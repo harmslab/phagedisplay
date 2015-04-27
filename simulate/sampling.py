@@ -1,5 +1,6 @@
 __description__ = \
 """
+Classes for doing sampling of pool instances.  
 """
 __author__ = "Michael J. Harms, harmsm@gmail.com"
 __date__ = "2015-04-25"

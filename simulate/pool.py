@@ -1,5 +1,6 @@
 __description__ = \
 """
+Classes for storing sequence pools that can then be sampled.
 """
 __author__ = "Michael J. Harms"
 __date__ = "2015-04-25"
