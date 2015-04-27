@@ -1,0 +1,270 @@
+__description__ = \
+"""
+"""
+__author__ = "Michael J. Harms"
+__date__ = "2015-04-25"
+
+import string
+import numpy as np
+
+import utility
+
+AMINO_ACIDS = ("A","C","D","E","F",
+               "G","H","I","K","L",
+               "M","N","P","Q","R",
+               "S","T","V","W","Y")
+
+BASES = ("A","T","G","C")
+
+BINARY = (0,1)
+
+class SeqIntegerMapper:
+    """
+    To save memory and avoid big-ole dicts, treat sequences as base-"alphabet
+    size" numbers that are converted to base 10 integers.  Can handle alphabets
+    up to 36 letters long. As written, we'll run out of long ints for 64 bit
+    systems for 15+ amino acid peptides.  
+    """
+    
+    def __init__(self,seq_length,alphabet=AMINO_ACIDS):
+        """
+        Initialize instance of class.
+        """
+        
+        self._alphabet = ["{:s}".format(s) for s in alphabet]
+        self._base = len(alphabet)
+        self._seq_length = seq_length
+        self.possible_digits = string.digits + string.ascii_lowercase
+        
+        self.max_int = self._base**(self._seq_length)
+        
+        self.string_to_base = dict([(letter,self.possible_digits[i])
+                                    for i, letter in enumerate(alphabet)])
+                
+    @property
+    def alphabet(self):
+        """
+        Get alphabet.
+        """
+        return self._alphabet
+
+    @property
+    def base(self):
+        """
+        Get base.
+        """
+        return self._base
+    
+    @property
+    def seq_length(self):
+        """ Get base. """
+        return self._seq_length
+        
+    def seqToInt(self,sequence_string):
+        """
+        Return the base 10 integer equivalent of a sequence.
+        """
+    
+        sequence_in_base = "".join([self.string_to_base[s]
+                                    for s in sequence_string])
+        
+        return int(sequence_in_base,self._base)
+    
+    
+    def intToSeq(self,sequence_integer):
+        """
+        Return the sequence encoded by this base 10 integer.
+        """
+            
+        digits = list(self._alphabet[0])*self._seq_length
+        i = 0
+        while sequence_integer:
+            digits[i] = self._alphabet[sequence_integer % self._base]
+            sequence_integer //= self._base
+            i += 1
+          
+        digits.reverse()
+        
+        return "".join(digits)
+
+class Pool:
+    """
+    Class to hold a pool of sequences. 
+    
+    Important attributes:
+    
+         _all_seq holds integer representations of every sequence in the initial
+                        pool.
+         _affinities    holds the relative affinities of each sequence in
+                        _all_seq
+
+         _pool_contents is a list of arrays of integers ranging from 0 to
+                        len(_all_seq)-1. Each array in the list corresponds to
+                        one round in the experiment. Each integer in the arrays
+                        maps back to the sequences stored in _all_seq (and the
+                        affinities in _affinities)
+         _pool_counts   holds a list of integer arrays storing the counts of
+                        each sequence in the pool for a given round. 
+         _checkpoints   is a list of boolean variables that records whether this
+                        particular round is interesting.  This is set using
+                        addNewStep and is useful for keeping track of steps that
+                        correspond to, say, experimental outputs.
+
+    These private attributes can be accessed by a variety public functions. 
+    
+    The class also contains methods for generating pools and adding new rounds
+    (updating the _pool_contents and _pool_counts lists).  
+    """ 
+
+    def __init__(self,sequence_length=12,alphabet=BINARY):
+        """
+        Initialize the class with basic pool properties.
+        
+        Args: (sequence_length) length of sequences in pool
+              (alphabet) possible states at each site in the sequence
+        """
+
+        self.sequence_length = sequence_length
+        self.alphabet = alphabet[:]
+        
+        # mapper allows us to convert between internal integer representation and
+        # human-readable sequence representations.
+        self.mapper = SeqIntegerMapper(self.sequence_length,
+                                       tuple(self.alphabet[:]))
+        
+        # At this point, there are no sequences in the pool...
+        self._pool_exists = False
+    
+
+    def createUniformPool(self,initial_pool_size,max_K=1e6):
+        """
+        Generate a pool of "initial_pool_size" sequences, sampling affinities
+        randomly from 1 to max_K. Affinities are assigned using randomly chosen
+        log(K) values, but affinity is stored as K values. 
+        """
+        
+        # Create random initial sequences and count them.  mapper.max_int is the 
+        # highest possible sequence.  For example, for a 5-mer peptide, this will
+        # generate integer equivalents ranging from AAAAA to YYYYY.  
+        initial_sample = np.random.randint(0,self.mapper.max_int,
+                                           initial_pool_size)  
+        content, counts = utility.uniqueCounter(initial_sample)
+        
+        # All sequences seen, as well as their srelative affinities
+        self._all_seq = content
+        self._affinities = 10**(np.random.uniform(low=0.0,high=np.log10(max_K),
+                                                  size=self._all_seq.size))
+        
+        # Original pool of sequences
+        self._pool_contents = []
+        self._pool_contents.append(np.array(range(self._all_seq.size)))
+    
+        # Original counts in the pool
+        self._pool_counts = []
+        self._pool_counts.append(counts)                 
+
+        self._pool_checkpoints = [True]
+        
+        # Now we have a pool to work with.  
+        self._pool_exists = True
+        
+    
+    def addNewStep(self,new_contents,new_counts,checkpoint=False):
+        """
+        Append a new round of selection.  
+        """
+        
+        self._pool_contents.append(new_contents)
+        self._pool_counts.append(new_counts)
+        self._pool_checkpoints.append(checkpoint)
+    
+    
+    def prettyPrint(self):
+        """
+        Print out the current round in tabular fashion.  
+        """
+        
+        freq = self.current_counts/sum(self.current_counts)
+        for i in self.current_contents:
+            print(self.mapper.intToSeq(self._all_seq[self.current_contents[i]]),
+                  self.current_counts[i],
+                  self.current_affinities[i],
+                  freq[i])  
+    
+    @property
+    def pool_exists(self):
+        """
+        Has the pool actually been populated?
+        """
+        
+        return self._pool_exists
+    
+    @property
+    def current_contents(self):
+        """
+        The current contents of the pool. 
+        """
+        
+        return self._pool_contents[-1]
+    
+    @property
+    def current_counts(self):
+        """
+        The current counts of all sequences in the current pool.  
+        """
+        
+        return self._pool_counts[-1]  
+
+    @property
+    def current_affinities(self):
+        """
+        The affinities of all of the sequences in the currrent pool. 
+        """
+        
+        return self._affinities[self._pool_contents[-1]]
+    
+    @property
+    def all_seq(self):
+        """
+        All sequences ever seen in the pool.  
+        """
+        
+        return self._all_seq
+    
+    @property
+    def all_affinities(self):
+        """
+        The affinities of every sequence ever seen in the pool. 
+        """
+        
+        return self._affinities 
+    
+    @property
+    def checkpoints(self):
+        """
+        Checkpoint rounds.  
+        """
+        return [i for i in range(len(self._pool_checkpoints))
+                if self._pool_checkpoints[i]]
+    
+    def round_contents(self,round_number):
+        """
+        Get contents of pool at round round_number.
+        """
+    
+        return self._pool_contents[round_number]
+    
+    def round_counts(self,round_number):
+        """
+        Get counts of sequences in pool at round round_number.
+        """
+    
+        return self._pool_counts[round_number]
+    
+    def round_affinities(self,round_number):
+        """
+        Get affinities of sequences in pool at round round_number.
+        """
+    
+        return self._affinities[self._pool_contents[round_number]]
+    
