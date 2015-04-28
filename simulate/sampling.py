@@ -62,15 +62,15 @@ class SamplerBaseClass(object):
         
         return pool_instance.current_counts/(pool_instance.current_counts.sum())
     
-    def runExperiment(self,pool_instance,sample_size):
+    def runExperiment(self,pool_instance,sample_size,checkpoint=False):
         """
         Run a sampling experiment.  
         
             Args: pool_instance (current pool)
                   sample_size (number of sequences to take forward)
-        
-            Returns: new_contents (new sequences after sampling)
-                     new_counts (number of times each sequence is seen)
+                  checkpoint (whether we should note this as an important round)
+
+            Output: adds new round to pool_instance 
         
         """
 
@@ -105,8 +105,8 @@ class SamplerBaseClass(object):
                 new_contents, new_counts = self._sample(possibilities,
                                                         weights=weights,
                                                         sample_size=sample_size)
-                
-        return new_contents, new_counts
+       
+        pool_instance.addNewStep(new_contents,new_counts,checkpoint)
         
 
 class PCRAmplificationSampler(SamplerBaseClass):
@@ -166,15 +166,15 @@ class BindingSampler(SamplerBaseClass):
     
         return pool_instance.current_affinities/np.sum(pool_instance.current_affinities)
     
-    def runExperiment(self,pool_instance,sample_size):
+    def runExperiment(self,pool_instance,sample_size,checkpoint=False):
         """
         Run a sampling experiment.  
         
             Args: pool_instance (current pool)
                   sample_size (number of sequences to take forward)
-        
-            Returns: new_contents (new sequences after sampling)
-                     new_counts (number of times each sequence is seen)
+                  checkpoint (whether we should note this as an important round)
+
+            Output: adds new round to pool_instance 
         
         """
 
@@ -220,9 +220,10 @@ class BindingSampler(SamplerBaseClass):
 
         # toss empties if seen
         if new_contents[0] == -1:
-            return new_contents[1:], new_counts[1:] 
+            new_contents = new_contents[1:]
+            new_counts = new_counts[1:] 
 
-        return new_contents, new_counts
+        pool_instance.addNewStep(new_contents,new_counts,checkpoint)
     
 
 class IlluminaRunSampler(SamplerBaseClass):

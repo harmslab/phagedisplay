@@ -93,18 +93,20 @@ class Pool:
     Class to hold a pool of sequences. 
     
     Important attributes:
-    
+   
+         LISTS WHERE EACH ENTRY IS A SEQUENCE 
          _all_seq holds integer representations of every sequence in the initial
                         pool.
          _affinities    holds the relative affinities of each sequence in
                         _all_seq
 
-         _pool_contents is a list of arrays of integers ranging from 0 to
+         LISTS WHERE EACH ENTRY IS A ROUND
+         _contents      is a list of arrays of integers ranging from 0 to
                         len(_all_seq)-1. Each array in the list corresponds to
                         one round in the experiment. Each integer in the arrays
                         maps back to the sequences stored in _all_seq (and the
                         affinities in _affinities)
-         _pool_counts   holds a list of integer arrays storing the counts of
+         _counts        holds a list of integer arrays storing the counts of
                         each sequence in the pool for a given round. 
          _checkpoints   is a list of boolean variables that records whether this
                         particular round is interesting.  This is set using
@@ -114,7 +116,7 @@ class Pool:
     These private attributes can be accessed by a variety public functions. 
     
     The class also contains methods for generating pools and adding new rounds
-    (updating the _pool_contents and _pool_counts lists).  
+    (updating the _contents and _counts lists).  
     """ 
 
     def __init__(self,sequence_length=12,alphabet=BINARY):
@@ -157,28 +159,25 @@ class Pool:
                                                   size=self._all_seq.size))
         
         # Original pool of sequences
-        self._pool_contents = []
-        self._pool_contents.append(np.array(range(self._all_seq.size)))
-    
-        # Original counts in the pool
-        self._pool_counts = []
-        self._pool_counts.append(counts)                 
-
-        self._pool_checkpoints = [True]
-        
+        self._contents = [np.array(range(self._all_seq.size))]
+        self._counts = [counts]
+        self._checkpoints = [True]
+       
         # Now we have a pool to work with.  
         self._pool_exists = True
         
     
-    def addNewStep(self,new_contents,new_counts,checkpoint=False):
+    def addNewStep(self,new_contents,new_counts,checkpoint):
         """
         Append a new round of selection.  
+
+        FUTURE NOTE: Could make this cleverly write out current contents as 
+        a pickle and then replace to allow large simulations. 
         """
-        
-        self._pool_contents.append(new_contents)
-        self._pool_counts.append(new_counts)
-        self._pool_checkpoints.append(checkpoint)
-    
+
+        self._contents.append(new_contents)
+        self._counts.append(new_counts)
+        self._checkpoints.append(checkpoint)
     
     def prettyPrint(self):
         """
@@ -206,15 +205,14 @@ class Pool:
         The current contents of the pool. 
         """
         
-        return self._pool_contents[-1]
+        return self._contents[-1]
     
     @property
     def current_counts(self):
         """
         The current counts of all sequences in the current pool.  
         """
-        
-        return self._pool_counts[-1]  
+        return self._counts[-1]  
 
     @property
     def current_affinities(self):
@@ -222,8 +220,16 @@ class Pool:
         The affinities of all of the sequences in the currrent pool. 
         """
         
-        return self._affinities[self._pool_contents[-1]]
-    
+        return self._affinities[self._contents[-1]]
+   
+    @property
+    def checkpoints(self):
+        """
+        Checkpoint status of each round.
+        """
+
+        return self._checkpoints
+ 
     @property
     def all_seq(self):
         """
@@ -239,33 +245,25 @@ class Pool:
         """
         
         return self._affinities 
-    
-    @property
-    def checkpoints(self):
-        """
-        Checkpoint rounds.  
-        """
-        return [i for i in range(len(self._pool_checkpoints))
-                if self._pool_checkpoints[i]]
-    
+
     def round_contents(self,round_number):
         """
         Get contents of pool at round round_number.
         """
     
-        return self._pool_contents[round_number]
+        return self._contents[round_number]
     
     def round_counts(self,round_number):
         """
         Get counts of sequences in pool at round round_number.
         """
     
-        return self._pool_counts[round_number]
+        return self._counts[round_number]
     
     def round_affinities(self,round_number):
         """
         Get affinities of sequences in pool at round round_number.
         """
     
-        return self._affinities[self._pool_contents[round_number]]
+        return self._affinities[self._contents[round_number]]
     
