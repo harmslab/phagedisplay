@@ -15,9 +15,8 @@ Example:
         fastqs/
             round0.fastq
             round1.fastq
-        pickles/
-            round0.pickle
-            round1.pickle
+        good-seq.pickle
+        bad-seq.pickle
 
 ** experiment-directory **
 This directory can have any name.
@@ -41,16 +40,9 @@ info.json
         "data_identifier":"long_unique_automatically_generated_random_string",
 
         "arbitrary_key":"has a value", 
+
+        "pickle_file":"runs.pickle",
  
-        "pickle0":{
-                   "file":"pickles/round0.pickle",
-                   "round":0
-                  },
-        "pickle1":{
-                   "file":"pickles/round5.pickle",
-                   "round":5
-                  },
-        
         "fastq0":{
                   "file":"fastq/round0.fastq",
                   "round":0
@@ -60,6 +52,11 @@ info.json
                   "round":5
                   }
     }
+
+** runs.pickle **
+A pickled dictionary (python3, binary) containing sequences as keys and tuples
+of counts for each run.  First entry in tuple is round 0.  Missing rounds have 
+None.  
 
 ** fastq **
 fastq files come to us from the sequencing facility.  The "round" attribute
@@ -76,7 +73,4 @@ AAAAAFFFFFFFFFFFFFAF.FFFFFFF#F##F##FF###<###FF#############################
 
 We care (mostly) about the second line, which has the actual sequence.
 
-** pickle **
-pickle files are pickled dictionaries (binary, python3) that key unique 
-sequences to number of counts. 
 
