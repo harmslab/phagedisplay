@@ -11,7 +11,15 @@ DATA_FORMAT_VERSION = "0.1"
 REQUIRED_KEYS = ["date","description","data_format_version","data_identifier"]
 CORE_DIRECTORIES = ["fastqs","pickles"]
 
-import os, shutil, json, random, string, datetime
+import os, shutil, json, random, string, datetime, sys
+import processFastq
+
+class PhageDisplayExperimentError(Exception):
+    """
+    General error class for this module.
+    """
+    
+    pass
 
 class PhageDisplayExperiment:
     """
@@ -47,14 +55,13 @@ class PhageDisplayExperiment:
             self._validateProperty(k,kwargs[k])
             self._props[k] = kwargs[k]
     
-    def addFile(self,file_name,file_round,file_type="guess"):
+    def addFastqFile(self,file_name,file_round):
         """
-        Add a data file to the experiment.  
+        Add a fastq file to the experiment.  
         
         Args:
             file_name: name of data file
             file_round: experimental round data file corresponds to (int >= 0)
-            file_type: "pickle", "fastq" or "guess".  
         """
 
         # Make sure file_round is good
@@ -62,23 +69,27 @@ class PhageDisplayExperiment:
             err = "Round must be a positive integer."
             raise ValueError(err)
 
-        # Grab file extension to guess
-        if file_type == "guess":
-            file_type = file_name.split(".")[-1]
+        if not hasattr(self,"fastq_list"):
+            self.fastq_list = []
+        self.fastq_list.append((os.path.relpath(file_name),file_round))
 
-        if file_type == "pickle":
-            if not hasattr(self,"pickle_list"):
-                self.pickle_list = []
-            self.pickle_list.append((os.path.relpath(file_name),file_round))
+    def addPickleFile(self,file_name,useful=True,copy=False):
+        """
+        Add a pickle file to the experiment.
+    
+        Args:
+            file_name: name of data file
+            useful: whether the data in the pickle are useful (e.g. good reads)
+        """
 
-        elif file_type == "fastq":
-            if not hasattr(self,"fastq_list"):
-                self.fastq_list = []
-            self.fastq_list.append((os.path.relpath(file_name),file_round))
-
-        else:
-            err = "file type {:s} not recognized.".format(file_type)
+        if type(useful) is not bool:
+            err = "Pickle 'useful' parameter must be True/False\n"
             raise ValueError(err)
+           
+        if not hasattr(self,"pickle_list"):
+            self.pickle_list = []
+        self.pickle_list.append((os.path.relpath(file_name),useful)) 
+
 
     def addProperty(self,key,value):
         """
@@ -91,6 +102,22 @@ class PhageDisplayExperiment:
 
         self._validateProperty(key,value)
         self._props[key] = value
+
+    def fastqToPickle(self):
+        """
+        """
+
+        good_seq = "good-seq.pickle"
+        bad_seq = "bad-seq.pickle"
+
+        filenames = [f[0] for f in self.fastq_list]
+        round_numbers = [f[1] for f in self.fastq_list]
+
+        p = processFastq.CountFastqSeq()
+        p.processFastqFiles(filenames,round_numbers,good_seq,bad_seq)
+    
+        self.addPickleFile(good_seq,useful=True)
+        self.addPickleFile(bad_seq,useful=False)
 
     def write(self,directory):
         """
@@ -111,8 +138,8 @@ class PhageDisplayExperiment:
             os.mkdir(os.path.join(self.dir_name,d))
                  
         # Create info.json and copy in pickle/fastq files 
-        self._copyExternalFiles("fastq")
-        self._copyExternalFiles("pickle")
+        self._moveExternalFiles("fastq")
+        self._moveExternalFiles("pickle")
         self._createInfoFile()
 
     def read(self,directory):
@@ -129,7 +156,6 @@ class PhageDisplayExperiment:
         print("File read.")
         self.print()
 
-
     def print(self):
 
         if hasattr(self,"dir_name"):
@@ -143,7 +169,7 @@ class PhageDisplayExperiment:
 
         if hasattr(self,"pickle_list"):
             print("")
-            print("pickle_files: (filename, round)")
+            print("pickle_list: (filename, useful)")
             for p in self.pickle_list:
                 print("   ",p)
         
@@ -176,7 +202,7 @@ class PhageDisplayExperiment:
                 err = "Data format ({:s}) is newer than parser format ({:s})".format(value,DATA_FORMAT_VERSION)
                 raise ValueError(err) 
 
-    def _copyExternalFiles(self,file_type):
+    def _moveExternalFiles(self,file_type):
         """
         Copy in any external files into the data directory.  In doing so, also
         update pickle_list and fastq_list so they have relative paths (base at
@@ -192,12 +218,12 @@ class PhageDisplayExperiment:
         if hasattr(self,list_name):
             for i, x in enumerate(self.__dict__[list_name]):
 
-                # Try to copy in files.  If we die with SameFileError, we're 
-                # copying to self and we can just ignore error.
+                # Try to move in files.  If we die with SameFileError, we're 
+                # moving to self and we can just ignore error.
                 try:
                     new_name = os.path.join(internal_dir_name,
                                             os.path.split(x[0])[-1])
-                    shutil.copy(x[0],os.path.join(self.dir_name,new_name))
+                    shutil.move(x[0],os.path.join(self.dir_name,new_name))
                 
                     # set relative path
                     self.__dict__[list_name][i] = (new_name,x[1])
@@ -239,13 +265,13 @@ class PhageDisplayExperiment:
         for k in json_input.keys():
 
             if k.startswith("pickle"):
-                self._loadInternalFile("pickle",k,json_input[k])
+                self._checkInternalFile("pickle",k,json_input[k])
             elif k.startswith("fastq"):
-                self._loadInternalFile("fastq",k,json_input[k])
+                self._checkInternalFile("fastq",k,json_input[k])
             else:
                 self._props[k] = json_input[k]
 
-    def _loadInternalFile(self,file_type,key,value):
+    def _checkInternalFile(self,file_type,key,value):
         """
         Load an internal file from the experimental data structure, making
         sure the file exists.
@@ -263,3 +289,119 @@ class PhageDisplayExperiment:
         else:
             err = "\"{:s}\" does not exist.".format(filename)
             raise IOError(err)
+
+
+    @property 
+    def data(self):
+        """
+        """
+
+        if not hasattr(self,pickle_list):
+            return None
+    
+        good_pickle = [i for i, x in self.pickle_list if x[1] == True]
+        if len(good_pickle) == 0:
+            return None
+        elif len(good_pickle) == 1:
+            return self.pickle_list[good_pickle[0]][0]
+        else:
+            return [self.pickle_list[i][0] for i in good_pickle] 
+
+
+# Wrappers for class construction etc.
+def createExperiment(output,
+                     description,
+                     date,
+                     fastq_files=[None],
+                     pickle_file=None,
+                     rounds_file=None,
+                     arbitrary_key_file=None):
+    """
+    """
+
+    if date == "today":
+        d = datetime.date.today()
+        date = "{:04d}-{:02d}-{:02d}".format(d.year,d.month,d.day)
+
+    # Dump "None" entries
+    fastq_files = [f for f in fastq_files if f]
+    if pickle_file != None and len(fastq_files) != 0:
+        err = "You cannot specify both a pickle file and fastq_files.\n"
+        raise PhageDisplayExperimentError(err)
+
+    # Read in the rounds_file, if specified
+    round_numbers = range(len(fastq_files))
+    if rounds_file != None:
+
+        if pickle_file:
+            sys.stderr.write("Pickle file specified.  Ignoring \"rounds\" file.\n")
+            sys.stderr.flush()
+
+        else: 
+            f = open(rounds_file,'r')
+            lines = f.readlines()
+            f.close()
+    
+            # Skip commented lines
+            lines = [l for l in lines if not l.startswith("#")]
+
+            total_input = "  ".join(lines).split()
+            round_numbers = [int(i) for i in total_input]
+   
+            num_exp_rounds = len(fastq_files) 
+            if len(round_numbers) != num_exp_rounds:
+                err = "Number of rounds must match number of experimental input files."
+                raise PhageDisplayExperimentError(err)
+
+    arb_key_dict = {}
+    if arbitrary_key_file:
+        f = open(arbitrary_key_file,'r')
+        lines = f.readlines()
+        f.close()
+
+        for l in lines:
+            
+            # Skip blank and commented lines 
+            if l.startswith("#") or l.strip() == "":
+                continue
+                
+            # Parse the line 
+            try:
+                key = l.split(":")[0].strip()
+                value = ":".join(l.split(":")[1:]).strip()
+                if value == "":
+                    raise IndexError
+
+            except IndexError:
+                err = "Line:\n\n{:s}\n in {:s} does not have key:value format\n".format(l,arbitrary_key_file)
+                raise PhageDisplayExperimentError(err)
+
+            # Don't silently allow duplicate key/value pairs in the file
+            if key in arb_key_dict:
+                err = "key {:s} duplicated in key file {:s}\n".format(key,arbitrary_key_file)
+                raise PhageDisplayExperimentError(err)
+
+            arb_key_dict[key] = value
+    
+    p = PhageDisplayExperiment(description=description,
+                               date=date,
+                               **arb_key_dict)
+
+    for i, f in enumerate(fastq_files):
+        p.addFastqFile(f,round_numbers[i])
+    
+    p.fastqToPickle()
+    p.write(output)
+
+    p.print()
+
+def loadExperiment():
+    """
+    What should this even be?
+    """
+
+    return p.load
+
+
+def writeExperiment():
+    pass

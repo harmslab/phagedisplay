@@ -166,6 +166,32 @@ class Pool:
         # Now we have a pool to work with.  
         self._pool_exists = True
         
+    def createScaledPool(self,initial_pool_size,max_K=1e6):
+        """
+        """
+        
+        # Create random initial sequences and count them.  mapper.max_int is the 
+        # highest possible sequence.  For example, for a 5-mer peptide, this will
+        # generate integer equivalents ranging from AAAAA to YYYYY.  
+        initial_sample = np.random.randint(0,self.mapper.max_int,
+                                           initial_pool_size)  
+        content, counts = utility.uniqueCounter(initial_sample)
+        
+        # All sequences seen, as well as their srelative affinities
+        self._all_seq = content
+
+        a = np.random.uniform(low=0.0,high=1.,size=self._all_seq.size)
+        b = np.random.uniform(low=0.0,high=1.,size=self._all_seq.size)
+        c = np.random.uniform(low=0.0,high=1.,size=self._all_seq.size)
+        self._affinities = 10**(a*b*c*np.log10(max_K))
+        
+        # Original pool of sequences
+        self._contents = [np.array(range(self._all_seq.size))]
+        self._counts = [counts]
+        self._checkpoints = [True]
+       
+        # Now we have a pool to work with.  
+        self._pool_exists = True
     
     def addNewStep(self,new_contents,new_counts,checkpoint):
         """

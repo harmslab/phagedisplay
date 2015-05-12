@@ -55,7 +55,6 @@ p.addFile("test1.fastq",1)
 p.addFile("test2.fastq",5,file_type='fastq')
 print(" success.")
 
-
 print("Try to {:s}...".format("write out data"),end="")
 p.write("test-dir")
 print(" success.")

@@ -6,7 +6,13 @@ __author__ = "Michael J. Harms, harmsm@gmail.com"
 __date__ = "2015-04-25"
 
 import numpy as np
-import utility
+import utility, sys
+
+class PoolIsEmptyError(Exception):
+    """
+    """
+
+    pass
 
 class SamplerBaseClass(object):
     """
@@ -51,7 +57,10 @@ class SamplerBaseClass(object):
         if not pool_instance.pool_exists:
             err = "pool must be initialized prior to sampling.\n\n"
             raise PhageDisplaySimulatorError(err)
-    
+
+        if sum(pool_instance.current_counts) == 0:
+            raise PoolIsEmptyError
+            
     
     def calcWeights(self,pool_instance):
         """
@@ -80,6 +89,7 @@ class SamplerBaseClass(object):
         # If the sample_size is bigger than the number of sequences in the pool
         # and we don't allow replacement, just return the whole pool. 
         if sample_size > np.sum(pool_instance.current_counts) and not self.allow_replace:
+
             return pool_instance.current_contents, pool_instance.current_counts
 
         else:
@@ -154,9 +164,14 @@ class BindingSampler(SamplerBaseClass):
     a plate.  
     """
     
-    def __init__(self):
-        
+    def __init__(self,conc_constant=1.0):
+        """
+        Args: 
+            conc_constant scales affinities.
+        """ 
+ 
         self.allow_replace = False
+        self.conc_constant = conc_constant
     
     def calcWeights(self,pool_instance):
         """
@@ -183,47 +198,45 @@ class BindingSampler(SamplerBaseClass):
        
         # Grab the total number of sequences seen 
         total_counts = np.sum(pool_instance.current_counts)
-    
-        # Calculate probability that each sequence binds to a single site.
+
         weights = pool_instance.current_affinities*pool_instance.current_counts
-        Q = 1 + np.sum(weights)
-        weights = weights/Q
+        Q = np.sum(weights)
 
-        # Calcualte probability that nothing binds at all.
-        p_nothing = 1/Q
-      
-        # Normalize the binding probability to the number of times we will query
-        # this probability in the final, expanded array
-        weights = weights/pool_instance.current_counts
+        # Calcualte probability that nothing binds at all (assumes that [M] is
+        # much higher than Kx_average).
+        p_nothing = self.conc_constant/(self.conc_constant + Q)
 
-        # Add a "nothing-bound" probability to the weights.  This will be added 
-        # "total_counts" times, hence the normalization to total_counts.
-        weights = np.append(p_nothing/total_counts,weights)
-     
-        # Add a "nothing bound" to the possible contents 
-        contents = pool_instance.current_contents.copy()
-        contents = np.append(-1,contents)
+        # Scale sample size according to the probability of not binding
+        sample_size = int(round(sample_size*(1-p_nothing),0)) 
+  
+        print("# Number of proteins taken",sample_size)
+        sys.stdout.flush()
+        # If the sample size remains bigger than the number of total sequences,
+        # keep them all.  
+        if sample_size >= sum(pool_instance.current_counts):
+            pool_instance.addNewStep(pool_instance.current_contents,
+                                     pool_instance.current_counts,
+                                     checkpoint)
 
-        # Add a total_counts "nothing bound" occurences to the counts 
-        counts = pool_instance.current_counts.copy()
-        counts = np.append(total_counts,counts)
+        # Otherwise, sample!
+        else:
+            weights = weights/Q
 
-        # Create possibilities and weights arrays arrays by repeating these instances
-        # the number of times they occur.
-        possibilities = np.repeat(contents,counts)
-        weights = np.repeat(weights,counts)
+            # Normalize the binding probability to the number of times we will query
+            # this probability in the final, expanded array
+            weights = weights/pool_instance.current_counts
 
-        # Sample                    
-        new_contents, new_counts = self._sample(possibilities,
-                                                weights=weights,
-                                                sample_size=sample_size)
+            # the number of times they occur.
+            possibilities = np.repeat(pool_instance.current_contents,
+                                      pool_instance.current_counts)
+            weights = np.repeat(weights,pool_instance.current_counts)
 
-        # toss empties if seen
-        if new_contents[0] == -1:
-            new_contents = new_contents[1:]
-            new_counts = new_counts[1:] 
+            # Sample                    
+            new_contents, new_counts = self._sample(possibilities,
+                                                    weights=weights,
+                                                    sample_size=sample_size)
 
-        pool_instance.addNewStep(new_contents,new_counts,checkpoint)
+            pool_instance.addNewStep(new_contents,new_counts,checkpoint)
     
 
 class IlluminaRunSampler(SamplerBaseClass):
