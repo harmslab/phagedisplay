@@ -1,27 +1,28 @@
 Title: Phage display experiment data structure spec.
-Version: 0.1
+Version: 0.11
 Date: 2015-04-29
 Author: Michael J. Harms
 
-** Overview **
+## Overview 
 This file/data structure will be generated and populated by a script given input
 fastq and/or pickle files.  This can be done from either experimental or
 simulated data. 
 
-Example:
-
+#### Example:
+"""
     experiment-directory/
         info.json
         fastqs/
             round0.fastq
             round1.fastq
-        good-seq.pickle
-        bad-seq.pickle
+        good-reads.pickle
+        bad-reads.pickle
+"""
 
-** experiment-directory **
+### experiment-directory
 This directory can have any name.
 
-** info.json **
+### info.json
 info.json contains meta data about the experiment.  It requires entries date, 
 description, data_format_version, and data_identifier.  It can have entries
 specifying local fastq and pickle file locations (optional, but without them the
@@ -30,8 +31,8 @@ structure will be smart enough to read.  Examples of arbitrary keys might be
 round barcodes, person who worked at the bench, exact experimental conditions,
 etc.
 
-Example:
-
+###Example:
+"""
 info.json
     {
         "date":"2015-04-30",
@@ -41,7 +42,8 @@ info.json
 
         "arbitrary_key":"has a value", 
 
-        "pickle_file":"runs.pickle",
+        "good_pickle_file":"good-reads.pickle",
+        "bad_pickle_file":"bad-reads.pickle",
  
         "fastq0":{
                   "file":"fastq/round0.fastq",
@@ -52,18 +54,19 @@ info.json
                   "round":5
                   }
     }
+"""
 
-** runs.pickle **
+### good_pickle_file
 A pickled dictionary (python3, binary) containing sequences as keys and tuples
 of counts for each run.  First entry in tuple is round 0.  Missing rounds have 
 None.  
 
-** fastq **
+### fastq
 fastq files come to us from the sequencing facility.  The "round" attribute
 specifies where this sample comes from during the selection rounds.
 
-Example:
-
+####Example:
+"""
 An entry in one of these files has the form:
 
 @NS500451:25:H3K2MBGXX:1:11101:11677:1043 1:N:0:CTCTCTAC+GCGATCTA
@@ -72,5 +75,5 @@ GCGTGGCAGATTCCTTATAATGCGTATGNTNNTNNTGNNNGNNNTTNNNNNNNNNNNNNNNNNNNNNNNNNNNNN
 AAAAAFFFFFFFFFFFFFAF.FFFFFFF#F##F##FF###<###FF#############################
 
 We care (mostly) about the second line, which has the actual sequence.
-
+"""
 

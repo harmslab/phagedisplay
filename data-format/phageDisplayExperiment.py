@@ -7,9 +7,9 @@ this directory.
 __author__ = "Michael J. Harms"
 __date__ = "2015-04-28"
 
-DATA_FORMAT_VERSION = "0.1"
+DATA_FORMAT_VERSION = "0.11"
 REQUIRED_KEYS = ["date","description","data_format_version","data_identifier"]
-CORE_DIRECTORIES = ["fastqs","pickles"]
+CORE_DIRECTORIES = ["fastqs"]  
 
 import os, shutil, json, random, string, datetime, sys
 import processFastq
@@ -24,7 +24,7 @@ class PhageDisplayExperimentError(Exception):
 class PhageDisplayExperiment:
     """
     Main data structure that holds phage display experiments, pointers to
-    data files, and metadata. Function is to create a standardized directory
+    data files, and metadata. Purpose is to create a standardized directory
     and information file that can then be read in and out for analysis.
     """
 
@@ -73,23 +73,20 @@ class PhageDisplayExperiment:
             self.fastq_list = []
         self.fastq_list.append((os.path.relpath(file_name),file_round))
 
-    def addPickleFile(self,file_name,useful=True,copy=False):
+    def addPickleFile(self,pickle_key,file_name):
         """
         Add a pickle file to the experiment.
     
         Args:
+            pickle_key: what to name this pickle file in the data structure
             file_name: name of data file
-            useful: whether the data in the pickle are useful (e.g. good reads)
         """
 
-        if type(useful) is not bool:
-            err = "Pickle 'useful' parameter must be True/False\n"
-            raise ValueError(err)
-           
-        if not hasattr(self,"pickle_list"):
-            self.pickle_list = []
-        self.pickle_list.append((os.path.relpath(file_name),useful)) 
-
+        if hasattr(self,pickle_key):
+            err = "Pickle file \"{:s}\" already specififed for attribute \"{:s}\".\n".format(self._props[pickle_key],pickle_key)
+            raise PhageDisplayExperimentError(err)
+        else:
+            self._props[pickle_key] = os.path.relpath(file_name)
 
     def addProperty(self,key,value):
         """
@@ -116,8 +113,8 @@ class PhageDisplayExperiment:
         p = processFastq.CountFastqSeq()
         p.processFastqFiles(filenames,round_numbers,good_seq,bad_seq)
     
-        self.addPickleFile(good_seq,useful=True)
-        self.addPickleFile(bad_seq,useful=False)
+        self.addPickleFile("good_pickle_file",good_seq)
+        self.addPickleFile("bad_pickle_file",bad_seq)
 
     def write(self,directory):
         """
@@ -139,7 +136,8 @@ class PhageDisplayExperiment:
                  
         # Create info.json and copy in pickle/fastq files 
         self._moveExternalFiles("fastq")
-        self._moveExternalFiles("pickle")
+        self._movePickleFile("good_pickle_file")
+        self._movePickleFile("bad_pickle_file")
         self._createInfoFile()
 
     def read(self,directory):
@@ -209,7 +207,7 @@ class PhageDisplayExperiment:
         self.dir_name).  
 
         Args:
-            file_type: type of files being manipulated.  pickle or fastq
+            file_type: type of files being manipulated. fastq only at the moment
         """
 
         list_name = "{:s}_list".format(file_type)
@@ -231,16 +229,40 @@ class PhageDisplayExperiment:
                 except shutil.SameFileError:
                     pass
 
+    def _movePickleFiles(self,pickle_key):
+        """
+        Copy in any external pickle files into the data directory.  In doing so,
+        also good_pickle_file and bad_pickle_file so they have relative paths, 
+        (base at self.dir_name)
+
+        Args:
+            pickle_key: key pointing to pickle file ("good_pickle_file" etc.)
+        """
+
+        internal_dir_name = ""
+
+        if hasattr(self,pickle_key):
+            pickle_file = self._props[pickle_key]
+
+            # Try to move in files.  If we die with SameFileError, we're 
+            # moving to self and we can just ignore error.
+            try:
+                new_name = os.path.join(internal_dir_name,
+                                        os.path.split(pickle_file)[-1])
+                shutil.move(pickle_file,os.path.join(self.dir_name,new_name))
+            
+                # set relative path
+                self._props[pickle_key] = new_name
+
+            except shutil.SameFileError:
+                pass
+
     def _createInfoFile(self):
         """
         Create an info file and write out.
         """
 
         to_write = self._props.copy()
-
-        if hasattr(self,"pickle_list"):
-            for i, x in enumerate(self.pickle_list):
-                to_write["pickle{:d}".format(i)] = x
 
         if hasattr(self,"fastq_list"):
             for i, x in enumerate(self.fastq_list):
@@ -264,9 +286,7 @@ class PhageDisplayExperiment:
    
         for k in json_input.keys():
 
-            if k.startswith("pickle"):
-                self._checkInternalFile("pickle",k,json_input[k])
-            elif k.startswith("fastq"):
+            if k.startswith("fastq"):
                 self._checkInternalFile("fastq",k,json_input[k])
             else:
                 self._props[k] = json_input[k]
@@ -289,23 +309,6 @@ class PhageDisplayExperiment:
         else:
             err = "\"{:s}\" does not exist.".format(filename)
             raise IOError(err)
-
-
-    @property 
-    def data(self):
-        """
-        """
-
-        if not hasattr(self,pickle_list):
-            return None
-    
-        good_pickle = [i for i, x in self.pickle_list if x[1] == True]
-        if len(good_pickle) == 0:
-            return None
-        elif len(good_pickle) == 1:
-            return self.pickle_list[good_pickle[0]][0]
-        else:
-            return [self.pickle_list[i][0] for i in good_pickle] 
 
 
 # Wrappers for class construction etc.
@@ -401,7 +404,6 @@ def loadExperiment():
     """
 
     return p.load
-
 
 def writeExperiment():
     pass
