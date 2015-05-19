@@ -3,6 +3,29 @@ Version: 0.11
 Date: 2015-04-29
 Author: Michael J. Harms
 
+## Rewriting
+Current format is trying to be too many things to too many people.  Going to
+shift to a new strategy:
+
+"""
+Container instance, which is made of:
+    ProcessStep instances, which are made of:
+        Blob instances for different data types
+
+c = Container()
+SomeProcessStep(c,process_args)
+SomeOtherProcessStep(c,other_process_args)
+"""       
+
+The container will have a directory with an info.json file.  Each process step
+will then have its own info.json file with metadata/parameters, as well as any
+output files.  (The input files will be in the previous step).  For fastq and
+pickle imports, the original file will be outside of the data structure, however
+these operations copy in the file rather than modify it, so the "chain of 
+custody" is preserved.
+
+ 
+
 ## Overview 
 This file/data structure will be generated and populated by a script given input
 fastq and/or pickle files.  This can be done from either experimental or

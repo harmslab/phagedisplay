@@ -54,7 +54,8 @@ class PhageDisplayExperiment:
         for k in kwargs.keys():
             self._validateProperty(k,kwargs[k])
             self._props[k] = kwargs[k]
-    
+
+
     def addFastqFile(self,file_name,file_round):
         """
         Add a fastq file to the experiment.  

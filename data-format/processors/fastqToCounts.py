@@ -1,20 +1,23 @@
 __description__ = \
 """
-Class for converting a set of fastq nucleotide sequences, collected over 
-multiple rounds of selection, and turning them into a single dictionary of the
-form:
-
-{"seq1":[10,20,100,...]}
-
-where the integers count the number of times that this sequence was seen in 
-each round.  
 """
 __author__ = "Michael J. Harms"
 __date__ = "2015-01-09"
 
 import sys, re, pickle
+import base
 
 class CountFastqSeq:
+    """
+    Class for converting a set of fastq nucleotide sequences, collected over 
+    multiple rounds of selection, and turning them into a single dictionary of the
+    form:
+
+    {"seq1":[10,20,100,...]}
+
+    where the integers count the number of times that this sequence was seen in 
+    each round.  
+    """
 
     def __init__(self,bad_pattern="[*X]",phage_term="GGG*AET",seq_length=12):
 
@@ -203,3 +206,9 @@ class CountFastqSeq:
         Return expected length of peptide sequences.
         """
         return self._seq_length
+
+class ProcessFastq(base.ProcessorBase):
+    """
+    """
+
+    pass
