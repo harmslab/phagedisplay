@@ -4,15 +4,15 @@ __description__ = \
 __author__ = "Michael J. Harms"
 __date__ = "2015-04-28"
 
-import os, gzip
+import os, gzip, container
 
-class ImportFastq(base.ProcessorBase):
+class ImportFastq(container.ContainerParent):
     """
     Class to import and hold onto a set of fastq files corresponding to a set
     of enrichment rounds.
     """
 
-    def addFastqFile(self,file_name,file_round):
+    def _addFastqFile(self,file_name,file_round):
         """
         Add a fastq file to the experiment.  
         
@@ -34,7 +34,6 @@ class ImportFastq(base.ProcessorBase):
         # Add the property keying to the newly created file
         self._addProp(key,value,blob.FileBlob) 
 
-
     def process(self,file_list,round_list=None):
         """
         Given a set of fastq files and round numbers, load them in.
@@ -46,21 +45,6 @@ class ImportFastq(base.ProcessorBase):
         for i, f in enumerate(file_list):
             self.addFastqFile(f,round_list[i])
 
-    def load(self):
-        """
-        Overwrite generic loader, adding extra sanity check to make sure that
-        specified fastq files actually exist. 
-        """
-        
-        super().load()
-
-        # Make sure the loaded files actually exist.
-        for k in self._props:
-            if k.startswith("fastq-file_"):
-                if os.path.exists(self.getProperty(k)):
-                    err = "Could not find file: {:s}\n".format(self.getProperty(k))
-                    raise ValueError(err)
-        
     @property
     def data(self):
         """

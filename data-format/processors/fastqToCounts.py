@@ -7,7 +7,7 @@ __date__ = "2015-01-09"
 import sys, re, pickle
 import base
 
-class CountFastqSeq:
+class FastqSeqCounter:
     """
     Class for converting a set of fastq nucleotide sequences, collected over 
     multiple rounds of selection, and turning them into a single dictionary of the
@@ -206,9 +206,3 @@ class CountFastqSeq:
         Return expected length of peptide sequences.
         """
         return self._seq_length
-
-class ProcessFastq(base.ProcessorBase):
-    """
-    """
-
-    pass
