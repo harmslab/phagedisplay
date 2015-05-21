@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 __description__ = \
 """
+Run the processing pipeline on a set of input files.  (This may eventually be
+the "master" script that we run on new input data).
 """
 __author__ = "Michael J. Harms"
 __date__ = "2015-04-28"
@@ -9,7 +11,7 @@ import argparse, sys, datetime
 
 import processors
 
-class XXXError(Exception):
+class PhageProcessorError(Exception):
     """
     """
 
@@ -61,26 +63,27 @@ def parseArbitraryKeyFile(arbitrary_key_file):
 
             except IndexError:
                 err = "Line:\n\n{:s}\n in {:s} does not have key:value format\n".format(l,arbitrary_key_file)
-                raise XXXError(err)
+                raise PhageProcessorError(err)
 
             # Don't silently allow duplicate key/value pairs in the file
             if key in arb_key_dict:
                 err = "key {:s} duplicated in key file {:s}\n".format(key,arbitrary_key_file)
-                raise XXXError(err)
+                raise PhageProcessorError(err)
 
             arb_key_dict[key] = value
 
     return arb_key_dict
 
-# Wrappers for class construction etc.
-def createExperiment(expt_name,
-                     description,
-                     date,
-                     fastq_files=[None],
-                     pickle_file=None,
-                     rounds_file=None,
-                     arbitrary_key_file=None):
+def runPipeline(expt_name,
+                description,
+                date,
+                fastq_files=[None],
+                pickle_file=None,
+                rounds_file=None,
+                arbitrary_key_file=None):
     """
+    Run the main phage display data analysis pipeline, starting from fastq files
+    or a counted pickle file.  
     """
 
     # --------------------- fastq files ---------------------------------------
@@ -101,7 +104,7 @@ def createExperiment(expt_name,
     # ---------------------- pickle files -------------------------------------
     if pickle_file:
         err = "pickle loading not yet implemented.  Sorry."
-        raise XXXError(err)
+        raise PhageProcessorError(err)
    
     # ---------------------- other params -------------------------------------
     if date == "today":
@@ -122,11 +125,13 @@ def createExperiment(expt_name,
    
     # Create the directory for the experiment 
     m.create()
-    
+   
+    # Load in the fastq files 
     a = processors.FastqListProcessor(expt_name="raw-fastq-files")
     m.addProcessor(a)
     m.process(file_list=fastq_files)
 
+    # Count good sequences in the fastq files
     b = processors.FastqToCountsProcessor(expt_name="raw-counts")
     m.addProcessor(b)
     m.process()
@@ -156,6 +161,7 @@ class FastqOnlyAction(argparse.Action):
 
 def main(argv=None):
     """
+    Parse argv and run the pipeline.
     """
 
     if argv == None:
@@ -215,13 +221,13 @@ def main(argv=None):
     # --------------------- Parse the command line ----------------------------
     args = parser.parse_args(argv[1:])
 
-    p = createExperiment(expt_name=args.expt_name,
-                         description=args.description[0],
-                         date=args.date[0],
-                         fastq_files=args.fastq_files,
-                         pickle_file=args.pickle_file[0],
-                         rounds_file=args.rounds_file[0],
-                         arbitrary_key_file=args.arbitrary_key_file[0])
+    p = runPipeline(expt_name=args.expt_name,
+                    description=args.description[0],
+                    date=args.date[0],
+                    fastq_files=args.fastq_files,
+                    pickle_file=args.pickle_file[0],
+                    rounds_file=args.rounds_file[0],
+                    arbitrary_key_file=args.arbitrary_key_file[0])
 
 
 if __name__ == "__main__":
