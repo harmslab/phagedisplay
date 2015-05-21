@@ -9,7 +9,7 @@ pickled dictionary format) and treat it with the same pipeline we would use to
 analyze an experiment.
 
 ##Some design details
-* This pipeline is built on a generic `ProcessorBase` class.  This class holds 
+* This pipeline is built on a generic `BaseProcessor` class.  This class holds 
 actual experimental information and metadata in a consistent format.  Class 
 instances can be nested.  
  * Each instance has a `data` property that spits out the interesting 

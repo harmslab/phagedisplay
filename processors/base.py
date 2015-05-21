@@ -4,10 +4,10 @@ __description__ = \
 __author__ = "Michael J. Harms"
 __date__ = "2015-05-16"
 
-from processors import blob
+from .blob import *
 import datetime, string, random, os, json, pickle
 
-class ProcessorParent:
+class BaseProcessor:
     """
     Base class for phage display processing steps.
     """
@@ -24,9 +24,9 @@ class ProcessorParent:
         if not date:
             d = datetime.date.today()
             self.addProperty("date","{:d}-{:02d}-{:02d}".format(d.year,d.month,d.day),
-                          blob.DateBlob)
+                          DateBlob)
         else:
-            self.addProperty("date",date,blob.DateBlob)
+            self.addProperty("date",date,DateBlob)
 
         # Add a description
         self.addProperty("description",description)
@@ -56,7 +56,7 @@ class ProcessorParent:
             expt_name = self.getProperty("expt_name")
 
         os.mkdir(expt_name)
-        self.addProperty("expt_name",expt_name,blob.FileBlob)       
+        self.addProperty("expt_name",expt_name,FileBlob)       
 
         self.saveFile()
 
@@ -130,7 +130,7 @@ class ProcessorParent:
         if custom_blob_class:
             self._props[key] = custom_blob_class(key,value)
         else:
-            self._props[key] = blob.Blob(key,value)
+            self._props[key] = Blob(key,value)
 
 
     def _writeJson(self,json_file="info.json"):

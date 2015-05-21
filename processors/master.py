@@ -5,9 +5,9 @@ __author__ = "Michael J. Harms"
 __date__ = "2015-04-28"
 
 import os, gzip,  pickle
-from processors import processorBase
+from . import BaseProcessor
 
-class MasterProcessor(processorBase.ProcessorParent):
+class MasterProcessor(BaseProcessor):
     """
     Processor that will hold an entire phage display experiment.
     """

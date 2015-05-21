@@ -5,7 +5,7 @@ __author__ = "Michael J. Harms"
 __date__ = "2015-04-28"
 
 import os, gzip, pickle, re
-from processors import processorBase
+from . import BaseProcessor
 
 class FastqSeqCounter:
     """
@@ -199,7 +199,7 @@ class FastqSeqCounter:
         """
         return self._seq_length
 
-class FastqToCountsProcessor(processorBase.ProcessorParent):
+class FastqToCountsProcessor(BaseProcessor):
     """
     """
 

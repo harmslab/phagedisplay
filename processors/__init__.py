@@ -6,8 +6,9 @@ sequences according to frequency and affinity.
 __author__ = "Michael J. Harms"
 __date__ = "2015-04-27"
 
-__all__ = ["masterProcessor","fastqListProcessor","fastqToCountsProcessor"]
+__all__ = ["BaseProcessor","MasterProcessor","FastqListProcessor","FastqToCountsProcessor"]
 
-from processors.masterProcessor import MasterProcessor
-from processors.fastqListProcessor import FastqListProcessor
-from processors.fastqToCountsProcessor import FastqToCountsProcessor
+from .base import BaseProcessor
+from .master import MasterProcessor
+from .fastq_list import FastqListProcessor
+from .fastq_to_counts import FastqToCountsProcessor

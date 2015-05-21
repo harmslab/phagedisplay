@@ -5,9 +5,9 @@ __author__ = "Michael J. Harms"
 __date__ = "2015-01-09"
 
 import re, gzip, os
-from processors import processorBase
+from . import BaseProcessor
 
-class FastqListProcessor(processorBase.ProcessorParent):
+class FastqListProcessor(BaseProcessor):
     """
     Class to import and hold onto a set of fastq files corresponding to a set
     of enrichment rounds.
