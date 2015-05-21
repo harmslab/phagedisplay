@@ -5,7 +5,7 @@ __author__ = "Michael J. Harms"
 __date__ = "2015-04-28"
 
 import os, gzip,  pickle
-import processorBase
+from processors import processorBase
 
 class MasterProcessor(processorBase.ProcessorParent):
     """

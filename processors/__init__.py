@@ -8,6 +8,6 @@ __date__ = "2015-04-27"
 
 __all__ = ["masterProcessor","fastqListProcessor","fastqToCountsProcessor"]
 
-import masterProcessor.MasterProcessor as MasterProcessor
-import fastqListProcessor.FastqListProcessor as FastqListProcessor
-import fastqToCountsProcessor.FastqToCountsProcessor as FastqToCounts
+from processors.masterProcessor import MasterProcessor
+from processors.fastqListProcessor import FastqListProcessor
+from processors.fastqToCountsProcessor import FastqToCountsProcessor
