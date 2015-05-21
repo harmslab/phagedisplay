@@ -4,8 +4,9 @@ Generic Blob classes to hold onto key/value pairs with specific validations
 specified using subclasses.
 """
 __author__ = "Michael J. Harms"
-__date__ "2015-05-16"
+__date__ = "2015-05-16"
 
+import datetime, os
 
 class Blob:
     """
@@ -19,13 +20,13 @@ class Blob:
         self.key = key_name
         self.value = value
        
-    def _validate_key(self):
+    def _validate_key(self,key):
         """
         Key validation.  Throw exception if bad.
         """
         pass    
      
-    def _validate_value(self):
+    def _validate_value(self,value):
         """
         Value validation. Throw exception if bad.
         """
@@ -46,7 +47,7 @@ class Blob:
         self._validate_key(key)
         self._key = key
 
-    @property:
+    @property
     def value(self):
         """
         Return the value.
@@ -61,7 +62,7 @@ class Blob:
         self._validate_value(value)
         self._value = value
 
-class FileBlob:
+class FileBlob(Blob):
     """
     Blob that checks to make sure the file added as a value is real.
     """
@@ -74,7 +75,7 @@ class FileBlob:
             err = "{:s} does not exist.\n".format(value)
             raise ValueError(err)
  
-class DateBlob:
+class DateBlob(Blob):
     """
     Blob that makes sure the date format in the value is valid.
     """

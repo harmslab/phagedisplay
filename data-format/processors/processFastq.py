@@ -4,8 +4,7 @@ __description__ = \
 __author__ = "Michael J. Harms"
 __date__ = "2015-01-09"
 
-import sys, re, pickle
-import base
+import re, gzip
 
 class FastqSeqCounter:
     """
@@ -83,12 +82,15 @@ class FastqSeqCounter:
         good_count_dict = {}
         bad_count_dict = {}
 
-        with open(fastq_file,'r+') as f:
+        get_line = False
+        with gzip.open(fastq_file,'r+') as f:
        
             for l in f:
+            
+                l_ascii = l.decode("ascii")
 
                 # If we see @, take the next line
-                if l[0] == "@":
+                if l_ascii.startswith("@"):
                     get_line = True
                     continue
 
@@ -100,7 +102,7 @@ class FastqSeqCounter:
                     get_line = False
 
                 # Translate the sequence
-                sequence = self._translate(l.strip())
+                sequence = self._translate(l_ascii.strip())
 
                 # Record it in either the good or bad dict, depending on its
                 # quality score
@@ -119,7 +121,7 @@ class FastqSeqCounter:
 
         return good_count_dict, bad_count_dict
 
-    def _compressDictSet(self,list_of_dicts,round_numbers):
+    def _compressDictSet(self,list_of_dicts):
         """
         Take a list of dictionaries, each corresponding to the counts for each
         peptide in a round, and create a single output dictionary keying 
@@ -129,62 +131,51 @@ class FastqSeqCounter:
     
         # all_keys has every sequence seen
         all_keys = []
-        for a in list_of_dicts:
-            all_keys.extend(a.keys())
+        template = [None for i in range(len(list_of_dicts))]
+        for i, a in enumerate(list_of_dicts):
+            if a:
+                template[i] = 0
+                all_keys.extend(a.keys())
 
-        # Create a template list for each key, with None for all non-sequenced
-        # rounds and 0 for all sequenced_rounds
-        template = [None for i in range(max(round_numbers)+1)]
-        for i in round_numbers:
-            template[i] = 0
-    
         # Create final dictionary that we'll populate with values below
         out_dict = dict([(a,template[:]) for a in all_keys])
 
         # Populate the final dictionary
         for i in range(len(list_of_dicts)):
+            if not list_of_dicts[i]:
+                continue
+
             for key, value in list_of_dicts[i].items():
-                out_dict[key][round_numbers[i]] = value
+                out_dict[key][i] = value
 
         return out_dict
 
-    def processFastqFiles(self,
-                          fastq_file_list,
-                          round_numbers=[],
-                          good_pickle_file="good-seq.pickle",
-                          bad_pickle_file="bad-seq.pickle"):
+    def processFastqFiles(self,fastq_file_list):
         """
-        Take a set of fastq files and create pickle files from them.
+        Take a set of fastq files and count them.
         """
-
-        # Figure out how to assign round numbers to each entry.        
-        if len(round_numbers) == 0:
-            round_numbers = range(len(fastq_file_list))
-        else:
-            if len(round_numbers) != len(fastq_file_list):
-                err = "Number of rounds does not match number of fastq files.\n"
-                raise ProcessFastqError(err)
 
         # Count good and bad reads and put them into lists of dictionaries
         all_good_dicts = [] 
         all_bad_dicts = [] 
         for f in fastq_file_list:
-            print("Processing %s" % f)
-            good_counts, bad_counts = self._processSingleFile(f)
+
+            good_counts = None
+            bad_counts = None
+            if f != None:
+                print("Processing %s" % f)
+                good_counts, bad_counts = self._processSingleFile(f)
+            
             all_good_dicts.append(good_counts)
             all_bad_dicts.append(bad_counts)
 
         # Create a final dictionary for the good counts
-        good_dict = self._compressDictSet(all_good_dicts,round_numbers)
-        f = open(good_pickle_file,'wb')
-        pickle.dump(good_dict,f)
-        f.close()
+        good_dict = self._compressDictSet(all_good_dicts)
     
         # Create a final dictionary for the bad counts
-        bad_dict = self._compressDictSet(all_bad_dicts,round_numbers)
-        f = open(bad_pickle_file,'wb')
-        pickle.dump(bad_dict,f)
-        f.close()
+        bad_dict = self._compressDictSet(all_bad_dicts)
+
+        return good_dict, bad_dict
 
     @property
     def bad_pattern(self):
@@ -206,3 +197,5 @@ class FastqSeqCounter:
         Return expected length of peptide sequences.
         """
         return self._seq_length
+
+
