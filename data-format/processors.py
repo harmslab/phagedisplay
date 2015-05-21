@@ -4,36 +4,43 @@ __description__ = \
 __author__ = "Michael J. Harms"
 __date__ = "2015-04-28"
 
-import os, gzip, container, pickle
+import os, gzip,  pickle
+import processorBase
 
 import processFastq
 
-class TotalContainer(container.ContainerParent):
+class MasterProcessor(processorBase.ProcessorParent):
     """
-    Container that will hold an entire phage display experiment.
+    Processor that will hold an entire phage display experiment.
     """
-    
+
     def process(self,**kwargs):
         """
         """
 
-        # No subcontainers, nothing to do
-        if len(self._subcontainers) == 0:
+        # No subprocessors, nothing to do
+        if len(self._subprocessors) == 0:
             return None
 
-        # Has only one subcontainer, so all data must come from outside
-        elif len(self._subcontainers) == 1:
-            self._subcontainers[-1].process(**kwargs)
+        # Has only one subprocessor, so all data must come from outside
+        elif len(self._subprocessors) == 1:
+            self._subprocessors[-1].process(**kwargs)
 
-        # Has more than one subcontainer.  Take data from previous container,
+        # Has more than one subprocessorBase.  Take data from previous processor,
         # plust the kwargs
         else:
-            self._subcontainers[-1].process(self._subcontainers[-2].data,**kwargs)
+            self._subprocessors[-1].process(self._subprocessors[-2].data,**kwargs)
 
         self.saveFile()
 
+    @property
+    def data(self):
+        """
+        """
 
-class FastqListContainer(container.ContainerParent):
+        return self._subprocessors
+
+class FastqListProcessor(processorBase.ProcessorParent):
     """
     Class to import and hold onto a set of fastq files corresponding to a set
     of enrichment rounds.
@@ -45,34 +52,24 @@ class FastqListContainer(container.ContainerParent):
         """
    
         initial_fastq = [None for i in range(len(file_list))]
-        self._addProperty("fastq-files",initial_fastq)
+        self.addProperty("fastq-files",initial_fastq)
     
+        expt_name = self.getProperty("expt_name")
         for i, f in enumerate(file_list):
             if f:
-                self._addFastqFile(f,i)
 
-    def _addFastqFile(self,file_name,file_round):
-        """
-        Add a fastq file to the experiment.  
-        
-        Args:
-            file_name: name of data file
-            file_round: round of experiment in file
-        """
-
-        expt_name = self.getProperty("expt_name")
-        value = os.path.join(expt_name,"{}.gz".format(os.path.split(file_name)[-1]))
+                value = os.path.join(expt_name,"{}.gz".format(os.path.split(f)[-1]))
       
-        print("Importing and compressing {:s}".format(file_name))
+                print("Importing and compressing {:s}".format(f))
  
-        # Bring in the fastq file, compressing along the way 
-        with open(file_name,'rb') as fastq_in:
-            with gzip.open(value, 'wb') as gzipped_fastq_out:
-                gzipped_fastq_out.writelines(fastq_in) 
+                # Bring in the fastq file, compressing along the way 
+                with open(f,'rb') as fastq_in:
+                    with gzip.open(value, 'wb') as gzipped_fastq_out:
+                        gzipped_fastq_out.writelines(fastq_in) 
 
-        # Update the "None" entry in the fastq-files list to be the filename for
-        # for this round.
-        self.getProperty("fastq-files")[file_round] = value
+                # Update the "None" entry in the fastq-files list to be the filename for
+                # for this round.
+                self.getProperty("fastq-files")[i] = value
 
     @property
     def data(self):
@@ -82,7 +79,7 @@ class FastqListContainer(container.ContainerParent):
  
         return self.getProperty("fastq-files")
 
-class FastqToCountsContainer(container.ContainerParent):
+class FastqToCountsProcessor(processorBase.ProcessorParent):
     """
     """
 
@@ -118,8 +115,8 @@ class FastqToCountsContainer(container.ContainerParent):
         f.close()
 
         # Record that we have the counts
-        self._addProperty("good-counts",good_counts)
-        self._addProperty("bad-counts",bad_counts)
+        self.addProperty("good-counts",good_counts)
+        self.addProperty("bad-counts",bad_counts)
 
         self._do_not_write_to_json.append("good-counts")
         self._do_not_write_to_json.append("bad-counts")

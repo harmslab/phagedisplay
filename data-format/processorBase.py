@@ -7,50 +7,58 @@ __date__ = "2015-05-16"
 import blob
 import datetime, string, random, os, json, pickle
 
-class ContainerParent:
+class ProcessorParent:
     """
     Base class for phage display processing steps.
     """
 
-    def __init__(self):
+    def __init__(self,expt_name=None,date=None,description=None,ident=None):
         """
         """
 
         self._props = {}
-        self._subcontainers = []
+        self._subprocessors = []
         self._do_not_write_to_json = []
-
-    def create(self,expt_name=None,date=None,description=None,ident=None):
-        """
-        Create a new experiment with some common meta data.  This will also
-        create the directory in which the experiment will reside.
-        """
-
+        
         # Create a date stamp
         if not date:
             d = datetime.date.today()
-            self._addProperty("date","{:d}-{:02d}-{:02d}".format(d.year,d.month,d.day),
+            self.addProperty("date","{:d}-{:02d}-{:02d}".format(d.year,d.month,d.day),
                           blob.DateBlob)
         else:
-            self._addProperty("date",date,blob.DateBlob)
+            self.addProperty("date",date,blob.DateBlob)
 
         # Add a description
-        self._addProperty("description",description)
+        self.addProperty("description",description)
 
         # Create a totally unique identifier string for this dataset
         if not ident:
             chars = string.ascii_letters + string.digits
             ident = "".join([random.choice(chars) for i in range(15)])
-            self._addProperty("identifier",ident)
+            self.addProperty("identifier",ident)
         else:
-            self._addProperty("identifier",ident)
-
-        # Create a base directory to store this stuff 
+            self.addProperty("identifier",ident)
+  
+        # Add experiment name 
         if not expt_name:
             expt_name = ident
+        self.addProperty("expt_name",expt_name) 
+
+
+    def create(self,base_dir=None):
+        """
+        Create a directory in which the experiment will reside.
+        """
+
+        if base_dir:
+            expt_name = os.path.join(base_dir,self.getProperty("expt_name"))
+        else:
+            expt_name = self.getProperty("expt_name")
 
         os.mkdir(expt_name)
-        self._addProperty("expt_name",expt_name,blob.FileBlob)       
+        self.addProperty("expt_name",expt_name,blob.FileBlob)       
+
+        self.saveFile()
 
     def saveFile(self,filename=None):
         """
@@ -81,25 +89,23 @@ class ContainerParent:
 
         self.__dict__.update(tmp_dict)
 
-    def addSubContainer(self,container_class,**kwargs):
+    def addProcessor(self,processor_class,**kwargs):
         """
-        Add another container within this one.  **kwargs will all be passed to 
-        the "create" method of container_class.
+        Add another processor within this one.  
         """
 
         if "expt_name" in kwargs:
             kwargs["expt_name"] = os.path.join(self.getProperty("expt_name"),
                                               kwargs["expt_name"])
 
-        new_container = container_class()
-        new_container.create(**kwargs)
-        self._subcontainers.append(new_container)
+        processor_class.create(self.getProperty("expt_name"))
+        self._subprocessors.append(processor_class)
     
-    def processData(self,some_data):
+    def process(self,some_data):
         """
         Publicly accessible function to actually process the data.  This is 
         really only meaningful for subclasses that do more than store other
-        containers.
+        processors.
         """
 
         pass 
@@ -115,7 +121,7 @@ class ContainerParent:
         except KeyError:
             return None
  
-    def _addProperty(self,key,value,custom_blob_class=None):
+    def addProperty(self,key,value,custom_blob_class=None):
         """
         Add a property to the instance.  custom_blob_class can be used to define
         a custom property validator.
@@ -137,14 +143,16 @@ class ContainerParent:
         for k in self._props.keys():
             if k not in self._do_not_write_to_json:
                 write_dict[k] = self._props[k].value
+            else:
+                write_dict[k] = "not written to json" 
       
         # Write out nested combination classes 
-        out_subcontainers = []
-        for s in self._subcontainers:
+        out_subprocessors = []
+        for s in self._subprocessors:
             s._writeJson()
-            out_subcontainers.append(s.getProperty("expt_name"))
+            out_subprocessors.append(s.getProperty("expt_name"))
         
-        write_dict["_out_subcontainers"] = out_subcontainers       
+        write_dict["_out_subprocessors"] = out_subprocessors       
  
         # Write out 
         f = open(os.path.join(self.getProperty("expt_name"),json_file),"w")
@@ -157,8 +165,9 @@ class ContainerParent:
         be run, as self.saveFile/self.loadFile will preserve everything about
         this class instance (including custom class instances, etc.) while the
         json file will only have text references to the contents of those
-        classes. (In particular, every sub container will have ContainerParent
-        class rather than the subclass it had on creation).   
+        classes. In particular, every sub processor will have ProcessorParent
+        class rather than the subclass it had on creation. Further, data in 
+        self._do_not_write_to_json will be lost.  
         """
     
         f = open(json_file,"r")
@@ -166,14 +175,14 @@ class ContainerParent:
         f.close()
         
         # Load in nested combination classes 
-        out_subcontainers = json_in.pop("_out_subcontainers")
-        for s in out_subcontainers:
-            new_container = ContainerParent()
-            new_container.load(s)
-            self._subcontainers.append(new_container)
+        out_subprocessors = json_in.pop("_out_subprocessors")
+        for s in out_subprocessors:
+            new_processor = ProcessorParent()
+            new_processor.load(s)
+            self._subprocessors.append(new_processor)
  
         for k in json_in:
-            self._addProperty(k,json_in[k])
+            self.addProperty(k,json_in[k])
 
     @property
     def data(self):
@@ -186,16 +195,16 @@ class ContainerParent:
     @property 
     def summary(self):
         """
-        Return string summary of what's in this container.
+        Return string summary of what's in this processor.
         """
 
         output = ["Instance of '{:s}' class with the properties:".format(self.__name__)]
         for p in self._props:
             output.append("    {:s} : {}".format(p,self._props[p].value))
 
-        if len(self._subcontainers) > 0:
+        if len(self._subprocessors) > 0:
             output.append("\nClasses contained:")
-            for s in self._subcontainers:
+            for s in self._subprocessors:
                 output.append(s.summary())
             
         return "\n".join(output) 
