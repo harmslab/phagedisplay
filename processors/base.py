@@ -4,7 +4,7 @@ __description__ = \
 __author__ = "Michael J. Harms"
 __date__ = "2015-05-16"
 
-from .blob import *
+from .blob import Blob, DateBlob, FileBlob
 import datetime, string, random, os, json, pickle
 
 class BaseProcessor:
