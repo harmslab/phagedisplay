@@ -6,7 +6,8 @@ __author__ = "Michael J. Harms, harmsm@gmail.com"
 __date__ = "2015-04-25"
 
 import numpy as np
-import utility, sys
+import sys
+import utility
 
 class PoolIsEmptyError(Exception):
     """
@@ -71,13 +72,19 @@ class SamplerBaseClass(object):
         
         return pool_instance.current_counts/(pool_instance.current_counts.sum())
     
-    def runExperiment(self,pool_instance,sample_size,checkpoint=False):
+    def runExperiment(self,pool_instance,
+                      sample_size,
+                      round_to_sample=-1,
+                      checkpoint=False,
+                      append_to_current=True):
         """
         Run a sampling experiment.  
         
             Args: pool_instance (current pool)
                   sample_size (number of sequences to take forward)
+                  round_to_sample (which round to sample. default of -1 takes last round)
                   checkpoint (whether we should note this as an important round)
+                  append_to_current (if True, stick contents/counts on pool_instance. otherwise, return the values)
 
             Output: adds new round to pool_instance 
         
@@ -88,16 +95,17 @@ class SamplerBaseClass(object):
         
         # If the sample_size is bigger than the number of sequences in the pool
         # and we don't allow replacement, just return the whole pool. 
-        if sample_size > np.sum(pool_instance.current_counts) and not self.allow_replace:
+        if sample_size > np.sum(pool_instance.round_counts(round_to_sample)) and not self.allow_replace:
 
-            return pool_instance.current_contents, pool_instance.current_counts
+            new_contents = pool_instance.round_contents(round_to_sample)
+            new_counts = pool_instance.round_counts(round_to_sample)
 
         else:
             
             # If we allow replacement, do a simple weighted choice
             if self.allow_replace:
                 new_contents, new_counts = \
-                    self._sample(pool_instance.current_contents,
+                    self._sample(pool_instance.round_contents(round_to_sample),
                                  weights=self.calcWeights(pool_instance),
                                  sample_size=sample_size)
                 
@@ -105,18 +113,21 @@ class SamplerBaseClass(object):
             # member of the pool is repeated as "counts" times.  Then calculate
             # weights accordingly.  
             else:
-                possibilities = np.repeat(pool_instance.current_contents,
-                                          pool_instance.current_counts)
+                possibilities = np.repeat(pool_instance.round_contents(round_to_sample),
+                                          pool_instance.round_counts(round_to_sample))
                 
                 weights = self.calcWeights(pool_instance)
-                weights = np.repeat(weights,pool_instance.current_counts)
+                weights = np.repeat(weights,pool_instance.round_counts(round_to_sample))
                 weights = weights/np.sum(weights)
                 
                 new_contents, new_counts = self._sample(possibilities,
                                                         weights=weights,
                                                         sample_size=sample_size)
-       
-        pool_instance.addNewStep(new_contents,new_counts,checkpoint)
+      
+        if append_to_current: 
+            pool_instance.addNewStep(new_contents,new_counts,checkpoint)
+        else:
+            return new_contents, new_counts
         
 
 class PCRAmplificationSampler(SamplerBaseClass):
@@ -181,13 +192,21 @@ class BindingSampler(SamplerBaseClass):
     
         return pool_instance.current_affinities/np.sum(pool_instance.current_affinities)
     
-    def runExperiment(self,pool_instance,sample_size,checkpoint=False):
+    def runExperiment(self,pool_instance,
+                      sample_size,
+                      round_to_sample=-1,
+                      checkpoint=False,
+                      append_to_current=True,
+                      return_only_sample_size=False):
         """
         Run a sampling experiment.  
         
             Args: pool_instance (current pool)
                   sample_size (number of sequences to take forward)
+                  round_to_sample (which round to sample. default of -1 takes last round)
                   checkpoint (whether we should note this as an important round)
+                  append_to_current (if True, stick contents/counts on pool_instance. otherwise, return the values)
+                  return_only_sample_size (if True, return sample size and do not sample)
 
             Output: adds new round to pool_instance 
         
@@ -197,9 +216,9 @@ class BindingSampler(SamplerBaseClass):
         self.poolSanityCheck(pool_instance)
        
         # Grab the total number of sequences seen 
-        total_counts = np.sum(pool_instance.current_counts)
+        total_counts = np.sum(pool_instance.round_counts(round_to_sample))
 
-        weights = pool_instance.current_affinities*pool_instance.current_counts
+        weights = pool_instance.current_affinities*pool_instance.round_counts(round_to_sample)
         Q = np.sum(weights)
 
         # Calcualte probability that nothing binds at all (assumes that [M] is
@@ -207,16 +226,18 @@ class BindingSampler(SamplerBaseClass):
         p_nothing = self.conc_constant/(self.conc_constant + Q)
 
         # Scale sample size according to the probability of not binding
-        sample_size = int(round(sample_size*(1-p_nothing),0)) 
+        sample_size = int(round(sample_size*(1-p_nothing[0]),0)) 
+
+        if return_only_sample_size:
+            return sample_size
   
         print("# Number of proteins taken",sample_size)
         sys.stdout.flush()
         # If the sample size remains bigger than the number of total sequences,
         # keep them all.  
-        if sample_size >= sum(pool_instance.current_counts):
-            pool_instance.addNewStep(pool_instance.current_contents,
-                                     pool_instance.current_counts,
-                                     checkpoint)
+        if sample_size >= sum(pool_instance.round_counts(round_to_sample)):
+            new_contents = pool_instance.round_contents(round_to_sample)
+            new_counts = pool_instance.round_counts(round_to_sample)
 
         # Otherwise, sample!
         else:
@@ -224,19 +245,22 @@ class BindingSampler(SamplerBaseClass):
 
             # Normalize the binding probability to the number of times we will query
             # this probability in the final, expanded array
-            weights = weights/pool_instance.current_counts
+            weights = weights/pool_instance.round_counts(round_to_sample)
 
             # the number of times they occur.
-            possibilities = np.repeat(pool_instance.current_contents,
-                                      pool_instance.current_counts)
-            weights = np.repeat(weights,pool_instance.current_counts)
+            possibilities = np.repeat(pool_instance.round_contents(round_to_sample),
+                                      pool_instance.round_counts(round_to_sample))
+            weights = np.repeat(weights,pool_instance.round_counts(round_to_sample))
 
             # Sample                    
             new_contents, new_counts = self._sample(possibilities,
                                                     weights=weights,
                                                     sample_size=sample_size)
 
+        if append_to_current:
             pool_instance.addNewStep(new_contents,new_counts,checkpoint)
+        else:
+            return new_contents, new_counts
     
 
 class IlluminaRunSampler(SamplerBaseClass):

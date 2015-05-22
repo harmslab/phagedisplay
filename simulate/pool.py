@@ -166,7 +166,7 @@ class Pool:
         # Now we have a pool to work with.  
         self._pool_exists = True
         
-    def createScaledPool(self,initial_pool_size,max_K=1e6):
+    def createScaledPool(self,initial_pool_size,max_K=1e6,scale_reps=3):
         """
         """
         
@@ -180,10 +180,13 @@ class Pool:
         # All sequences seen, as well as their srelative affinities
         self._all_seq = content
 
-        a = np.random.uniform(low=0.0,high=1.,size=self._all_seq.size)
-        b = np.random.uniform(low=0.0,high=1.,size=self._all_seq.size)
-        c = np.random.uniform(low=0.0,high=1.,size=self._all_seq.size)
-        self._affinities = 10**(a*b*c*np.log10(max_K))
+        s = 1
+        for i in range(scale_reps):
+            s = s*np.random.uniform(low=0.0,high=1.,size=self._all_seq.size)
+            #b = np.random.uniform(low=0.0,high=1.,size=self._all_seq.size)
+            #c = 1   #np.random.uniform(low=0.0,high=1.,size=self._all_seq.size)
+        #self._affinities = 10**(a*b*c*np.log10(max_K))
+        self._affinities = 10**(s*np.log10(max_K))
         
         # Original pool of sequences
         self._contents = [np.array(range(self._all_seq.size))]
@@ -204,7 +207,16 @@ class Pool:
         self._contents.append(new_contents)
         self._counts.append(new_counts)
         self._checkpoints.append(checkpoint)
-    
+   
+    def reset(self):
+        """
+        Reset the pool to its initial state.
+        """
+
+        self._contents = self._contents[:1]
+        self._counts = self._counts[:1]
+        self._checkpoints = self._checkpoints[:1]
+ 
     def prettyPrint(self):
         """
         Print out the current round in tabular fashion.  
@@ -292,4 +304,30 @@ class Pool:
         """
     
         return self._affinities[self._contents[round_number]]
-    
+
+    @property
+    def round_count_dict(self):
+        """
+        Return a count dict in the same format that the experimental analysis 
+        pipeline does:
+            {"SEQUENCE":[round0_count,round1_count,round2_count...],...}
+        """
+
+        out_dict = {}
+        rounds_to_write = [i for i, c in enumerate(self._checkpoints) if c]
+        template = [0 for i in range(len(rounds_to_write))]
+        for a in self._all_seq:
+            seq = self.mapper.intToSeq(a)
+            out_dict[seq] = template[:]
+
+        for i, r in enumerate(rounds_to_write):
+            contents = self.round_contents(r)
+            counts = self.round_counts(r)
+
+            for j in range(len(contents)):
+                key = self.mapper.intToSeq(self._all_seq[contents[j]])
+                out_dict[key][i] = counts[j]
+            
+        return out_dict 
+
+       
