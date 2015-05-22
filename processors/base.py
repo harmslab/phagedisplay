@@ -58,19 +58,24 @@ class BaseProcessor:
         os.mkdir(expt_name)
         self.addProperty("expt_name",expt_name,FileBlob)       
 
+        # Don't allow overwrite here, as this is when it is created (effectively 
+        # a "save as" call)
         self.saveFile()
 
-    def saveFile(self,filename=None):
+    def saveFile(self,filename=None,overwrite=False):
         """
         Write out the whole data structure tp a pickle.
         """
 
         # Write out pretty, human and other-programming-languages readable
         # json file.  
-        self._writeJson()
+        self._writeJson(overwrite)
 
         if not filename:
             filename = os.path.join(self.getProperty("expt_name"),"save.pickle")
+
+        if not overwrite and os.path.exists(filename):
+            raise IOError("{:s} file exists.".format(filename))
 
         f = open(filename,'wb')
         pickle.dump(self.__dict__,f)
@@ -133,10 +138,16 @@ class BaseProcessor:
             self._props[key] = Blob(key,value)
 
 
-    def _writeJson(self,json_file="info.json"):
+    def _writeJson(self,json_file="info.json",overwrite=False):
         """
         Create a json file and write out contents of self._props.
         """
+
+        filename = os.path.join(os.path.join(self.getProperty("expt_name"),
+                                json_file)
+
+        if not overwrite and os.path.exists(filename):
+            raise IOError("file {:s} already exists".format(filename))
 
         # Create a dictionary of keys to write out
         write_dict = {}
@@ -155,7 +166,7 @@ class BaseProcessor:
         write_dict["_out_subprocessors"] = out_subprocessors       
  
         # Write out 
-        f = open(os.path.join(self.getProperty("expt_name"),json_file),"w")
+        f = open(filename,"w")
         json_out = json.dump(write_dict,f,sort_keys=True,indent=4) 
         f.close()       
 

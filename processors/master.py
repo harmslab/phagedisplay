@@ -29,7 +29,7 @@ class MasterProcessor(BaseProcessor):
         else:
             self._subprocessors[-1].process(self._subprocessors[-2].data,**kwargs)
 
-        self.saveFile()
+        self.saveFile(overwrite=True)
 
     @property
     def data(self):

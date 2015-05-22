@@ -37,6 +37,9 @@ class FastqListProcessor(BaseProcessor):
                 # Update the "None" entry in the fastq-files list to be the filename for
                 # for this round.
                 self.getProperty("fastq-files")[i] = value
+        
+        self.saveFile(overwrite=True)
+
 
     @property
     def data(self):

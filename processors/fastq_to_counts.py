@@ -241,6 +241,9 @@ class FastqToCountsProcessor(BaseProcessor):
         self._do_not_write_to_json.append("good-counts")
         self._do_not_write_to_json.append("bad-counts")
 
+        self.saveFile(overwrite=True)
+
+
     @property
     def data(self):
         """
