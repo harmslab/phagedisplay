@@ -166,7 +166,7 @@ class Pool:
         # Now we have a pool to work with.  
         self._pool_exists = True
         
-    def createScaledPool(self,initial_pool_size,max_K=1e6,scale_reps=3):
+    def createSkewedPool(self,initial_pool_size,max_K=1e6,scale_reps=3):
         """
         """
         

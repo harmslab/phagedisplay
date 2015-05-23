@@ -15,7 +15,7 @@ class PoolIsEmptyError(Exception):
 
     pass
 
-class SamplerBaseClass(object):
+class BaseSampler(object):
     """
     Class for sampling pools.  
     
@@ -63,14 +63,14 @@ class SamplerBaseClass(object):
             raise PoolIsEmptyError
             
     
-    def calcWeights(self,pool_instance):
+    def calcWeights(self,pool_instance,round_to_sample=-1):
         """
         Weight to place on a given sequence (for sampling with replacement).
         For most instances, this can just be frequency.  Subclasses may tweak
         this to include other processes.  
         """
         
-        return pool_instance.current_counts/(pool_instance.current_counts.sum())
+        return pool_instance.round_counts(round_to_sample)/(pool_instance.round_counts(round_to_sample).sum())
     
     def runExperiment(self,pool_instance,
                       sample_size,
@@ -106,7 +106,7 @@ class SamplerBaseClass(object):
             if self.allow_replace:
                 new_contents, new_counts = \
                     self._sample(pool_instance.round_contents(round_to_sample),
-                                 weights=self.calcWeights(pool_instance),
+                                 weights=self.calcWeights(pool_instance,round_to_sample),
                                  sample_size=sample_size)
                 
             # If we can't replace, create a possibilities array in which every
@@ -116,7 +116,7 @@ class SamplerBaseClass(object):
                 possibilities = np.repeat(pool_instance.round_contents(round_to_sample),
                                           pool_instance.round_counts(round_to_sample))
                 
-                weights = self.calcWeights(pool_instance)
+                weights = self.calcWeights(pool_instance,round_to_sample)
                 weights = np.repeat(weights,pool_instance.round_counts(round_to_sample))
                 weights = weights/np.sum(weights)
                 
@@ -130,7 +130,7 @@ class SamplerBaseClass(object):
             return new_contents, new_counts
         
 
-class PCRAmplificationSampler(SamplerBaseClass):
+class PCRAmplificationSampler(BaseSampler):
     """
     Class for simulating the amplification of phage that occurs via PCR.  
     """
@@ -140,7 +140,7 @@ class PCRAmplificationSampler(SamplerBaseClass):
         self.allow_replace = True
     
 
-class PhageAmplificationSampler(SamplerBaseClass):
+class PhageAmplificationSampler(BaseSampler):
     """
     Class for simulating the amplification of phage that occurs after a binding
     round.
@@ -150,7 +150,7 @@ class PhageAmplificationSampler(SamplerBaseClass):
         
         self.allow_replace = True
 
-class PipetteSampler(SamplerBaseClass):
+class PipetteSampler(BaseSampler):
     """
     Class for simulating the downsampling that occurs when you take a small
     fraction of the total pool using a pipette.  
@@ -160,16 +160,16 @@ class PipetteSampler(SamplerBaseClass):
         
         self.allow_replace = False
 
-    def calcWeights(self,pool_instance):
+    def calcWeights(self,pool_instance,round_to_sample=-1):
         """
         Since we're sampling without replacement, return even weights for every
         sequence.  Degeneracy will be taken care of in the sampling itself.  
         """
     
-        return np.ones(pool_instance.current_counts.size,dtype=float)/pool_instance.current_counts.size
+        return np.ones(pool_instance.round_counts(round_to_sample).size,dtype=float)/pool_instance.round_counts(round_to_sample).size
         
         
-class BindingSampler(SamplerBaseClass):
+class BindingSampler(BaseSampler):
     """
     Class for simulating downsampling that occurs when the phage are placed on
     a plate.  
@@ -184,13 +184,13 @@ class BindingSampler(SamplerBaseClass):
         self.allow_replace = False
         self.conc_constant = conc_constant
     
-    def calcWeights(self,pool_instance):
+    def calcWeights(self,pool_instance,round_to_sample=-1):
         """
         Weight by the affinity of the sequence.  Degeneracy will be taken care
         of since we sample without replacement.  
         """
     
-        return pool_instance.current_affinities/np.sum(pool_instance.current_affinities)
+        return pool_instance.round_affinities(round_to_sample)/np.sum(pool_instance.round_affinities(round_to_sample))
     
     def runExperiment(self,pool_instance,
                       sample_size,
@@ -263,7 +263,25 @@ class BindingSampler(SamplerBaseClass):
             return new_contents, new_counts
     
 
-class IlluminaRunSampler(SamplerBaseClass):
-    pass
+class IlluminaSampler(BaseSampler):
+    """
+    """
+
+    def __init__(self):
+        
+        self.allow_replace = True 
   
+
+    def runExperiment(self,pool_instance,
+                      sample_size,
+                      round_to_sample=-1):
+        """
+        Sample from pool_instance at round_to_sample.  Return the contents
+        and counts.  Do not append to pool.
+        """
+           
+        return super().runExperiment(pool_instance=pool_instance,
+                                     sample_size=sample_size,
+                                     round_to_sample=round_to_sample,
+                                     append_to_current=False)
 
