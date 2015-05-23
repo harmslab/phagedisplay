@@ -7,7 +7,7 @@ __date__ = "2015-04-25"
 
 import numpy as np
 import sys
-import utility
+from . import utility
 
 class PoolIsEmptyError(Exception):
     """

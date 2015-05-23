@@ -8,7 +8,7 @@ __date__ = "2015-04-25"
 import string
 import numpy as np
 
-import utility
+from . import utility
 
 AMINO_ACIDS = ("A","C","D","E","F",
                "G","H","I","K","L",
