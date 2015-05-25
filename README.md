@@ -1,6 +1,6 @@
 # Phage display analysis tools
 
-This is the master repository that includes computational tools for analyzing data from phage display experiments in Harms' Lab. 
+This is the master repository that includes computational tools for analyzing data from phage display experiments in Harms Lab. 
 
 ## Developers
 
