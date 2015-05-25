@@ -8,4 +8,6 @@ __date__ = "2015-04-27"
 
 __all__ = ["pool","samplers","utility"]
 
+from . parameters import param_sets as param_sets
 from . scenarios import StandardExperiment
+

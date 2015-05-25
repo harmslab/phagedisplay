@@ -69,8 +69,8 @@ class BaseSampler(object):
         For most instances, this can just be frequency.  Subclasses may tweak
         this to include other processes.  
         """
-        
-        return pool_instance.round_counts(round_to_sample)/(pool_instance.round_counts(round_to_sample).sum())
+       
+        return (1.0*pool_instance.round_counts(round_to_sample))/(pool_instance.round_counts(round_to_sample).sum())
     
     def runExperiment(self,pool_instance,
                       sample_size,
@@ -104,6 +104,8 @@ class BaseSampler(object):
             
             # If we allow replacement, do a simple weighted choice
             if self.allow_replace:
+
+                x = self.calcWeights(pool_instance,round_to_sample)
                 new_contents, new_counts = \
                     self._sample(pool_instance.round_contents(round_to_sample),
                                  weights=self.calcWeights(pool_instance,round_to_sample),
@@ -231,7 +233,7 @@ class BindingSampler(BaseSampler):
         if return_only_sample_size:
             return sample_size
   
-        print("# Number of proteins taken",sample_size)
+        sys.stdout.write("# Number of proteins taken: {:d}\n".format(sample_size))
         sys.stdout.flush()
         # If the sample size remains bigger than the number of total sequences,
         # keep them all.  
@@ -280,8 +282,8 @@ class IlluminaSampler(BaseSampler):
         and counts.  Do not append to pool.
         """
            
-        return super().runExperiment(pool_instance=pool_instance,
-                                     sample_size=sample_size,
-                                     round_to_sample=round_to_sample,
-                                     append_to_current=False)
+        return super(IlluminaSampler,self).runExperiment(pool_instance=pool_instance,
+                                                         sample_size=sample_size,
+                                                         round_to_sample=round_to_sample,
+                                                         append_to_current=False)
 

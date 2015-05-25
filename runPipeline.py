@@ -86,6 +86,10 @@ def runPipeline(expt_name,
     or a counted pickle file.  
     """
 
+    if len([f for f in fastq_files if f != None]) > 0 and pickle_file:
+        err = "fastq and pickle files cannot be specified simultaneously\n"
+        raise PhageProcessorError(err)
+
     # --------------------- fastq files ---------------------------------------
     # Create fastq_files input with None for skipped rounds
     if len([f for f in fastq_files if f != None]) > 0:
@@ -101,11 +105,6 @@ def runPipeline(expt_name,
         
         fastq_files = new_fastq_files[:]
 
-    # ---------------------- pickle files -------------------------------------
-    if pickle_file:
-        err = "pickle loading not yet implemented.  Sorry."
-        raise PhageProcessorError(err)
-   
     # ---------------------- other params -------------------------------------
     if date == "today":
         d = datetime.date.today()
@@ -125,16 +124,28 @@ def runPipeline(expt_name,
    
     # Create the directory for the experiment 
     m.create()
-   
-    # Load in the fastq files 
-    a = processors.FastqListProcessor(expt_name="raw-fastq-files")
-    m.addProcessor(a)
-    m.process(file_list=fastq_files)
+  
+    if len([f for f in fastq_files if f != None]) > 0:
+ 
+        # Load in the fastq files 
+        a = processors.FastqListProcessor(expt_name="raw-fastq-files")
+        m.addProcessor(a)
+        m.process(file_list=fastq_files)
+    
+        # Count good sequences in the fastq files
+        b = processors.FastqToCountsProcessor(expt_name="raw-counts")
+        m.addProcessor(b)
+        m.process()
 
-    # Count good sequences in the fastq files
-    b = processors.FastqToCountsProcessor(expt_name="raw-counts")
-    m.addProcessor(b)
-    m.process()
+    elif pickle_file:
+
+        a = processors.PickleDictProcessor(expt_name="input-pickle-file")
+        m.addProcessor(a)
+        m.process(pickle_file=pickle_file)
+
+    else:
+        err = "fastq_files or pickle file must be specified.\n"
+        raise PhageProcessorError(err)
 
 
 # -----------------------------------------------------------------------------
