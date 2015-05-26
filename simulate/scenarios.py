@@ -1,8 +1,7 @@
 
 import sys, pickle
-from simulate import pool, samplers, utility
+from simulate import pool, samplers, utility, parameters
 from scipy.optimize import minimize
-import simulate
 
 class StandardExperiment:
     """
@@ -23,7 +22,7 @@ class StandardExperiment:
         self._actual_out_dict = {}
         self._illumina_out_dict = {}
 
-    def create(self,param_set=simulate.param_sets.lwheeler_00,affinity_max=1e6,skew=3,conc_const_guess=10.,specified_conc_const=-1):
+    def create(self,param_set=parameters.lwheeler00,affinity_max=1e6,skew=3,conc_const_guess=10.,specified_conc_const=-1):
         """
         Create a simulation engine with a concentration constant that reproduces the
         observed experimental value.
@@ -39,8 +38,9 @@ class StandardExperiment:
                       Negative values indicate that it should be ooptimized. 
         """
        
-        for k in param_set:
-            setattr(self,k,param_set[k])
+        for k in param_set.__dict__.keys():
+            if not k.startswith("_"):
+                setattr(self,k,getattr(param_set,k))
        
         try: 
             # Determine the number of sequences in each 

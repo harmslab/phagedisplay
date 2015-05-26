@@ -6,8 +6,7 @@ sequences according to frequency and affinity.
 __author__ = "Michael J. Harms"
 __date__ = "2015-04-27"
 
-__all__ = ["pool","samplers","utility"]
+__all__ = ["pool","samplers","utility","parameters"]
 
-from . parameters import param_sets as param_sets
 from . scenarios import StandardExperiment
 

@@ -28,7 +28,7 @@ def checkFileExists(filename):
 
 def runSimulation(out_file="save.simulation",
                   num_rounds=3,
-                  param_set="lwheeler_00",
+                  param_set="lwheeler00",
                   sequence_length=7,
                   k_distrib_skew=3,
                   affinity_max=1e6,
@@ -44,7 +44,7 @@ def runSimulation(out_file="save.simulation",
     checkFileExists(out_file)
 
     e = simulate.StandardExperiment(sequence_length=sequence_length)
-    e.create(param_set=simulate.param_sets.__dict__[param_set],
+    e.create(param_set=simulate.parameters.__dict__[param_set],
              skew=k_distrib_skew,   
              affinity_max=affinity_max,
              specified_conc_const=conc_const)
@@ -73,11 +73,13 @@ def main(argv=None):
                         type=int,
                         default=3)
 
+    possible_keys = [s for s in simulate.parameters.__dict__ if not s.startswith("_")]
+    help_message = "name of parameters to use.  Possibilities: \n{:s}".format("   \n".join(possible_keys))
     parser.add_argument('-p','--param',
                         dest="param_set",
-                        help="name of parameters to use.  See parameters.py, all_param_sets for allowed keys",
+                        help=help_message,  
                         type=str,
-                        default="lwheeler_00")
+                        default="lwheeler00")
 
     parser.add_argument('-c','--conc-const',
                         dest="conc_const",
