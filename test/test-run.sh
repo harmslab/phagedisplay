@@ -6,12 +6,13 @@ echo "Testing fastq import"
 echo "Testing pickle import"
 ../runPipeline.py from-pickle-input -p test.pickle
 
+echo "Test basic simulation (will take ~10 min)"
+../runSimulation.py test-simulation -l 8
+
 echo "Testing simulation import (illumina reads)"
-../runPipeline.py from-sim-illumina-input -s output.simulation
+../runPipeline.py from-sim-illumina-input -s test-simulation
 
 echo "Testing simulation import (all samples)"
-../runPipeline.py from-sim-all-input -s output.simulation -a
+../runPipeline.py from-sim-all-input -s test-simulation -a
 
-echo "Test basic simulation"
-../runSimulation.py test-simulation
 
