@@ -6,7 +6,7 @@ __date__ = "2015-01-20"
 
 from . import BaseProcessor
 
-import sys, time
+import sys, time, copy
 import pickle, scipy
 import numpy as np
 
@@ -120,11 +120,11 @@ class CoarseGrainer:
         v_err_floor = v - cg_width*np.sqrt(v)
 
         self.breaks = [0,1]
-        current_ceiling = self.breaks[-1] + cg_width*sqrt(self.breaks[-1])
+        current_ceiling = self.breaks[-1] + cg_width*np.sqrt(self.breaks[-1])
         for i in range(len(v)):
             if current_ceiling < v_err_floor[i]:
                 self.breaks.append(v[i])
-                current_ceiling = v[i] + cg_width*sqrt(v[i])
+                current_ceiling = v[i] + cg_width*np.sqrt(v[i])
 
     def coarseGrain(self,v):
         """
@@ -193,7 +193,7 @@ class FitModel:
                    = ln(theta_x_0) + ln(E_x)*i - ln(sum(Q))
     """
 
-    def __init__(self,patterns,degeneracy,rounds_start_at=0):
+    def __init__(self,patterns,degeneracy,rounds):
         """
         Using the data in patterns and degeneracy, create an observable set, 
         objective function, constraints, and bounds taht can then be minimized.
@@ -201,12 +201,10 @@ class FitModel:
 
         self.patterns = patterns
         self.degeneracy = degeneracy 
-        self.rounds_start_at = rounds_start_at
+        self.rounds = np.array(rounds,dtype=int)
+        self.num_rounds = len(self.rounds)
         
         self.num_patterns = len(patterns)
-        self.num_rounds = len(patterns[0,:])
-        self.round_exponents = np.array([i + self.rounds_start_at
-                                         for i in range(self.num_rounds)])
         self.log_degeneracy = np.log(self.degeneracy)
 
         # Create observable matrix (thetas x rounds)
@@ -230,15 +228,13 @@ class FitModel:
         print("Generating initial parameter guesses...",end="")
         sys.stdout.flush()
         self.param_guess = np.zeros((self.num_patterns*2),dtype=float) 
-        x_for_guess = np.array(range(rounds_start_at,
-                                     rounds_start_at + self.num_rounds),dtype=int)
         for i in range(self.num_patterns):
             y = self.y_obs[i,:]
             conc_guess = self.y_obs[i,0]
             K_guess = 1.0 
 
             try:
-                indep_param, cov = curve_fit(self._indepFit,x_for_guess,y,
+                indep_param, cov = curve_fit(self._indepFit,self.rounds,y,
                                              p0=(conc_guess,K_guess),maxfev=10000)
 
                 if indep_param[0] <= 0 or indep_param[1] <= 0:
@@ -284,7 +280,7 @@ class FitModel:
         self.p = param[:self.num_patterns]
 
         # For every round, apply the beta term
-        for j, n in enumerate(self.round_exponents):
+        for j, n in enumerate(self.rounds):
             if n != 0:
                 self.p = self.p*(param[self.num_patterns:])
             self.y_calc[:,j] = self.p/sum(self.p)
@@ -305,7 +301,7 @@ class FitModel:
         param = [all_thetas...., all_Ks...]
         """
 
-        for j, n in enumerate(self.round_exponents):
+        for j, n in enumerate(self.rounds):
             self.p = np.exp(self.log_degeneracy + param[:self.num_patterns] + param[self.num_patterns:]*n)
             self.y_calc[:,j] = self.p/np.sum(self.p)
 
@@ -358,32 +354,36 @@ class RegressEnrichmentProcessor(BaseProcessor):
         """
         """
 
+        self.count_dict = count_dict
         self.cg_width = cg_width
         self.minimum_times_seen = minimum_times_seen
 
-        patterns = self._loadData(count_dict,cg_width)
+        rounds, patterns = self._loadData()
+    
+        self.rounds = rounds
+        self.patterns = patterns
 
-        fit_pattern = np.zeros((len(patterns),patterns[0].pattern_length),dtype=float)
-        degeneracy = np.zeros((len(patterns)),dtype=int)
-        for i, c in enumerate(patterns):
+        fit_pattern = np.zeros((len(self.patterns),self.patterns[0].pattern_length),dtype=float)
+        degeneracy = np.zeros((len(self.patterns)),dtype=int)
+        for i, c in enumerate(self.patterns):
             if len(c.degen_sequence_set) != 0:
                 mean_pattern, degen = c.calcMeanPattern()
                 fit_pattern[i,:] = mean_pattern
                 degeneracy[i] = degen
 
-        m = regression.FitModel(fit_pattern,degeneracy,rounds_start_at=1)
+        m = FitModel(fit_pattern,degeneracy,rounds)
         m.runRegression()
 
         theta, K, calc_values = m.returnParam()
 
         totals = np.zeros((3),dtype=float)
-        for i, c in enumerate(patterns):
+        for i, c in enumerate(self.patterns):
             if len(c.degen_sequence_set) != 0:
                 for j in range(len(c.degen_sequence_set)):
                     for k in range(len(c.degen_sequence_set[j].sequences)):
                         totals += c.degen_sequence_set[j].pattern
 
-        for i, c in enumerate(patterns):
+        for i, c in enumerate(self.patterns):
             if len(c.degen_sequence_set) != 0:
                 for j in range(len(c.degen_sequence_set)):
                     for k in range(len(c.degen_sequence_set[j].sequences)):
@@ -393,34 +393,42 @@ class RegressEnrichmentProcessor(BaseProcessor):
                               c.degen_sequence_set[j].pattern/totals,
                               calc_values[i,:]/degeneracy[i])
 
-    def _loadData(self,count_dict):
+    def _loadData(self):
         """
         """
         
-        all_sequences = list(count_dict.keys())
-        num_rounds = len(count_dict[all_sequences[0]])
+        all_sequences = list(self.count_dict.keys())
 
         # Create a list, (degen_sequence_list) that has a list of all sequences that
         # share exactly the same count pattern.  Each unique pattern/sequence set is
         # stored in an instance of the DegenerateSequences class.
         self.degen_sequence_dict = {}
+        rounds = [i for i, v in enumerate(self.count_dict[all_sequences[0]])
+                  if v != None]
+        num_rounds = len(rounds)
         for s in all_sequences:
-            if sum(count_dict[s]) < minimum_times_seen:
-                continue
 
+            # Get rid of missing data
+            pattern = tuple([v for v in self.count_dict[s] if v != None])
+            if len(pattern) != num_rounds:
+                err = "All sequences must have same rounds observed."
+                raise ValueError(err)
+
+            if sum(pattern) < self.minimum_times_seen:
+                continue
             try:
-                self.degen_sequence_dict[tuple(count_dict[s])].append(s)
+                self.degen_sequence_dict[pattern].append(s)
             except KeyError:
-                pattern = tuple(count_dict[s])
                 self.degen_sequence_dict[pattern] = DegenerateSequences(pattern,s)
 
         degen_sequence_list = []
-        for k in degen_sequence_dict.keys():
-            degen_sequence_list.append(copy.copy(degen_sequence_dict[k]))
+        for k in self.degen_sequence_dict.keys():
+            degen_sequence_list.append(copy.copy(self.degen_sequence_dict[k]))
 
         num_unique_patterns = len(degen_sequence_list)
         print("Found %i unique patterns for %i clones" % (num_unique_patterns,
                                                           len(all_sequences)))
+
 
         # Create a numpy array of all unique patterns
         unique_patterns = np.zeros((num_unique_patterns,num_rounds),dtype=int)
@@ -428,7 +436,7 @@ class RegressEnrichmentProcessor(BaseProcessor):
             unique_patterns[i,:] = np.array(degen_sequence_list[i].pattern)
 
         # Coarse grain these unique patterns into similar patterns
-        cg = CoarseGrainer(np.max(unique_patterns),cg_width)
+        cg = CoarseGrainer(np.max(unique_patterns),self.cg_width)
         similar_pattern_dict = {}
         for i in range(num_unique_patterns):
 
@@ -447,7 +455,7 @@ class RegressEnrichmentProcessor(BaseProcessor):
 
         print("Collapsed to %i similar patterns." % (len(final_clusters)))
 
-        return final_clusters
+        return rounds, final_clusters
 
  
 
