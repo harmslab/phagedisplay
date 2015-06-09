@@ -28,7 +28,7 @@ rounds.  The first went from 25 in the initial library to 300 at round 2 and to
                  ...}
 ```
 * A `param_dict` is a dictionary that keys sequences to affinity and initial
-counts in the data set.  These affinity/initial counts values can either be
+counts in the data set.  These (affinity, initial counts) values can either be
 simulation generation parameters or the final result of simulations allowing
 simple comparision between simulation and analysis output in a common format.
 ```

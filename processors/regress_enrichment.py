@@ -1,5 +1,9 @@
 __description__ = \
 """
+Perform a global regression of a selex-style model for each peptide enrichment
+curve in the total dataset.  To make the calculation tractable, peptides showing
+similar "patterns" over rounds are binned together and fit with a degeneracy
+term accounting for the binning.
 """
 __author__ = "Michael J. Harms"
 __date__ = "2015-01-20"
@@ -72,6 +76,8 @@ class DegenerateSequenceCluster:
 
     def calcMeanPattern(self):
         """
+        Calculate the mean pattern for all entries in this cluster of similar 
+        enrichment patterns and fit.
         """
 
         pattern_list = []
@@ -314,6 +320,7 @@ class FitModel:
         etc.
         """
 
+        print("Performing main fit... ",end="")
         self.start_time = time.time()
 
         self.fit_result = minimize(fun=self._objective2,x0=self.param_guess,
@@ -321,13 +328,11 @@ class FitModel:
                                    #constraints=self.constraints,
                                    options={"maxiter":maxiter,"maxfun":maxiter})
         self.end_time = time.time()
-
-        print(time.asctime())
-        print(self.fit_result.status,self.fit_result.fun,self.fit_result.message)
-        print(time.asctime())
+        print("Done.")
 
     def returnParam(self):
         """
+        Return the fit parameters.  
         """
 
         initial_theta = self.fit_result.x[:self.num_patterns]
@@ -342,27 +347,42 @@ class FitModel:
 
 
     def _indepFit(self,x,conc=1.0,K=1.0):
-    
+        """
+        Local function for generating initial parameter guesses assuming that all
+        peptides bind independently and do not compete with one another for sites.
+        """   
+ 
         return conc*(K**x)
 
 
 class RegressEnrichmentProcessor(BaseProcessor):
     """
+    Regress the selex-style binding model against a set of experimental data.  
+    First collapses statistically indistinguishable patterns of counts vs.
+    rounds into single objects, then globally fits the model.
     """
 
     def process(self,count_dict,cg_width=1.0,minimum_times_seen=4):
         """
+        Do the regression. 
+            count_dict is a set of sequences with counts over rounds as values
+            cg_width is the number of standard deviations at which counts in a
+                     given round are considered different
+            minium_times_seen is the number of times a particular sequence must
+                              be seen across all rounds if it is to be included
+                              in the fit.
         """
 
         self.count_dict = count_dict
         self.cg_width = cg_width
         self.minimum_times_seen = minimum_times_seen
 
+        # Create patterns
         rounds, patterns = self._loadData()
-    
         self.rounds = rounds
         self.patterns = patterns
 
+        # Set up fit
         fit_pattern = np.zeros((len(self.patterns),self.patterns[0].pattern_length),dtype=float)
         degeneracy = np.zeros((len(self.patterns)),dtype=int)
         for i, c in enumerate(self.patterns):
@@ -371,30 +391,24 @@ class RegressEnrichmentProcessor(BaseProcessor):
                 fit_pattern[i,:] = mean_pattern
                 degeneracy[i] = degen
 
+        # Do actual fit
         m = FitModel(fit_pattern,degeneracy,rounds)
         m.runRegression()
 
+        # Grab values from fit
         theta, K, calc_values = m.returnParam()
 
-        totals = np.zeros((3),dtype=float)
+        # create output
+        self._out_dict = {}
         for i, c in enumerate(self.patterns):
             if len(c.degen_sequence_set) != 0:
                 for j in range(len(c.degen_sequence_set)):
-                    for k in range(len(c.degen_sequence_set[j].sequences)):
-                        totals += c.degen_sequence_set[j].pattern
-
-        for i, c in enumerate(self.patterns):
-            if len(c.degen_sequence_set) != 0:
-                for j in range(len(c.degen_sequence_set)):
-                    for k in range(len(c.degen_sequence_set[j].sequences)):
-                        print(c.degen_sequence_set[j].sequences[k],
-                              theta[i]/degeneracy[i],
-                              K[i],
-                              c.degen_sequence_set[j].pattern/totals,
-                              calc_values[i,:]/degeneracy[i])
+                    for s in c.degen_sequence_set[j].sequences:
+                        self._out_dict[s] = (np.exp(K[i]),np.exp(theta[i]/degeneracy[i]))
 
     def _loadData(self):
         """
+        Load the data into a set of degenerate patterns.
         """
         
         all_sequences = list(self.count_dict.keys())
@@ -426,9 +440,12 @@ class RegressEnrichmentProcessor(BaseProcessor):
             degen_sequence_list.append(copy.copy(self.degen_sequence_dict[k]))
 
         num_unique_patterns = len(degen_sequence_list)
+        if num_unique_patterns == 0:
+            err = "No sequences were seen enough times to be included."
+            raise ValueError(err)
+
         print("Found %i unique patterns for %i clones" % (num_unique_patterns,
                                                           len(all_sequences)))
-
 
         # Create a numpy array of all unique patterns
         unique_patterns = np.zeros((num_unique_patterns,num_rounds),dtype=int)
@@ -456,6 +473,14 @@ class RegressEnrichmentProcessor(BaseProcessor):
         print("Collapsed to %i similar patterns." % (len(final_clusters)))
 
         return rounds, final_clusters
-
  
+    @property
+    def data(self):
+        """
+        Return a dictionary of sequences keyed to fit affiniites and initial counts.
+        """
+
+        return self._out_dict
+
+            
 
