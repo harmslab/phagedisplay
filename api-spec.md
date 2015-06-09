@@ -17,18 +17,23 @@ data from the class in a useful, programatically accessible way.
  * Each instance has a `process` method which takes `**kwargs` and, potentially
 the `data` property from the previous instance and processes/transforms the
 data appropriatesly. 
- * Under the hood, everything is stored as a list/tuple in which the index indicates
-the selection round.  0 is the initial library, 1 is after one round, 2 after two 
-rounds etc.  Rounds in which no data were collected should have `NoneType`.  
- * The key format is a dictionary that keys sequences to counts/frequencies 
-over rounds.  Each index in the tuple corresponds to a round (as above), with None
+ * A `freq_dict` is a dictionary that keys sequences to counts/frequencies 
+over rounds.  Each index in the tuple corresponds to a round, with None
 for missing entries.  The following dictionary shows how two peptides changed over 
 rounds.  The first went from 25 in the initial library to 300 at round 2 and to
 5000 and round 3. These dictionaries are written out as binary/python3 pickles.
 ```
-    this_dict = {"ATGPRCTNKRDY":(25,None,300,5000),
+    freq_dict = {"ATGPRCTNKRDY":(25,None,300,5000),
                  "ACRNDPQENDWV":(400,None,30,0),
                  ...}
+```
+* A `param_dict` is a dictionary that keys sequences to affinity and initial
+counts in the data set.  These affinity/initial counts values can either be
+simulation generation parameters or the final result of simulations allowing
+simple comparision between simulation and analysis output in a common format.
+```
+    param_dict = {"ATGPRCTNKRDY":(5,100),
+                  ...}
 ```
 
 ##Saving
