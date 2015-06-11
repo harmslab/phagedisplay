@@ -78,181 +78,143 @@ def possibleNeighbors(sequence,num_steps,alphabet):
     return final_neighbors.items()
 
 
-
 class Rocker:
 
-    def __init__(self,count_dict,num_steps,transition_matri):
+    def __init__(self,count_dict,num_steps,transition_matrix,err_guess=0.01):
         """
+        Do other stuff
+        
+        Create a matrix for transitions between each possible sequence neigbor
+        with a probability given by the types of transitions between each
+        neighbor.
         """
 
         self.num_steps = num_steps
         self.tm = transition_matrix
+        self.err_guess = err_guess
 
         # Convert count_dictionary to a list, sorted from highest to lowest counts
+        # Toss any sequences with 0 counts or None
         tmp_seq_list = list((v[1],v[0]) for v in count_dict.items())
+        tmp_seq_list = [s for s in tmp_seq_list if s[0] < 1 or s[0] == None]
         tmp_seq_list.sort(reverse=True)
 
         # Create core mapping arrays/dictionaries to link sequences back to their
         # indexes, counts, etc.
+        self.num_real_seq = len(tmp_seq_list)
         self.seq_list =   [s[1] for s in tmp_seq_list]
         self.seq_counts = [s[0] for s in tmp_seq_list]
         self.seq_index_dict = dict((s,i) for i,s in enumerate(self.seq_list))
-        self.num_real_seq = len(self.seq_list)
 
-        # Add dummy sequences for each possible mutation combination
-        possible_mutations = []
-        for i, a in enumerate(self.tm.alphabet):
-            for j, b in enumerate(self.tm.alphabet):
-                if a != b:
-                    possible_mutations.append((a,b))
+        # Create lists that will store all neighbors and the probability of reaching
+        # them given the transition matrix
+        self.neighbor_lists = [[] for s in self.seq_list]
+        self.neighbor_prob = [[] for s in self.seq_list]
+        self.neighbor_num_steps = [[] for s in self.seq_list]
 
-        all_muts = []
-        for i in range(num_steps):
-            all_muts.extend(itertools.combinations(possible_mutations,i+1))
+        # Go through every sequence and calculate possible transitions to every 
+        # possible neighbor
+        tmp_seq_list = self.seq_list[:]
+        for i, seq in enumerate(tmp_seq_list):
+            for neighbor in possibleNeighbors(seq,self.num_steps,self.tm.alphabet):
 
-        self.seq_list.extend(all_muts)
-        self.seq_counts.extend([0 for i in range(len(all_muts))])
-        self.seq_index_dict.update((a,i+self.num_real_seq) for i, a in enumerate(all_muts))
-
-
-        # Figure out how many neighbors are going to be possible for each sequence
-        seq_length = len(self.seq_list[0])
-        num_neighbors = 0
-        for i in range(len(self.num_steps)):
-            num_neighbors += misc.comb(seq_length,i)*(self.tm.alphabet_length)**i)
-            
-        # Populate arrays of neighbors accessible by point mutation, the intrinsic
-        # probability of that error, and the number of steps away this neighbor is from
-        # its parent
-        num_seq = len(self.seq_list)
-        self.neighbor_indexes = np.zeros((num_seq,num_neighbors),dtype=int)
-        self.neighbor_fwd_prob_index[i,j,k] = np.ones((num_seq,num_neighbors,self.num_steps),dtype=int)
-        self.neighbor_rev_prob_index[i,j,k] = np.ones((num_seq,num_neighbors,self.num_steps),dtype=int)
-
-        # Populate np arrays that point from sequence index to neighbor indexes.  
-        # Record indexes to the appropriate transition probability indexes as well.
-        new_seq_list = self.seq_list[:]
-        for i, seq in enumerate(seq_list):
-            for j, neighbor in enumerate(possibleNeighbors(seq,self.num_steps,self.tm.alphabet)):
-
+                # Sequence and mutations required to get there
                 neighbor_seq = neighbor[0]
                 mutations = neighbor[1]
 
-                # Record index of this neighbor in seq_list so we can point to it
-                # in likelihood function 
+                # Grab the index of the neighbor
                 try:
-                    self.neighbor_indexes[i,j] = self.seq_index_dict[neighbor_seq]
+                    j = self.seq_index_dict[neighbor_seq]
 
-
-                # If the neighbor sequence was not actually seen, point to a 
-                # dummy sequence.  There will be a dummy sequence for each 
-                # class of possible mutations (e.g. a combination of A->T,P->Q
-                # will have a different dummy sequence than A->T,R->S)
+                # If that neighbor hasn't been seen yet, create it.
                 except KeyError:
 
-                    # Grab the set of all mutations
-                    mut_key = []
-                    for m in mutations:
-                        mut_key.append((m[0],m[2]))
-                    mut_key = tuple(mut_key)
-                   
-                    k = self.seq_index_dict[mut_key]
- 
-                    self.neighbor_indexes[i,j] = k
-                    self.neighbor_indexes[k,xxx] = i
+                    self.seq_list.append(neighbor_seq)
+                    self.seq_counts.append(0)
+                    self.seq_index_dict[neighbor_seq] = len(self.seq_list)-1
+                    self.neighbor_lists.append([])
+                    self.neighbor_prob.append([])
+                    self.neighbor_num_steps.append([])
+            
+                    j = self.seq_index_dict[neighbor_seq]
 
-                    # Record it 
-                    #try:
+                # Record neighbor adjacency both ways
+                self.neighbor_lists[i].append(j)
+                self.neighbor_lists[j].append(i)
 
-                    # but if this mutation class hasn't been seen yet, add it.
-                    #except KeyError:
-
-                    #    new_seq_list.append(mut_key)
-                    #    self.seq_index_dict[mut_key] = len(new_seq_list) - 1
-                    #    self.seq_counts.append(0)
-                    #    self.neighbor_indexes[i,j] = self.seq_index_dict[mut_key]
-
-                k = 0
+                # Record probability of errors going each direction from the
+                # transition matrix
+                self.neighbor_prob[i].append(1.0)
+                self.neighbor_prob[j].append(1.0)
                 for m in mutations:
-                    self.neighbor_fwd_prob_index[i,j,k] = self.tm.letter_to_index[m[0]]*self.tm.alphabet_length + letter_to_index[m[2]]
-                    self.neighbor_rev_prob_index[i,j,k] = self.tm.letter_to_index[m[2]]*self.tm.alphabet_length + letter_to_index[m[1]]
-                    k += 1
+                    a = self.tm.letter_to_index[m[0]]
+                    b = self.tm.letter_to_index[m[2]]
 
-        self.seq_list = new_seq_list[:]
-   
-        self.transition_matrix = np.prod(err_prob 
+                    self.neighbor_prob[i][-1] *= self.tm.transition_matrix[a,b]
+                    self.neighbor_prob[j][-1] *= self.tm.transition_matrix[b,a]
 
+                self.neighbor_num_steps[i].append(len(mutations))
+                self.neighbor_num_steps[j].append(len(mutations))
 
+        # Construct a total transition matrix for each i-->j transition
+        self.total_matrix = np.zeros((len(self.seq_list),len(self.seq_list)),dtype=float)
+        self.num_steps_matrix = np.zeros((len(self.seq_list),len(self.seq_list)),dtype=int)
+        for i in range(len(self.seq_list)):
+            self.total_matrix[self.neighbor_lists[i],i] = self.neighbor_prob[i]
+            self.num_steps_matrix[self.neighbor_lists[i],i] = self.neighbor_num_steps[i]
+      
+        # This information has now been matrix-ified.  Delete.   
+        del self.neighbor_lists
+        del self.neighbor_prob 
 
-        x = np.array(range(len(self.seq_list))
-        y = np.array(self.seq_counts,dtype=float)
-
-        y = param[x]
-        y_out = param[x]*param[self.neighbor_fwd_prob_index[:,self.neighbor_indexes[x,:],:]]
-        y_in  = param[x]*param[self.neighbor_rev_prob_index[:,self.neighbor_indexes[x,:],:]]
-       
-        y_obs = y - y_out + y_in 
-
-        self.seq_counts*log(y_obs)
- 
-        # Guesses
-        self.param_guess = np.zeros((self.num_patterns*2),dtype=float) 
-        for i in range(self.num_patterns):
-            y = self.y_obs[i,:]
-            conc_guess = self.y_obs[i,0]
-            K_guess = 1.0 
-
-            try:
-                indep_param, cov = curve_fit(self._indepFit,self.rounds,y,
-                                             p0=(conc_guess,K_guess),maxfev=10000)
-
-                if indep_param[0] <= 0 or indep_param[1] <= 0:
-                    raise RuntimeError
-                self.param_guess[i] = np.log(indep_param[0]) 
-                self.param_guess[self.num_patterns + i] = np.log(indep_param[1])
-            except RuntimeError:
-                self.param_guess[i] = np.log(1/self.num_patterns) 
-                self.param_guess[self.num_patterns + i] = np.log(1.0)
-
-        # Create bound list.  conc must be between 0 and 1, K must be positive
-        self.bounds = [(None,None) for i in range(self.num_patterns)]   
-        self.bounds.extend([(None,None) for i in range(self.num_patterns)])
-
-        self.bounds[self.num_patterns] = (-1.0,-1.0)
-        self.param_guess[self.num_patterns] = -1.0
+        self.param_guesses = np.zeros((len(self.seq_list)+1),dtype=float)
+        self.param_guesses[range(len(self.seq_list))] = self.seq_counts
+        self.param_guesses = self.param_guesses/np.sum(self.param_guesses)
+        self.param_guesses[-1] = self.err_guess
 
     def runRegression(self,maxiter=100000000000):
         """
-        Run a regression of the objective function given our bound, constraints,
-        etc.
+        Run a regression of the objective function.
         """
 
-        self.fit_result = minimize(fun=self._objective,x0=self.param_guess,
-                                   bounds=self.bounds,
+        self.fit_result = minimize(fun=self._objective,
+                                   x0=self.param_guess,
                                    options={"maxiter":maxiter,"maxfun":maxiter})
 
     def returnParam(self):
         """
-        Return the fit parameters.  
+        Return the fit parameters. 
+            out is a list of tuples that encode sequence, estimated freq, and
+                how many times this sequence was actually seen.
+            err_rate is the estimated global error rate applied to the 
+                transition matrix.
         """
 
-        initial_theta = self.fit_result.x[:self.num_patterns]
-        K_values = self.fit_result.x[self.num_patterns:]
+        frequencies = self.fit_result.x[:-1]
+        err_rate = self.fit_result.x[-1]
 
-        out = np.zeros((len(K_values),3),dtype=float)
-        for i in range(3):
-            out[:,i] = np.exp(self.log_degeneracy + initial_theta + K_values*(i+1))
-            out[:,i] = out[:,i]/sum(out[:,i])
-
-        return initial_theta, K_values, out   
+        out = []
+        for i in range(len(self.seq_list)):
+            out.append((self.seq_list[i],frequencies[i],self.seq_counts[i]))
+  
+        return out, err_rate
 
     def _objective(self,param):
         """
+        Calculate the -log likelihood of the experimentally observed sequence
+        counts given our model of mutational neighbors.
         """
-    
-        f = param[:self.size]
-        Q = param[self.size]*f*self.transition_matrix
-        return np.sum(np.log(f - np.sum(Q,1) + np.sum(Q,0))*self.seq_counts)
+        
+        # Frequencies 
+        f = param[:self.num_total_seq]
+
+        # Q is the frequency of each sequence times the estimated error rate 
+        # raised to the number of steps made, times the total error transition
+        # matrix.
+        Q = (param[-1]**self.num_steps_matrix)*f*self.total_matrix
+
+        # Return -log(likelihood)
+        return -1*np.sum(np.log(f - np.sum(Q,1) + np.sum(Q,0))*self.seq_counts)
 
 
 """
