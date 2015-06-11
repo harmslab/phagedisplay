@@ -10,13 +10,13 @@ class TransitionMatrix:
     """
     """
 
-    def __init__(self,base_value=1.0):
+    def __init__(self,base_value=0.1):
         
         self._alphabet = []
         self._transition_matrix = []
         self._alphabet_length = len(self.alphabet)
 
-    def setup(self,base_value)
+    def setup(self,base_value):
 
         self._base_value = base_value
         self._letter_to_index_dict = dict((a,i) for i, a in enumerate(self._alphabet))
@@ -25,9 +25,8 @@ class TransitionMatrix:
         self._transition_matrix = np.ones((self.alphabet_length,
                                            self.alphabet_length),dtype=float)
 
-        # Set A->A = 0, T->T = 0, etc.
-        self_to_self = np.array(zip(range(self.alphabet_length),range(self.alphabet_length)))
-        self._transition_matrix[self_to_self] = 0.
+        # Transition to self as 0
+        np.fill_diagonal(self._transition_matrix,0)
 
         self._transition_matrix = self._transition_matrix*self._base_value
 
@@ -53,7 +52,7 @@ class FlatDNATM(TransitionMatrix):
     """
     """
     
-    def __init__(self,base_value=1.0):
+    def __init__(self,base_value=0.1):
         
         self._alphabet = ["A","T","G","C"]
         self.setup(base_value)
@@ -62,7 +61,7 @@ class FlatProteinTM(TransitionMatrix):
     """
     """
     
-    def __init__(self,base_value=1.0):
+    def __init__(self,base_value=0.1):
       
         warn = "This transition matrix models all amino acid subsitutions as "
         warn += "equally probable!  Really only for testing..."
