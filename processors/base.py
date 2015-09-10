@@ -69,7 +69,7 @@ class BaseProcessor:
 
         # Write out pretty, human and other-programming-languages readable
         # json file.  
-        self._writeJson(overwrite)
+        self._writeJson(overwrite=overwrite)
 
         if not filename:
             filename = os.path.join(self.getProperty("expt_name"),"save.pickle")
@@ -143,8 +143,7 @@ class BaseProcessor:
         Create a json file and write out contents of self._props.
         """
 
-        filename = os.path.join(os.path.join(self.getProperty("expt_name"),
-                                json_file)
+        filename = os.path.join(self.getProperty("expt_name"),json_file)
 
         if not overwrite and os.path.exists(filename):
             raise IOError("file {:s} already exists".format(filename))
@@ -160,7 +159,7 @@ class BaseProcessor:
         # Write out nested combination classes 
         out_subprocessors = []
         for s in self._subprocessors:
-            s._writeJson()
+            s._writeJson(overwrite=True)
             out_subprocessors.append(s.getProperty("expt_name"))
         
         write_dict["_out_subprocessors"] = out_subprocessors       
