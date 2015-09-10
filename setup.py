@@ -1,9 +1,18 @@
-from setuptools import setup
+#!/usr/bin/env python3
 
+# Try using setuptools first, if it's installed
+try:
+    from setuptools import setup
+except: 
+    from distutils.core import setup
+    
 # Need to add all dependencies to setup as we go!
-
 setup(name='phagedisplay',
       version='0.1',
       description='Sequence Space in the Protein Lattice Model Landscape',
       author='Luke Wheeler, Zach Sailer, Andrea Loes, Dr. Michael J. Harms',
-      zip_safe=False)
+      url='https://github.com/harmslab/phagedisplay',
+      packages=['phagedisplay'], 
+      zip_safe=False,
+      install_requires=["scipy"])
+
