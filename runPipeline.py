@@ -140,6 +140,10 @@ class FastqPipeline(Pipeline):
         self.m.addProcessor(b)
         self.m.process()
 
+        c = processors.RegressEnrichmentProcessor(expt_name="regression")
+        self.m.addProcessor(c)
+        self.m.process()
+
     def _parseRoundsFile(self):
         """
         Grab the round numbers specified in a rounds_file, splitting on all spaces
@@ -210,6 +214,9 @@ class SimulationPipeline(Pipeline):
         # delete the temporary file
         os.remove(pickle_file)
     
+        c = processors.RegressEnrichmentProcessor(expt_name="regression")
+        self.m.addProcessor(c)
+        self.m.process()
 
 
 # -----------------------------------------------------------------------------
