@@ -5,6 +5,7 @@ __author__ = "Michael J. Harms"
 __date__ = "2015-04-28"
 
 import os, gzip, pickle, re
+
 from . import BaseProcessor
 
 class FastqSeqCounter:

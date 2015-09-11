@@ -5,6 +5,7 @@ __author__ = "Michael J. Harms"
 __date__ = "2015-01-09"
 
 import re, gzip, os
+
 from . import BaseProcessor
 
 class FastqListProcessor(BaseProcessor):
