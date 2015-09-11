@@ -4,7 +4,7 @@ __description__ = \
 __author__ = "Michael J. Harms"
 __date__ = "2015-01-09"
 
-import re, gzip, os
+import re, gzip, os, shutil
 
 from . import BaseProcessor
 
@@ -25,15 +25,23 @@ class FastqListProcessor(BaseProcessor):
         expt_name = self.getProperty("expt_name")
         for i, f in enumerate(file_list):
             if f:
+            
+                print("Importing {:s}".format(f))
 
-                value = os.path.join(expt_name,"{}.gz".format(os.path.split(f)[-1]))
-      
-                print("Importing and compressing {:s}".format(f))
+                # If it's already compressed, just copy it in.
+                if f[-3:] == ".gz":
+                    value = os.path.join(expt_name,os.path.split(f)[-1])
+                    shutil.copy(f,value)
+
+                # Otherwise, compress it ourselves
+                else:
+                    value = os.path.join(expt_name,"{}.gz".format(os.path.split(f)[-1]))
  
-                # Bring in the fastq file, compressing along the way 
-                with open(f,'rb') as fastq_in:
-                    with gzip.open(value, 'wb') as gzipped_fastq_out:
-                        gzipped_fastq_out.writelines(fastq_in) 
+                    # Bring in the fastq file, compressing along the way 
+                    with open(f,'rb') as fastq_in:
+                        with gzip.open(value, 'wb') as gzipped_fastq_out:
+                            gzipped_fastq_out.writelines(fastq_in) 
+
 
                 # Update the "None" entry in the fastq-files list to be the filename for
                 # for this round.
