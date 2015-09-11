@@ -5,7 +5,10 @@ __author__ = "Michael J. Harms"
 __date__ = "2015-04-28"
 
 import os, gzip, pickle, re
+
 from . import BaseProcessor
+
+
 
 class FastqSeqCounter:
     """
@@ -19,8 +22,18 @@ class FastqSeqCounter:
     each round.  
     """
 
-    def __init__(self,bad_pattern="[*X]",phage_term="GGG*AET",seq_length=12):
+    def __init__(self,bad_pattern="[*X]",seq_length=12):
 
+        # These are all amino acid sequences accessible as single point mutants
+        # from the normal phage sequence GGGSAE
+        self._ALLOWED_PHAGE_SEQ = ["GGSSAE","GGGSAE","AGGSAE","GGGSDE","GGASAE",
+                                   "GGGSPE","DGGSAE","GGGSSE","VGGSAE","GGGSTE",
+                                   "GGRSAE","GEGSAE","GGGPAE","GGGSAV","GGGSVE",
+                                   "GGGLAE","GGGAAE","RGGSAE","GGGSAG","GGGTAE",
+                                   "CGGSAE","GGGSAQ","GGG*AE","GGGSGE","GVGSAE",
+                                   "G*GSAE","GAGSAE","GGGSA*","SGGSAE","GGVSAE",
+                                   "GRGSAE","GGGSAD","GGGSAA","GGGWAE","GGDSAE",
+                                   "GGGSAK","GGCSAE"]
         self._GENCODE = {
             'ATA':'I', 'ATC':'I', 'ATT':'I', 'ATG':'M',
             'ACA':'T', 'ACC':'T', 'ACG':'T', 'ACT':'T',
@@ -39,8 +52,8 @@ class FastqSeqCounter:
             'TAC':'Y', 'TAT':'Y', 'TAA':'*', 'TAG':'*',
             'TGC':'C', 'TGT':'C', 'TGA':'*', 'TGG':'W'}
 
+        self._phage_part_size = len(self._ALLOWED_PHAGE_SEQ[0])
         self._bad_pattern = re.compile(bad_pattern)
-        self._phage_term = phage_term
         self._seq_length = seq_length
 
     def _translate(self,sequence):
@@ -69,8 +82,11 @@ class FastqSeqCounter:
         codons). 
         """
 
-        if sequence[self._seq_length:(self._seq_length+len(self._phage_term))] == self._phage_term:
-            if not self._bad_pattern.search(sequence[:self._seq_length]):
+        phage_part = sequence[self._seq_length:(self._seq_length+self._phage_part_size)]
+        real_part = sequence[:self._seq_length]
+
+        if phage_part in self._ALLOWED_PHAGE_SEQ:
+            if not self._bad_pattern.search(real_part):
                 return True
 
         return False
@@ -184,13 +200,6 @@ class FastqSeqCounter:
         Return regular expression we use to look for "badness"
         """
         return self._bad_pattern.pattern
-
-    @property
-    def phage_term(self):
-        """
-        Return the amino acid sequence of the C-terminus in the phage itself
-        """
-        return self._phage_term
 
     @property
     def seq_length(self):

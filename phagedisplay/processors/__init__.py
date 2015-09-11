@@ -6,7 +6,11 @@ experiments and processing them in a consistent way.
 __author__ = "Michael J. Harms"
 __date__ = "2015-04-27"
 
-__all__ = ["base","master","fastq_list","fastq_to_counts","pickle_dict",
+__all__ = ["base",
+           "master",
+           "fastq_list",
+           "fastq_to_counts",
+           "pickle_dict",
            "regress_enrichment"]
 
 from .base import BaseProcessor

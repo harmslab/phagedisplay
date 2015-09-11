@@ -9,7 +9,8 @@ __date__ = "2015-04-28"
 
 import argparse, sys, datetime, pickle, os
 
-import processors, simulate
+import phagedisplay
+from phagedisplay import processors, simulate
 
 class PhagePipelineError(Exception):
     """

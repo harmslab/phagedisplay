@@ -1,6 +1,6 @@
 
 import sys, pickle
-from simulate import pool, samplers, utility, parameters
+from . import pool, samplers, utility, parameters
 from scipy.optimize import minimize
 
 class StandardExperiment:

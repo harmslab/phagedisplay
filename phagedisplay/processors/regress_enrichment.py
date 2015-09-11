@@ -10,7 +10,7 @@ __date__ = "2015-01-20"
 
 from . import BaseProcessor
 
-import sys, time, copy
+import sys, time, copy, os
 import pickle, scipy
 import numpy as np
 
@@ -249,7 +249,7 @@ class FitModel:
                 self.param_guess[self.num_patterns + i] = np.log(indep_param[1])
             except RuntimeError:
                 self.param_guess[i] = np.log(1/self.num_patterns) 
-                self.param_guess[self.num_patterns + i] = np.log(1.0)
+                self.param_guess[self.num_patterns + i] = np.log(K_guess)
 
         print("Done.")
         sys.stdout.flush()
@@ -260,6 +260,8 @@ class FitModel:
 
         #self.bounds[0] = (-1.0,-1.0)
         #self.param_guess[0] = -1.0
+        # Nail down K for the first pattern as site to exp(-1).  This is the 
+        # reference state for the K values.
         self.bounds[self.num_patterns] = (-1.0,-1.0)
         self.param_guess[self.num_patterns] = -1.0
  
@@ -362,7 +364,8 @@ class RegressEnrichmentProcessor(BaseProcessor):
     rounds into single objects, then globally fits the model.
     """
 
-    def process(self,count_dict,cg_width=1.0,minimum_times_seen=4):
+    def process(self,count_dict,cg_width=1.0,minimum_times_seen=4,
+                human_out_file="human-readable-summary.txt"):
         """
         Do the regression. 
             count_dict is a set of sequences with counts over rounds as values
@@ -378,9 +381,7 @@ class RegressEnrichmentProcessor(BaseProcessor):
         self.minimum_times_seen = minimum_times_seen
 
         # Create patterns
-        rounds, patterns = self._loadData()
-        self.rounds = rounds
-        self.patterns = patterns
+        self._find_patterns()
 
         # Set up fit
         fit_pattern = np.zeros((len(self.patterns),self.patterns[0].pattern_length),dtype=float)
@@ -392,7 +393,7 @@ class RegressEnrichmentProcessor(BaseProcessor):
                 degeneracy[i] = degen
 
         # Do actual fit
-        m = FitModel(fit_pattern,degeneracy,rounds)
+        m = FitModel(fit_pattern,degeneracy,self.rounds)
         m.runRegression()
 
         # Grab values from fit
@@ -404,9 +405,36 @@ class RegressEnrichmentProcessor(BaseProcessor):
             if len(c.degen_sequence_set) != 0:
                 for j in range(len(c.degen_sequence_set)):
                     for s in c.degen_sequence_set[j].sequences:
-                        self._out_dict[s] = (np.exp(K[i]),np.exp(theta[i]/degeneracy[i]))
+                        self._out_dict[s] = (np.exp(K[i]),
+                                             np.exp(theta[i]/degeneracy[i]),
+                                             np.exp(m.param_guess[i+m.num_patterns]),
+                                             np.exp(m.param_guess[i]/degeneracy[i]))
 
-    def _loadData(self):
+        new_out = [] 
+        for k in self._out_dict.keys():
+            new_out.append((tuple(self._out_dict[k]),k))
+        new_out.sort(reverse=True)
+
+        base_dir = self.getProperty("expt_name")
+        f = open(os.path.join(base_dir,human_out_file),"w")
+        f.write("{:>20s}{:>20s}{:>20s}{:>20s}{:>20s}{:>20s}\n".format(" ",
+                                                                      "sequence",
+                                                                      "K_global",
+                                                                      "theta_global",
+                                                                      "K_indep",
+                                                                      "theta_indep"))
+
+        for i, o in enumerate(new_out):
+            f.write("{:20d}{:>20s}{:20.10e}{:20.10e}{:20.10e}{:20.10e}\n".format(i,
+                                                                                 o[1],
+                                                                                 o[0][0],
+                                                                                 o[0][1],
+                                                                                 o[0][2],
+                                                                                 o[0][3]))
+        f.close()
+
+
+    def _find_patterns(self):
         """
         Load the data into a set of degenerate patterns.
         """
@@ -417,9 +445,9 @@ class RegressEnrichmentProcessor(BaseProcessor):
         # share exactly the same count pattern.  Each unique pattern/sequence set is
         # stored in an instance of the DegenerateSequences class.
         self.degen_sequence_dict = {}
-        rounds = [i for i, v in enumerate(self.count_dict[all_sequences[0]])
-                  if v != None]
-        num_rounds = len(rounds)
+        self.rounds = [i for i, v in enumerate(self.count_dict[all_sequences[0]])
+                       if v != None]
+        num_rounds = len(self.rounds)
         for s in all_sequences:
 
             # Get rid of missing data
@@ -464,16 +492,14 @@ class RegressEnrichmentProcessor(BaseProcessor):
                 similar_pattern_dict[key] = [degen_sequence_list[i]]
 
         # Create a final set of clusters (made of SequenceCluster instance)
-        final_clusters = [DegenerateSequenceCluster()
-                          for i in range(len(similar_pattern_dict))]
+        self.patterns = [DegenerateSequenceCluster()
+                         for i in range(len(similar_pattern_dict))]
         for i, key in enumerate(similar_pattern_dict.keys()):
             for cluster in similar_pattern_dict[key]:
-                final_clusters[i].addSequenceSet(cluster)
+                self.patterns[i].addSequenceSet(cluster)
 
-        print("Collapsed to %i similar patterns." % (len(final_clusters)))
+        print("Collapsed to %i similar patterns." % (len(self.patterns)))
 
-        return rounds, final_clusters
- 
     @property
     def data(self):
         """

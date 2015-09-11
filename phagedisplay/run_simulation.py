@@ -7,7 +7,7 @@ __date__ = "2015-05-21"
 __usage__ = ""
 
 import argparse, pickle, sys, os
-import simulate
+from phagedisplay import simulate
 
 class RunSimulationError(Exception):
     """
