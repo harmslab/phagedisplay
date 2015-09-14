@@ -7,8 +7,7 @@ __date__ = "2015-04-28"
 import os, gzip, pickle, re
 
 from . import BaseProcessor
-
-
+from phagedisplay import util
 
 class FastqSeqCounter:
     """
@@ -180,7 +179,7 @@ class FastqSeqCounter:
             good_counts = None
             bad_counts = None
             if f != None:
-                print("Processing %s" % f)
+                util.logger("Processing {:s}".format(f))
                 good_counts, bad_counts = self._processSingleFile(f)
             
             all_good_dicts.append(good_counts)
@@ -226,9 +225,11 @@ class FastqToCountsProcessor(BaseProcessor):
         p = FastqSeqCounter()
 
         # Count
+        self._logger("processing fastq files")
         good_counts, bad_counts = p.processFastqFiles(fastq_filenames)
 
         # Write out pickle files 
+        self._logger("writing counts files")
         if not good_counts_pickle:
             good_counts_pickle = os.path.join(self.getProperty("expt_name"),
                                               "good-counts.pickle") 

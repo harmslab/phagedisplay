@@ -8,6 +8,9 @@ from . import blob
 from .blob import Blob, DateBlob, FileBlob
 import datetime, string, random, os, json, pickle
 
+import phagedisplay
+from phagedisplay import util
+
 class BaseProcessor:
     """
     Base class for phage display processing steps.
@@ -20,7 +23,7 @@ class BaseProcessor:
         self._props = {}
         self._subprocessors = []
         self._do_not_write_to_json = []
-        
+
         # Create a date stamp
         if not date:
             d = datetime.date.today()
@@ -62,6 +65,9 @@ class BaseProcessor:
         # Don't allow overwrite here, as this is when it is created (effectively 
         # a "save as" call)
         self.saveFile()
+
+        self._log_file = os.path.join(expt_name,"log.txt")
+        self._logger("experiment {:s} created".format(expt_name))
 
     def saveFile(self,filename=None,overwrite=False):
         """
@@ -194,6 +200,12 @@ class BaseProcessor:
  
         for k in json_in:
             self.addProperty(k,json_in[k])
+
+    def _logger(self,msg):
+        """
+        """
+
+        util.logger(msg,self._log_file)
 
     @property
     def data(self):

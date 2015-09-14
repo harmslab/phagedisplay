@@ -9,6 +9,7 @@ __author__ = "Michael J. Harms"
 __date__ = "2015-01-20"
 
 from . import BaseProcessor
+from phagedisplay import util
 
 import sys, time, copy, os
 import pickle, scipy
@@ -199,7 +200,7 @@ class FitModel:
                    = ln(theta_x_0) + ln(E_x)*i - ln(sum(Q))
     """
 
-    def __init__(self,patterns,degeneracy,rounds):
+    def __init__(self,patterns,degeneracy,rounds,log_file=None):
         """
         Using the data in patterns and degeneracy, create an observable set, 
         objective function, constraints, and bounds taht can then be minimized.
@@ -212,6 +213,8 @@ class FitModel:
         
         self.num_patterns = len(patterns)
         self.log_degeneracy = np.log(self.degeneracy)
+
+        self.log_file = log_file
 
         # Create observable matrix (thetas x rounds)
         self.y_obs = patterns[:]
@@ -231,8 +234,7 @@ class FitModel:
         #    first guess.
         # 2) If that doesn't converge, assign the initial conc to the frequency
         #    at obs0 and  K to 1.0
-        print("Generating initial parameter guesses...",end="")
-        sys.stdout.flush()
+        util.logger("Generating initial parameter guesses...",self.log_file)
         self.param_guess = np.zeros((self.num_patterns*2),dtype=float) 
         for i in range(self.num_patterns):
             y = self.y_obs[i,:]
@@ -251,7 +253,7 @@ class FitModel:
                 self.param_guess[i] = np.log(1/self.num_patterns) 
                 self.param_guess[self.num_patterns + i] = np.log(K_guess)
 
-        print("Done.")
+        util.logger("Done.",self.log_file)
         sys.stdout.flush()
 
         # Create bound list.  conc must be between 0 and 1, K must be positive
@@ -322,7 +324,7 @@ class FitModel:
         etc.
         """
 
-        print("Performing main fit... ",end="")
+        util.logger("Performing main fit... ",self.log_file)
         self.start_time = time.time()
 
         self.fit_result = minimize(fun=self._objective2,x0=self.param_guess,
@@ -330,7 +332,7 @@ class FitModel:
                                    #constraints=self.constraints,
                                    options={"maxiter":maxiter,"maxfun":maxiter})
         self.end_time = time.time()
-        print("Done.")
+        util.logger("Done.",self.log_file)
 
     def returnParam(self):
         """
@@ -340,8 +342,8 @@ class FitModel:
         initial_theta = self.fit_result.x[:self.num_patterns]
         K_values = self.fit_result.x[self.num_patterns:]
 
-        out = np.zeros((len(K_values),3),dtype=float)
-        for i in range(3):
+        out = np.zeros((len(K_values),self.num_rounds),dtype=float)
+        for i in range(self.num_rounds):
             out[:,i] = np.exp(self.log_degeneracy + initial_theta + K_values*(i+1))
             out[:,i] = out[:,i]/sum(out[:,i])
 
@@ -365,7 +367,8 @@ class RegressEnrichmentProcessor(BaseProcessor):
     """
 
     def process(self,count_dict,cg_width=1.0,minimum_times_seen=4,
-                human_out_file="human-readable-summary.txt"):
+                human_out_file="human-readable-summary.txt",
+                global_regression=True):
         """
         Do the regression. 
             count_dict is a set of sequences with counts over rounds as values
@@ -374,6 +377,10 @@ class RegressEnrichmentProcessor(BaseProcessor):
             minium_times_seen is the number of times a particular sequence must
                               be seen across all rounds if it is to be included
                               in the fit.
+            human_out_file human-readable output file
+            global_regression (True/False) whether or not to run global     
+                              regression rather than simply fitting each pattern
+                              individually.
         """
 
         self.count_dict = count_dict
@@ -393,11 +400,19 @@ class RegressEnrichmentProcessor(BaseProcessor):
                 degeneracy[i] = degen
 
         # Do actual fit
-        m = FitModel(fit_pattern,degeneracy,self.rounds)
-        m.runRegression()
+        m = FitModel(fit_pattern,degeneracy,self.rounds,self._log_file)
+        
+        if global_regression:
+            m.runRegression()
 
-        # Grab values from fit
-        theta, K, calc_values = m.returnParam()
+            # Grab values from fit
+            theta, K, calc_values = m.returnParam()
+
+        else:
+            theta = np.array([0.0 for i in range(len(self.patterns))])
+            K     = np.array([0.0 for i in range(len(self.patterns))])
+            calc_values = np.array([[0.0 for j in range(max(self.rounds))]
+                                    for i in range(len(self.patterns))])
 
         # create output
         self._out_dict = {}
@@ -452,10 +467,15 @@ class RegressEnrichmentProcessor(BaseProcessor):
 
             # Get rid of missing data
             pattern = tuple([v for v in self.count_dict[s] if v != None])
+
             if len(pattern) != num_rounds:
                 err = "All sequences must have same rounds observed."
                 raise ValueError(err)
-
+           
+            # If the sequence was *only* seen in the starting library, ignore it 
+            if sum(pattern[1:]) == 0:
+                continue
+    
             if sum(pattern) < self.minimum_times_seen:
                 continue
             try:
@@ -472,8 +492,8 @@ class RegressEnrichmentProcessor(BaseProcessor):
             err = "No sequences were seen enough times to be included."
             raise ValueError(err)
 
-        print("Found %i unique patterns for %i clones" % (num_unique_patterns,
-                                                          len(all_sequences)))
+        self._logger("Found {:d} unique patterns for {:d} clones".format(num_unique_patterns,
+                                                                         len(all_sequences)))
 
         # Create a numpy array of all unique patterns
         unique_patterns = np.zeros((num_unique_patterns,num_rounds),dtype=int)
@@ -498,7 +518,7 @@ class RegressEnrichmentProcessor(BaseProcessor):
             for cluster in similar_pattern_dict[key]:
                 self.patterns[i].addSequenceSet(cluster)
 
-        print("Collapsed to %i similar patterns." % (len(self.patterns)))
+        self._logger("Collapsed to {:d} similar patterns.".format(len(self.patterns)))
 
     @property
     def data(self):
