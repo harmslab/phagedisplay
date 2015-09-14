@@ -7,6 +7,7 @@ __date__ = "2015-01-09"
 import re, gzip, os, shutil
 
 from . import BaseProcessor
+from phagedisplay import util
 
 class FastqListProcessor(BaseProcessor):
     """
@@ -26,7 +27,7 @@ class FastqListProcessor(BaseProcessor):
         for i, f in enumerate(file_list):
             if f:
             
-                print("Importing {:s}".format(f))
+                self._logger("Importing {:s}".format(f))
 
                 # If it's already compressed, just copy it in.
                 if f[-3:] == ".gz":
