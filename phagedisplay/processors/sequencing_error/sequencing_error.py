@@ -16,6 +16,9 @@ import transition_matrix
 
 import sys
 
+
+
+
 def _possibleNeighborsRecursive(sequence,num_steps,mutations,alphabet):
     """
     Recursive function to generate a list of neighbors.  Should actually call
@@ -269,3 +272,5 @@ class SequencingErrorProcessor(BaseProcessor):
         pass
 
 """
+
+

@@ -8,79 +8,54 @@ __date__ = "2015-06-09"
 
 import numpy as np
 #from . import BaseProcessor
+import itertools
 
-def _possibleNeighborsRecursive(sequence,num_steps,mutations,alphabet):
+# -----------------------------------------------------------------------------
+
+def find_seq_neighbors(seq,max_num_mutations=2,alphabet=("A","T","G","C")):
     """
-    Generate a list of unique neighbors within num_steps hamming distance of the
-    starting sequence given some alphabet.
-    """
+    Take a sequence and generate a list of all possible sequence neighbors 
+    within max_num_mutations.  
+
+        input:
+
+        seq: sequence string (assumes all letters are within alphabet)
+        max_num_mutations: integer indicating how many mutations away to walk
+        alphabet: possible states at each site.  
+
+        output:
     
-    neighbors = []
-    original_sequence = list(sequence)
-    original_mutations = mutations[:]
+        all_possible_neighbors: a list of strings containing all possible 
+                                neighbors to seq.
+    """
+        
+    wt_seq = list(seq)
+    num_sites = len(wt_seq)
+    all_possible_neighbors = []
 
-    # Go through each site in the sequence
-    for i in range(len(original_sequence)):
+    # For all possible numbers of mutations (0 through max_num...)
+    for i in range(max_num_mutations+1):
 
-        # At each site, go through each letter in the alphabet
-        for a in alphabet:
+        # Create a list of all possible combinations of i states given the
+        # alphabet
+        state_combos = list(itertools.combinations_with_replacement(alphabet,(i)))
 
-            # Make the change and append to neighbors
-            new_sequence = original_sequence[:]
-            if new_sequence[i] == a:
-                continue
+        # Go through all possible "num_sites choose i" combinatons of site indexes
+        for sites in itertools.combinations(range(num_sites),i):
 
-            new_sequence[i] = a
-            joined_sequence = "".join(new_sequence)
+            # Now go through possible state combinations for these sites.
+            for j in range(len(state_combos)):
+
+                # Do the actual mutations to the string
+                mutated_seq = wt_seq[:]
+                for k in range(i):
+                    mutated_seq[sites[k]] = state_combos[j][k]
+
+                all_possible_neighbors.append("".join(mutated_seq))
+
+    return all_possible_neighbors
        
-            mutations = original_mutations[:]
-            mutations.append((original_sequence[i],i,a))
 
-            neighbors.append((joined_sequence,tuple(mutations)))
-           
-            # Recursive call to take care of neighbors of neighbors 
-            if num_steps > 1:
-                neighbors.extend(_possibleNeighborsRecursive(joined_sequence,num_steps-1,mutations,alphabet))
-
-
-    # Take unique sequences
-    neighbors = list(dict([(n,[]) for n in neighbors]).keys())
-   
-    return neighbors 
-             
-def possibleNeighbors(sequence,num_steps,alphabet):
-    """
-    Generate a list of unique neighbors within num_steps hamming distance of the
-    starting sequence given some alphabet.
-    """
-    
-    neighbors = _possibleNeighborsRecursive(sequence,num_steps,[],alphabet)
-
-    final_neighbors = {}
-    for i in range(len(neighbors)):
-
-        neighbor_sequence = neighbors[i][0]
-        mutations = neighbors[i][1]
-
-        if neighbor_sequence == sequence:
-            continue
-
-        try:
-            current = final_neighbors[neighbor_sequence]
-            if len(current) > len(mutations):
-                final_neighbors[neighbor_sequence] = mutations[:]
-        except KeyError:
-            final_neighbors[neighbor_sequence] = mutations[:]
-
-
-    for f in final_neighbors:
-        print(f,final_neighbors[f],len(final_neighbors[f]))
-    print(len(final_neighbors))
-
-    return final_neighbors
-
-
-possibleNeighbors("YYYYYYYYYYYY",2,["A","C","D","E","F","G","H","I","K","L","M","N","P","Q","R","S","T","V","W","Y"])
 
 class Rocker:
 
@@ -92,17 +67,15 @@ class Rocker:
         self.alphabet = alphabet
 
         seq_list = count_dict.keys()
-        seq_as_string = [converter(s) for s in seq_list]
 
-        #round_list = [SOMEHOW POPULATE HERE]
-
+        zero_tuple = tuple(0 for c in count_dict[seq_list[0]] if c != None)
         seq_dict = {}
         for i in range(len(seq_list)):
             seq_dict[seq_as_string[i]] = tuple([c for c in count_dict[seq_list[i]] if c != None])
 
         neighbors = np.zeros((num_seq,num_neighbors,num_rounds),dtype=float)
         for i, s in enumerate(sequences):
-            for j, neighbor in enumerate(possibleNeighbors(s,num_steps)):
+            for j, neighbor in enumerate(find_seq_neighbors(s,num_steps,self.alphabet)):
 
                 # If we've seen the sequence and have counts for it, record. 
                 if seq_dict[s2]:
@@ -110,9 +83,8 @@ class Rocker:
 
                 # Otherwise, set counts to 0.
                 else:
-                    neighbors[i,j,:] = 0
+                    neighbors[i,j,:] = zero_tuple
         
-
         # Guesses
         self.param_guess = np.zeros((self.num_patterns*2),dtype=float) 
         for i in range(self.num_patterns):
