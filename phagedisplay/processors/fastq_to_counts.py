@@ -179,7 +179,7 @@ class FastqSeqCounter:
             good_counts = None
             bad_counts = None
             if f != None:
-                util.logger("Processing {:s}".format(f))
+                print("Processing {:s}".format(f))
                 good_counts, bad_counts = self._processSingleFile(f)
             
             all_good_dicts.append(good_counts)

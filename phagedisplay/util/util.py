@@ -1,5 +1,5 @@
 
-import datetime
+import datetime, sys
 
 def logger(message,output_file):
     """
@@ -9,5 +9,8 @@ def logger(message,output_file):
     d = "_".join(str(datetime.date.today()).split(" "))
 
     f = open(output_file,'a')
-    f.write(format("{:25s}{:s}\n",d,message))
+    f.write("{:25s}{:s}\n".format(d,message))
     f.close()
+
+    print(message)
+    sys.stdout.flush()
