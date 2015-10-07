@@ -9,7 +9,6 @@ __author__ = "Michael J. Harms"
 __date__ = "2015-01-20"
 
 from . import BaseProcessor
-from phagedisplay import util
 
 import sys, time, copy, os
 import pickle, scipy
@@ -234,7 +233,7 @@ class FitModel:
         #    first guess.
         # 2) If that doesn't converge, assign the initial conc to the frequency
         #    at obs0 and  K to 1.0
-        util.logger("Generating initial parameter guesses...",self.log_file)
+        self._logger("Generating initial parameter guesses...",self.log_file)
         self.param_guess = np.zeros((self.num_patterns*2),dtype=float) 
         for i in range(self.num_patterns):
             y = self.y_obs[i,:]
@@ -253,7 +252,7 @@ class FitModel:
                 self.param_guess[i] = np.log(1/self.num_patterns) 
                 self.param_guess[self.num_patterns + i] = np.log(K_guess)
 
-        util.logger("Done.",self.log_file)
+        self._logger("Done.",self.log_file)
         sys.stdout.flush()
 
         # Create bound list.  conc must be between 0 and 1, K must be positive
@@ -324,7 +323,7 @@ class FitModel:
         etc.
         """
 
-        util.logger("Performing main fit... ",self.log_file)
+        self._logger("Performing main fit... ",self.log_file)
         self.start_time = time.time()
 
         self.fit_result = minimize(fun=self._objective2,x0=self.param_guess,
@@ -332,7 +331,7 @@ class FitModel:
                                    #constraints=self.constraints,
                                    options={"maxiter":maxiter,"maxfun":maxiter})
         self.end_time = time.time()
-        util.logger("Done.",self.log_file)
+        self._logger("Done.",self.log_file)
 
     def returnParam(self):
         """

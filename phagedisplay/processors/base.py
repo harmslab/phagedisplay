@@ -9,7 +9,6 @@ from .blob import Blob, DateBlob, FileBlob
 import datetime, string, random, os, json, pickle
 
 import phagedisplay
-from phagedisplay import util
 
 class BaseProcessor:
     """
@@ -205,7 +204,7 @@ class BaseProcessor:
         """
         """
 
-        util.logger(msg,self._log_file)
+        self._logger(msg,self._log_file)
 
     @property
     def data(self):

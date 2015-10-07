@@ -7,7 +7,6 @@ __date__ = "2015-01-09"
 import re, gzip, os, shutil
 
 from . import BaseProcessor
-from phagedisplay import util
 
 class FastqListProcessor(BaseProcessor):
     """
