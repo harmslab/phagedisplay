@@ -1,33 +1,38 @@
-from Cluster import *
-
-class ClusterAnalysis(Cluster):
+class ClusterAnalysis():
 	"""
-	child class of Cluster.
+	analysis operations to determine best clustering.
 	"""
 
-	def elbowAnalysis(data):
-	    """
-	    find optimal k from data using elbow analysis.
-	    """
-	    initial = [vq.kmeans(data,i) for i in range(1,10)]
-	    plt.plot([var for (cent,var) in initial])
-	    plt.show()
-	    
 	def simplek(data):
 	    """
 	    super basic k approximation.
 	    """
 	    
-	    k = np.sqrt(len(data)/2)
+	    k = sqrt(len(cluster)/2)
 	    
 	    return k
 
-	def silhouette(data, n_clust):
+	def silhouette(data, start, stop):
 	    """
-	    return silhouette score
+	    return silhouette score.
+	    Best score is closest to 1, worst score closest to -1, and scores near 0 indicates overlapping clusters.
 	    """
 	    
-	    calc = KMeans(n_clusters = n_clust).fit(data)
-	    sil_score = silhouette_score(calc, calc.labels_, sample_size = len(data))
+	    s = []
+	    X = squareform(data)
+        linkage = hcl.average(X)
+
+	    for n_clust in range(start, stop):
+	    	calc = hcl.fcluster(linkage, self._factor, criterion = 'distance')
+	     
+	              
+	        labels = calc.labels_
+	        
+	        sil_score = silhouette_score(data.as_matrix(), labels, metric = 'precomputed')
+	        s.append(sil_score)
 	    
-	    return sil_score
+	    plt.plot(s)
+	    plt.ylabel("Silhouette Score")
+	    plt.xlabel("t")
+	    plt.xlim((start, stop))
+	    plt.title("Cluster analysis for Agglomerative)
