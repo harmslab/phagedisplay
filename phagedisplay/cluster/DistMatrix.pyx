@@ -6,7 +6,6 @@ import pandas as pd
 from scipy.spatial.distance import *
 
 cimport cython
-cimport openmp
 from cython.parallel cimport prange
 
 cdef class DistMatrix:
