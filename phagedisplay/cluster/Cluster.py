@@ -24,7 +24,8 @@ class Cluster():
 
     def cluster(self):
         """
-        cluster and shit.
+        cluster using DBSCAN or hierarchal clustering. DBSCAN works best on larger datasets
+        while hierarchal works best on smaller datasets.
         """
 
         X = self._dist_matrix
@@ -34,12 +35,6 @@ class Cluster():
             condensed = squareform(X)
             linkage = hcl.average(condensed)
             clusters = hcl.fcluster(linkage, self._factor, criterion = 'distance')
-
-         # compute sklearn agglomerative clustering
-        if self._cluster_alg == 'agglomerative':
-            calc = AgglomerativeClustering(n_clusters = self._factor, affinity = 'precomputed', linkage = 'average')
-            clusters = calc.fit(X.as_matrix() )
-            labels = clusters.labels_
 
         # compute DBSCAN clustering
         elif self._cluster_alg == 'DBSCAN':
