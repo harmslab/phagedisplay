@@ -19,11 +19,9 @@ class ClusterAnalysis():
 	    """
 	    
 	    s = []
-	    X = squareform(data)
-        linkage = hcl.average(X)
 
 	    for n_clust in range(start, stop):
-	    	calc = hcl.fcluster(linkage, self._factor, criterion = 'distance')
+	    	calc = AgglomerativeClustering(n_clusters = n_clust, affinity = 'precomputed', linkage = 'average').fit(data.as_matrix()) 
 	     
 	              
 	        labels = calc.labels_
@@ -33,6 +31,6 @@ class ClusterAnalysis():
 	    
 	    plt.plot(s)
 	    plt.ylabel("Silhouette Score")
-	    plt.xlabel("t")
+	    plt.xlabel("k")
 	    plt.xlim((start, stop))
 	    plt.title("Cluster analysis for Agglomerative)
