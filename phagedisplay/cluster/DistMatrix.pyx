@@ -37,9 +37,6 @@ cdef class DistMatrix:
         If phage file is already a list of sequences, outputs that as a list.
         """
     
-        #create 12xN array of sequences.
-        
-        #cdef np.ndarray[dtype=ch*, ndim=2] D = np.zeros((12, N))
         cdef phage_data = []
         
         if self._seq == 'no':
@@ -93,8 +90,6 @@ cdef class DistMatrix:
 
         for i in prange(nrow, nogil = True, schedule = 'guided'):
             for j in range(i + 1, nrow):
-                #seq1 = np.array(list(np.ndarray[dtype=double, ndim=2] D = np.zeros((nrow, nrow))))
-                #seq2 = np.array(list(sequences[j]))
                 with gil:
                     temp = self.scorePairwise(sequences[i], sequences[j])
                 D[i, j] = temp
