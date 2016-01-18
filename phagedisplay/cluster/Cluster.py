@@ -50,8 +50,5 @@ class Cluster():
         n_clusters = len(np.unique(clusters)) - (1 if -1 in clusters else 0)
         cluster_labels = pd.DataFrame({'Sequences' : X.index, 
                                        'Cluster' : clusters})
-        
-        print(n_clusters)
-        print(clusters, len(clusters))
     
         return cluster_labels
