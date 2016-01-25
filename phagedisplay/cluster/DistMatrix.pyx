@@ -1,12 +1,28 @@
 from libc.math cimport exp
 import numpy as np
 cimport numpy as np
-from Bio.SubsMat.MatrixInfo import *
 import pandas as pd
-from scipy.spatial.distance import *
 
 cimport cython
 from cython.parallel cimport prange
+
+def readMatrix(fileName):
+    """
+    read matrix text file into dictionary for scoring.
+    """
+
+    data = open(fileName).readlines()
+    seq = data[0].strip('/n/r').split()
+
+    matrix = {}
+
+    for line in data[1:]:
+        line = line.strip('/n/r').split()
+        for j in range(1, len(line)):
+            b = seq[j-1]
+            matrix[(line[0], b)] = int(line[j])
+
+    return matrix
 
 cdef class DistMatrix:
     """
@@ -15,7 +31,7 @@ cdef class DistMatrix:
     
     args:
             matrix: the biopython matrix to use for pairwise scoring. Can score using hamming distance 
-                    if matrix = 'hamming' or a given matrix.
+                    if 'hamming' or weighted blosum scoring if 'weighted'.
             
             seq (optional): if not declared, assumes file is already a list of sequences. If seq = 'no' declared then
             list of sequence is pulled out from phage data file.
@@ -24,12 +40,13 @@ cdef class DistMatrix:
     """
     
     cdef str _phage_file, _seq
-    cdef _matrix
+    cdef _scoring, _matrix
     
-    def __init__(self, phage_file, matrix = None, seq = None):
+    def __init__(self, phage_file, scoring = None, seq = None):
         self._phage_file = phage_file
-        self._matrix = matrix
+        self._scoring = scoring
         self._seq = seq
+        _matrix = readMatrix('blosum62.txt')
         
     cpdef createSeqList(self):
         """
@@ -61,13 +78,11 @@ cdef class DistMatrix:
         cdef str i, j
         
         
-        if self._matrix == 'hamming':
+        if self._scoring == 'hamming':
             for i, j in zip(seq1, seq2):
                 score += 0.0 if i == j else 1.0
-        elif self._matrix:
+        elif self._scoring == 'weighted':
             for i, j in zip(seq1, seq2):
-                if (i, j) not in self._matrix:
-                    j, i = i, j
                 score += self._matrix[(i, j)]
             score = 1 - exp(score)   
         else:
@@ -88,10 +103,11 @@ cdef class DistMatrix:
             
             double temp
 
-        for i in prange(nrow, nogil = True, schedule = 'guided'):
+        #for i in prange(nrow, nogil = True, schedule = 'guided'):
+        for i in range(nrow):
             for j in range(i + 1, nrow):
-                with gil:
-                    temp = self.scorePairwise(sequences[i], sequences[j])
+                #with gil:
+                temp = self.scorePairwise(sequences[i], sequences[j])
                 D[i, j] = temp
                 D[j, i] = temp
                 
