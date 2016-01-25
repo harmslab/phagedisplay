@@ -1,3 +1,7 @@
+import pyximport
+pyximport.install()
+import DistMatrix
+
 from sklearn.cluster import *
 from sklearn import metrics
 from sklearn.preprocessing import StandardScaler
