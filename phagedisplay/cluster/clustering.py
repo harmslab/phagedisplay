@@ -3,8 +3,6 @@ pyximport.install()
 import DistMatrix
 
 from sklearn.cluster import *
-from sklearn import metrics
-from sklearn.preprocessing import StandardScaler
 import scipy.cluster.hierarchy as hcl
 from scipy.spatial.distance import squareform
 
@@ -18,14 +16,15 @@ class Cluster():
     args
         dist_matrix: distance matrix to perform clustering on
         cluster_alg: clustering algorithm to use on matrix
-        factor: for setting a parameter on calculating clusters/number of predicted clusters.
-        
+        factor: for setting a parameter on calculating clusters/number of predicted clusters. (epsilon DBSCAN)
+        num: DBSCAN - min_samples
     """
     
-    def __init__(self, dist_matrix, cluster_alg, factor = None):
+    def __init__(self, dist_matrix, cluster_alg, factor = None, num = None):
         self._dist_matrix = dist_matrix
         self._cluster_alg = cluster_alg
         self._factor = factor
+        self._num = num
 
     def freqHist(self):
         """
@@ -39,6 +38,13 @@ class Cluster():
         """
         cluster using DBSCAN or hierarchal clustering. DBSCAN works best on larger datasets
         while hierarchal works best on smaller datasets.
+        DBSCAN - 
+            min_samples: the minimum number of samples for the point to considered to be a central cluster point.
+                a higher number will give a smaller number of large clusters with a large noise (-1) cluster while
+                a lower number will give a large number of small clusters with a very small or no noise cluster.
+            
+            epsilon: use of freqHist can help determine a factor to use, max distance radius around a point to grab
+                cluster points from. 
         """
 
         X = self._dist_matrix
@@ -51,7 +57,8 @@ class Cluster():
 
         # compute DBSCAN clustering
         elif self._cluster_alg == 'DBSCAN':
-            db = DBSCAN(eps = self._factor, metric = 'precomputed').fit(X.as_matrix() )
+            db = DBSCAN(eps = self._factor, min_samples = self._num, metric = 'precomputed', 
+                       leaf_size = 300, algorithm = 'ball_tree').fit(X.as_matrix() )
             core_samples_mask = np.zeros_like(db.labels_, dtype=bool)
             core_samples_mask[db.core_sample_indices_] = True
             clusters = db.labels_
@@ -66,7 +73,7 @@ class Cluster():
         
     
         return cluster_labels
-        
+
 
 class Membership():
     """
@@ -78,7 +85,7 @@ class Membership():
         
     def getAll(self):
         """
-        return dictionary of all clusters and members.
+        return dictionary of all clusters and member IDs. 
         """
         
         return self._cluster.groups
@@ -92,7 +99,7 @@ class Membership():
     
     def getCount(self):
         """
-        return count in each cluster.
+        return count of size of each cluster.
         """
         
         return self._cluster.count()

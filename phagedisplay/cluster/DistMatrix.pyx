@@ -4,7 +4,6 @@ cimport numpy as np
 import pandas as pd
 
 cimport cython
-from cython.parallel cimport prange
 
 def readMatrix(fileName):
     """
@@ -114,3 +113,38 @@ cdef class DistMatrix:
         dist_matrix = pd.DataFrame(D, index = sequences, columns = sequences)
     
         return dist_matrix
+
+import random 
+
+def genSeqList(N, M, l, q):
+    """
+    generate dummy data.
+    
+    args:
+        N: number of clusters
+        M: differences in each sequence
+        l: length of sequences
+        q: minimum number of sequences in each cluster
+    """
+    
+    aminos = ['G', 'A', 'V', 'L', 'I', 'P', 'F', 'Y', 'W', 'E', 'D', 'K', 'R', 'H', 'S', 'T', 'C', 'M', 'N', 'Q']
+    seqList = []
+    
+    for i in range(N):
+        seq = [random.choice(aminos) for x in range(l)]
+        seqList.append(''.join(seq))
+        
+        # randomizes number of sequences in each cluster.
+        randClustNum = random.randint(q, q+20)
+        for j in range(randClustNum):
+            seq2 = seq[:]
+            for k in range(M):
+                index = random.randint(0, l-1)
+                seq2[index] = random.choice(aminos)
+            seqList.append(''.join(seq2))
+        
+    return pd.DataFrame(seqList)
+
+def toFile(seqList, fileName):
+    
+    seqList.to_csv(fileName, index = False, header = False)
