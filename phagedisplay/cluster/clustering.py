@@ -128,7 +128,7 @@ class Membership():
     
     def toCSV(self, cluster, file):
         """
-        save a cluster to a csv file.
+        save a cluster to a csv or chosen text type file.
         """
         
         self.getCluster(cluster)['Sequences'].to_csv(file, index = False)
