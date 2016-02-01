@@ -249,8 +249,8 @@ class __Pyx_FakeReference {
 #define _USE_MATH_DEFINES
 #endif
 #include <math.h>
-#define __PYX_HAVE__phagedisplay__cluster__DistMatrix
-#define __PYX_HAVE_API__phagedisplay__cluster__DistMatrix
+#define __PYX_HAVE__DistMatrix
+#define __PYX_HAVE_API__DistMatrix
 #include "math.h"
 #include "string.h"
 #include "stdio.h"
@@ -467,7 +467,7 @@ static const char *__pyx_filename;
 
 
 static const char *__pyx_f[] = {
-  "phagedisplay/cluster/DistMatrix.pyx",
+  "DistMatrix.pyx",
   "__init__.pxd",
   "type.pxd",
 };
@@ -717,7 +717,7 @@ typedef npy_longdouble __pyx_t_5numpy_longdouble_t;
 
 
 /*--- Type declarations ---*/
-struct __pyx_obj_12phagedisplay_7cluster_10DistMatrix_DistMatrix;
+struct __pyx_obj_10DistMatrix_DistMatrix;
 
 /* "../../../../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":765
  * ctypedef npy_longdouble longdouble_t
@@ -755,16 +755,16 @@ typedef npy_clongdouble __pyx_t_5numpy_clongdouble_t;
  */
 typedef npy_cdouble __pyx_t_5numpy_complex_t;
 
-/* "phagedisplay/cluster/DistMatrix.pyx":28
+/* "DistMatrix.pyx":27
  *     return matrix
  * 
  * cdef class DistMatrix:             # <<<<<<<<<<<<<<
  *     """
  *     Takes a file, makes a list of sequences, and computes a distance matrix.
  */
-struct __pyx_obj_12phagedisplay_7cluster_10DistMatrix_DistMatrix {
+struct __pyx_obj_10DistMatrix_DistMatrix {
   PyObject_HEAD
-  struct __pyx_vtabstruct_12phagedisplay_7cluster_10DistMatrix_DistMatrix *__pyx_vtab;
+  struct __pyx_vtabstruct_10DistMatrix_DistMatrix *__pyx_vtab;
   PyObject *_phage_file;
   PyObject *_seq;
   PyObject *_scoring;
@@ -773,11 +773,11 @@ struct __pyx_obj_12phagedisplay_7cluster_10DistMatrix_DistMatrix {
 
 
 
-struct __pyx_vtabstruct_12phagedisplay_7cluster_10DistMatrix_DistMatrix {
-  PyObject *(*createSeqList)(struct __pyx_obj_12phagedisplay_7cluster_10DistMatrix_DistMatrix *, int __pyx_skip_dispatch);
-  double (*scorePairwise)(struct __pyx_obj_12phagedisplay_7cluster_10DistMatrix_DistMatrix *, PyObject *, PyObject *);
+struct __pyx_vtabstruct_10DistMatrix_DistMatrix {
+  PyObject *(*createSeqList)(struct __pyx_obj_10DistMatrix_DistMatrix *, int __pyx_skip_dispatch);
+  double (*scorePairwise)(struct __pyx_obj_10DistMatrix_DistMatrix *, PyObject *, PyObject *);
 };
-static struct __pyx_vtabstruct_12phagedisplay_7cluster_10DistMatrix_DistMatrix *__pyx_vtabptr_12phagedisplay_7cluster_10DistMatrix_DistMatrix;
+static struct __pyx_vtabstruct_10DistMatrix_DistMatrix *__pyx_vtabptr_10DistMatrix_DistMatrix;
 
 /* --- Runtime support code (head) --- */
 #ifndef CYTHON_REFNANNY
@@ -1185,8 +1185,6 @@ static CYTHON_INLINE __pyx_t_double_complex __pyx_t_double_complex_from_parts(do
 
 static CYTHON_INLINE long __Pyx_PyInt_As_long(PyObject *);
 
-static CYTHON_INLINE int __Pyx_StrEq(const char *, const char *); /*proto*/
-
 static int __Pyx_check_binary_version(void);
 
 #if !defined(__Pyx_PyIdentifier_FromString)
@@ -1203,8 +1201,8 @@ static PyTypeObject *__Pyx_ImportType(const char *module_name, const char *class
 
 static int __Pyx_InitStrings(__Pyx_StringTabEntry *t);
 
-static PyObject *__pyx_f_12phagedisplay_7cluster_10DistMatrix_10DistMatrix_createSeqList(struct __pyx_obj_12phagedisplay_7cluster_10DistMatrix_DistMatrix *__pyx_v_self, int __pyx_skip_dispatch); /* proto*/
-static double __pyx_f_12phagedisplay_7cluster_10DistMatrix_10DistMatrix_scorePairwise(struct __pyx_obj_12phagedisplay_7cluster_10DistMatrix_DistMatrix *__pyx_v_self, PyObject *__pyx_v_seq1, PyObject *__pyx_v_seq2); /* proto*/
+static PyObject *__pyx_f_10DistMatrix_10DistMatrix_createSeqList(struct __pyx_obj_10DistMatrix_DistMatrix *__pyx_v_self, int __pyx_skip_dispatch); /* proto*/
+static double __pyx_f_10DistMatrix_10DistMatrix_scorePairwise(struct __pyx_obj_10DistMatrix_DistMatrix *__pyx_v_self, PyObject *__pyx_v_seq1, PyObject *__pyx_v_seq2); /* proto*/
 
 /* Module declarations from 'libc.math' */
 
@@ -1237,25 +1235,25 @@ static CYTHON_INLINE char *__pyx_f_5numpy__util_dtypestring(PyArray_Descr *, cha
 
 /* Module declarations from 'cython' */
 
-/* Module declarations from 'phagedisplay.cluster.DistMatrix' */
-static PyTypeObject *__pyx_ptype_12phagedisplay_7cluster_10DistMatrix_DistMatrix = 0;
+/* Module declarations from 'DistMatrix' */
+static PyTypeObject *__pyx_ptype_10DistMatrix_DistMatrix = 0;
 static __Pyx_TypeInfo __Pyx_TypeInfo_double = { "double", NULL, sizeof(double), { 0 }, 0, 'R', 0, 0 };
-#define __Pyx_MODULE_NAME "phagedisplay.cluster.DistMatrix"
-int __pyx_module_is_main_phagedisplay__cluster__DistMatrix = 0;
+#define __Pyx_MODULE_NAME "DistMatrix"
+int __pyx_module_is_main_DistMatrix = 0;
 
-/* Implementation of 'phagedisplay.cluster.DistMatrix' */
+/* Implementation of 'DistMatrix' */
 static PyObject *__pyx_builtin_open;
 static PyObject *__pyx_builtin_range;
 static PyObject *__pyx_builtin_ValueError;
 static PyObject *__pyx_builtin_zip;
 static PyObject *__pyx_builtin_RuntimeError;
-static PyObject *__pyx_pf_12phagedisplay_7cluster_10DistMatrix_readMatrix(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_fileName); /* proto */
-static int __pyx_pf_12phagedisplay_7cluster_10DistMatrix_10DistMatrix___init__(struct __pyx_obj_12phagedisplay_7cluster_10DistMatrix_DistMatrix *__pyx_v_self, PyObject *__pyx_v_phage_file, PyObject *__pyx_v_scoring, PyObject *__pyx_v_seq); /* proto */
-static PyObject *__pyx_pf_12phagedisplay_7cluster_10DistMatrix_10DistMatrix_2createSeqList(struct __pyx_obj_12phagedisplay_7cluster_10DistMatrix_DistMatrix *__pyx_v_self); /* proto */
-static PyObject *__pyx_pf_12phagedisplay_7cluster_10DistMatrix_10DistMatrix_4calcDistMatrix(struct __pyx_obj_12phagedisplay_7cluster_10DistMatrix_DistMatrix *__pyx_v_self); /* proto */
+static PyObject *__pyx_pf_10DistMatrix_readMatrix(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_fileName); /* proto */
+static int __pyx_pf_10DistMatrix_10DistMatrix___init__(struct __pyx_obj_10DistMatrix_DistMatrix *__pyx_v_self, PyObject *__pyx_v_phage_file, PyObject *__pyx_v_scoring, PyObject *__pyx_v_seq); /* proto */
+static PyObject *__pyx_pf_10DistMatrix_10DistMatrix_2createSeqList(struct __pyx_obj_10DistMatrix_DistMatrix *__pyx_v_self); /* proto */
+static PyObject *__pyx_pf_10DistMatrix_10DistMatrix_4calcDistMatrix(struct __pyx_obj_10DistMatrix_DistMatrix *__pyx_v_self); /* proto */
 static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, Py_buffer *__pyx_v_info, int __pyx_v_flags); /* proto */
 static void __pyx_pf_5numpy_7ndarray_2__releasebuffer__(PyArrayObject *__pyx_v_self, Py_buffer *__pyx_v_info); /* proto */
-static PyObject *__pyx_tp_new_12phagedisplay_7cluster_10DistMatrix_DistMatrix(PyTypeObject *t, PyObject *a, PyObject *k); /*proto*/
+static PyObject *__pyx_tp_new_10DistMatrix_DistMatrix(PyTypeObject *t, PyObject *a, PyObject *k); /*proto*/
 static char __pyx_k_B[] = "B";
 static char __pyx_k_H[] = "H";
 static char __pyx_k_I[] = "I";
@@ -1277,7 +1275,6 @@ static char __pyx_k_Zg[] = "Zg";
 static char __pyx_k_no[] = "no";
 static char __pyx_k_np[] = "np";
 static char __pyx_k_pd[] = "pd";
-static char __pyx_k__14[] = "*";
 static char __pyx_k_n_r[] = "/n/r";
 static char __pyx_k_seq[] = "seq";
 static char __pyx_k_yes[] = "yes";
@@ -1307,6 +1304,7 @@ static char __pyx_k_fileName[] = "fileName";
 static char __pyx_k_weighted[] = "weighted";
 static char __pyx_k_DataFrame[] = "DataFrame";
 static char __pyx_k_readlines[] = "readlines";
+static char __pyx_k_DistMatrix[] = "DistMatrix";
 static char __pyx_k_ValueError[] = "ValueError";
 static char __pyx_k_phage_file[] = "phage_file";
 static char __pyx_k_pyx_vtable[] = "__pyx_vtable__";
@@ -1316,23 +1314,21 @@ static char __pyx_k_blosum62_txt[] = "blosum62.txt";
 static char __pyx_k_createSeqList[] = "createSeqList";
 static char __pyx_k_invalid_entry[] = "invalid entry!";
 static char __pyx_k_not_an_option[] = "not an option";
-static char __pyx_k_scipy_spatial_distance[] = "scipy.spatial.distance";
 static char __pyx_k_ndarray_is_not_C_contiguous[] = "ndarray is not C contiguous";
 static char __pyx_k_Users_hrnmy_Documents_Harms_pha[] = "/Users/hrnmy/Documents/Harms/phagedisplay/phagedisplay/cluster/DistMatrix.pyx";
-static char __pyx_k_phagedisplay_cluster_DistMatrix[] = "phagedisplay.cluster.DistMatrix";
 static char __pyx_k_unknown_dtype_code_in_numpy_pxd[] = "unknown dtype code in numpy.pxd (%d)";
 static char __pyx_k_Format_string_allocated_too_shor[] = "Format string allocated too short, see comment in numpy.pxd";
 static char __pyx_k_Non_native_byte_order_not_suppor[] = "Non-native byte order not supported";
 static char __pyx_k_ndarray_is_not_Fortran_contiguou[] = "ndarray is not Fortran contiguous";
 static char __pyx_k_Format_string_allocated_too_shor_2[] = "Format string allocated too short.";
 static PyObject *__pyx_n_s_DataFrame;
+static PyObject *__pyx_n_s_DistMatrix;
 static PyObject *__pyx_kp_u_Format_string_allocated_too_shor;
 static PyObject *__pyx_kp_u_Format_string_allocated_too_shor_2;
 static PyObject *__pyx_kp_u_Non_native_byte_order_not_suppor;
 static PyObject *__pyx_n_s_RuntimeError;
 static PyObject *__pyx_kp_s_Users_hrnmy_Documents_Harms_pha;
 static PyObject *__pyx_n_s_ValueError;
-static PyObject *__pyx_n_s__14;
 static PyObject *__pyx_n_s_append;
 static PyObject *__pyx_n_s_array;
 static PyObject *__pyx_n_s_b;
@@ -1362,12 +1358,10 @@ static PyObject *__pyx_n_s_open;
 static PyObject *__pyx_n_s_pandas;
 static PyObject *__pyx_n_s_pd;
 static PyObject *__pyx_n_s_phage_file;
-static PyObject *__pyx_n_s_phagedisplay_cluster_DistMatrix;
 static PyObject *__pyx_n_s_pyx_vtable;
 static PyObject *__pyx_n_s_range;
 static PyObject *__pyx_n_s_readMatrix;
 static PyObject *__pyx_n_s_readlines;
-static PyObject *__pyx_n_s_scipy_spatial_distance;
 static PyObject *__pyx_n_s_scoring;
 static PyObject *__pyx_n_s_seq;
 static PyObject *__pyx_n_s_split;
@@ -1392,10 +1386,10 @@ static PyObject *__pyx_tuple__10;
 static PyObject *__pyx_tuple__11;
 static PyObject *__pyx_tuple__12;
 static PyObject *__pyx_tuple__13;
-static PyObject *__pyx_tuple__15;
-static PyObject *__pyx_codeobj__16;
+static PyObject *__pyx_tuple__14;
+static PyObject *__pyx_codeobj__15;
 
-/* "phagedisplay/cluster/DistMatrix.pyx":10
+/* "DistMatrix.pyx":9
  * from cython.parallel cimport prange
  * 
  * def readMatrix(fileName):             # <<<<<<<<<<<<<<
@@ -1404,21 +1398,21 @@ static PyObject *__pyx_codeobj__16;
  */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_12phagedisplay_7cluster_10DistMatrix_1readMatrix(PyObject *__pyx_self, PyObject *__pyx_v_fileName); /*proto*/
-static char __pyx_doc_12phagedisplay_7cluster_10DistMatrix_readMatrix[] = "\n    read matrix text file into dictionary for scoring.\n    ";
-static PyMethodDef __pyx_mdef_12phagedisplay_7cluster_10DistMatrix_1readMatrix = {"readMatrix", (PyCFunction)__pyx_pw_12phagedisplay_7cluster_10DistMatrix_1readMatrix, METH_O, __pyx_doc_12phagedisplay_7cluster_10DistMatrix_readMatrix};
-static PyObject *__pyx_pw_12phagedisplay_7cluster_10DistMatrix_1readMatrix(PyObject *__pyx_self, PyObject *__pyx_v_fileName) {
+static PyObject *__pyx_pw_10DistMatrix_1readMatrix(PyObject *__pyx_self, PyObject *__pyx_v_fileName); /*proto*/
+static char __pyx_doc_10DistMatrix_readMatrix[] = "\n    read matrix text file into dictionary for scoring.\n    ";
+static PyMethodDef __pyx_mdef_10DistMatrix_1readMatrix = {"readMatrix", (PyCFunction)__pyx_pw_10DistMatrix_1readMatrix, METH_O, __pyx_doc_10DistMatrix_readMatrix};
+static PyObject *__pyx_pw_10DistMatrix_1readMatrix(PyObject *__pyx_self, PyObject *__pyx_v_fileName) {
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("readMatrix (wrapper)", 0);
-  __pyx_r = __pyx_pf_12phagedisplay_7cluster_10DistMatrix_readMatrix(__pyx_self, ((PyObject *)__pyx_v_fileName));
+  __pyx_r = __pyx_pf_10DistMatrix_readMatrix(__pyx_self, ((PyObject *)__pyx_v_fileName));
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_12phagedisplay_7cluster_10DistMatrix_readMatrix(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_fileName) {
+static PyObject *__pyx_pf_10DistMatrix_readMatrix(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_fileName) {
   PyObject *__pyx_v_data = NULL;
   PyObject *__pyx_v_seq = NULL;
   PyObject *__pyx_v_matrix = NULL;
@@ -1441,22 +1435,22 @@ static PyObject *__pyx_pf_12phagedisplay_7cluster_10DistMatrix_readMatrix(CYTHON
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("readMatrix", 0);
 
-  /* "phagedisplay/cluster/DistMatrix.pyx":15
+  /* "DistMatrix.pyx":14
  *     """
  * 
  *     data = open(fileName).readlines()             # <<<<<<<<<<<<<<
  *     seq = data[0].strip('/n/r').split()
  * 
  */
-  __pyx_t_2 = PyTuple_New(1); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 15; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_2 = PyTuple_New(1); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 14; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_INCREF(__pyx_v_fileName);
   __Pyx_GIVEREF(__pyx_v_fileName);
   PyTuple_SET_ITEM(__pyx_t_2, 0, __pyx_v_fileName);
-  __pyx_t_3 = __Pyx_PyObject_Call(__pyx_builtin_open, __pyx_t_2, NULL); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 15; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_3 = __Pyx_PyObject_Call(__pyx_builtin_open, __pyx_t_2, NULL); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 14; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_readlines); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 15; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_readlines); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 14; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   __pyx_t_3 = NULL;
@@ -1470,32 +1464,32 @@ static PyObject *__pyx_pf_12phagedisplay_7cluster_10DistMatrix_readMatrix(CYTHON
     }
   }
   if (__pyx_t_3) {
-    __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_t_2, __pyx_t_3); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 15; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_t_2, __pyx_t_3); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 14; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   } else {
-    __pyx_t_1 = __Pyx_PyObject_CallNoArg(__pyx_t_2); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 15; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_1 = __Pyx_PyObject_CallNoArg(__pyx_t_2); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 14; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   }
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __pyx_v_data = __pyx_t_1;
   __pyx_t_1 = 0;
 
-  /* "phagedisplay/cluster/DistMatrix.pyx":16
+  /* "DistMatrix.pyx":15
  * 
  *     data = open(fileName).readlines()
  *     seq = data[0].strip('/n/r').split()             # <<<<<<<<<<<<<<
  * 
  *     matrix = {}
  */
-  __pyx_t_2 = __Pyx_GetItemInt(__pyx_v_data, 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(__pyx_t_2 == NULL)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 16; __pyx_clineno = __LINE__; goto __pyx_L1_error;};
+  __pyx_t_2 = __Pyx_GetItemInt(__pyx_v_data, 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(__pyx_t_2 == NULL)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 15; __pyx_clineno = __LINE__; goto __pyx_L1_error;};
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_strip); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 16; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_strip); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 15; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_3, __pyx_tuple_, NULL); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 16; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_3, __pyx_tuple_, NULL); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 15; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_split); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 16; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_split); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 15; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __pyx_t_2 = NULL;
@@ -1509,44 +1503,44 @@ static PyObject *__pyx_pf_12phagedisplay_7cluster_10DistMatrix_readMatrix(CYTHON
     }
   }
   if (__pyx_t_2) {
-    __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_t_2); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 16; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_t_2); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 15; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   } else {
-    __pyx_t_1 = __Pyx_PyObject_CallNoArg(__pyx_t_3); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 16; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_1 = __Pyx_PyObject_CallNoArg(__pyx_t_3); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 15; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   }
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   __pyx_v_seq = __pyx_t_1;
   __pyx_t_1 = 0;
 
-  /* "phagedisplay/cluster/DistMatrix.pyx":18
+  /* "DistMatrix.pyx":17
  *     seq = data[0].strip('/n/r').split()
  * 
  *     matrix = {}             # <<<<<<<<<<<<<<
  * 
  *     for line in data[1:]:
  */
-  __pyx_t_1 = PyDict_New(); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 18; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = PyDict_New(); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 17; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_v_matrix = ((PyObject*)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "phagedisplay/cluster/DistMatrix.pyx":20
+  /* "DistMatrix.pyx":19
  *     matrix = {}
  * 
  *     for line in data[1:]:             # <<<<<<<<<<<<<<
  *         line = line.strip('/n/r').split()
  *         for j in range(1, len(line)):
  */
-  __pyx_t_1 = __Pyx_PyObject_GetSlice(__pyx_v_data, 1, 0, NULL, NULL, &__pyx_slice__2, 1, 0, 1); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 20; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __Pyx_PyObject_GetSlice(__pyx_v_data, 1, 0, NULL, NULL, &__pyx_slice__2, 1, 0, 1); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 19; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
   if (likely(PyList_CheckExact(__pyx_t_1)) || PyTuple_CheckExact(__pyx_t_1)) {
     __pyx_t_3 = __pyx_t_1; __Pyx_INCREF(__pyx_t_3); __pyx_t_4 = 0;
     __pyx_t_5 = NULL;
   } else {
-    __pyx_t_4 = -1; __pyx_t_3 = PyObject_GetIter(__pyx_t_1); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 20; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_4 = -1; __pyx_t_3 = PyObject_GetIter(__pyx_t_1); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 19; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_3);
-    __pyx_t_5 = Py_TYPE(__pyx_t_3)->tp_iternext; if (unlikely(!__pyx_t_5)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 20; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_5 = Py_TYPE(__pyx_t_3)->tp_iternext; if (unlikely(!__pyx_t_5)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 19; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   }
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   for (;;) {
@@ -1554,17 +1548,17 @@ static PyObject *__pyx_pf_12phagedisplay_7cluster_10DistMatrix_readMatrix(CYTHON
       if (likely(PyList_CheckExact(__pyx_t_3))) {
         if (__pyx_t_4 >= PyList_GET_SIZE(__pyx_t_3)) break;
         #if CYTHON_COMPILING_IN_CPYTHON
-        __pyx_t_1 = PyList_GET_ITEM(__pyx_t_3, __pyx_t_4); __Pyx_INCREF(__pyx_t_1); __pyx_t_4++; if (unlikely(0 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 20; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+        __pyx_t_1 = PyList_GET_ITEM(__pyx_t_3, __pyx_t_4); __Pyx_INCREF(__pyx_t_1); __pyx_t_4++; if (unlikely(0 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 19; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
         #else
-        __pyx_t_1 = PySequence_ITEM(__pyx_t_3, __pyx_t_4); __pyx_t_4++; if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 20; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+        __pyx_t_1 = PySequence_ITEM(__pyx_t_3, __pyx_t_4); __pyx_t_4++; if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 19; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
         __Pyx_GOTREF(__pyx_t_1);
         #endif
       } else {
         if (__pyx_t_4 >= PyTuple_GET_SIZE(__pyx_t_3)) break;
         #if CYTHON_COMPILING_IN_CPYTHON
-        __pyx_t_1 = PyTuple_GET_ITEM(__pyx_t_3, __pyx_t_4); __Pyx_INCREF(__pyx_t_1); __pyx_t_4++; if (unlikely(0 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 20; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+        __pyx_t_1 = PyTuple_GET_ITEM(__pyx_t_3, __pyx_t_4); __Pyx_INCREF(__pyx_t_1); __pyx_t_4++; if (unlikely(0 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 19; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
         #else
-        __pyx_t_1 = PySequence_ITEM(__pyx_t_3, __pyx_t_4); __pyx_t_4++; if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 20; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+        __pyx_t_1 = PySequence_ITEM(__pyx_t_3, __pyx_t_4); __pyx_t_4++; if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 19; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
         __Pyx_GOTREF(__pyx_t_1);
         #endif
       }
@@ -1574,7 +1568,7 @@ static PyObject *__pyx_pf_12phagedisplay_7cluster_10DistMatrix_readMatrix(CYTHON
         PyObject* exc_type = PyErr_Occurred();
         if (exc_type) {
           if (likely(exc_type == PyExc_StopIteration || PyErr_GivenExceptionMatches(exc_type, PyExc_StopIteration))) PyErr_Clear();
-          else {__pyx_filename = __pyx_f[0]; __pyx_lineno = 20; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+          else {__pyx_filename = __pyx_f[0]; __pyx_lineno = 19; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
         }
         break;
       }
@@ -1583,19 +1577,19 @@ static PyObject *__pyx_pf_12phagedisplay_7cluster_10DistMatrix_readMatrix(CYTHON
     __Pyx_XDECREF_SET(__pyx_v_line, __pyx_t_1);
     __pyx_t_1 = 0;
 
-    /* "phagedisplay/cluster/DistMatrix.pyx":21
+    /* "DistMatrix.pyx":20
  * 
  *     for line in data[1:]:
  *         line = line.strip('/n/r').split()             # <<<<<<<<<<<<<<
  *         for j in range(1, len(line)):
  *             b = seq[j-1]
  */
-    __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_line, __pyx_n_s_strip); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 21; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_line, __pyx_n_s_strip); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 20; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_2);
-    __pyx_t_6 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_tuple__3, NULL); if (unlikely(!__pyx_t_6)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 21; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_6 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_tuple__3, NULL); if (unlikely(!__pyx_t_6)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 20; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_6);
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-    __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_6, __pyx_n_s_split); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 21; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_6, __pyx_n_s_split); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 20; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_2);
     __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
     __pyx_t_6 = NULL;
@@ -1609,27 +1603,27 @@ static PyObject *__pyx_pf_12phagedisplay_7cluster_10DistMatrix_readMatrix(CYTHON
       }
     }
     if (__pyx_t_6) {
-      __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_t_2, __pyx_t_6); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 21; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_t_2, __pyx_t_6); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 20; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
     } else {
-      __pyx_t_1 = __Pyx_PyObject_CallNoArg(__pyx_t_2); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 21; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_1 = __Pyx_PyObject_CallNoArg(__pyx_t_2); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 20; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     }
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
     __Pyx_DECREF_SET(__pyx_v_line, __pyx_t_1);
     __pyx_t_1 = 0;
 
-    /* "phagedisplay/cluster/DistMatrix.pyx":22
+    /* "DistMatrix.pyx":21
  *     for line in data[1:]:
  *         line = line.strip('/n/r').split()
  *         for j in range(1, len(line)):             # <<<<<<<<<<<<<<
  *             b = seq[j-1]
  *             matrix[(line[0], b)] = int(line[j])
  */
-    __pyx_t_7 = PyObject_Length(__pyx_v_line); if (unlikely(__pyx_t_7 == -1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 22; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-    __pyx_t_1 = PyInt_FromSsize_t(__pyx_t_7); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 22; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_7 = PyObject_Length(__pyx_v_line); if (unlikely(__pyx_t_7 == -1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 21; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_1 = PyInt_FromSsize_t(__pyx_t_7); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 21; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_1);
-    __pyx_t_2 = PyTuple_New(2); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 22; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_2 = PyTuple_New(2); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 21; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_2);
     __Pyx_INCREF(__pyx_int_1);
     __Pyx_GIVEREF(__pyx_int_1);
@@ -1637,16 +1631,16 @@ static PyObject *__pyx_pf_12phagedisplay_7cluster_10DistMatrix_readMatrix(CYTHON
     __Pyx_GIVEREF(__pyx_t_1);
     PyTuple_SET_ITEM(__pyx_t_2, 1, __pyx_t_1);
     __pyx_t_1 = 0;
-    __pyx_t_1 = __Pyx_PyObject_Call(__pyx_builtin_range, __pyx_t_2, NULL); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 22; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_1 = __Pyx_PyObject_Call(__pyx_builtin_range, __pyx_t_2, NULL); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 21; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
     if (likely(PyList_CheckExact(__pyx_t_1)) || PyTuple_CheckExact(__pyx_t_1)) {
       __pyx_t_2 = __pyx_t_1; __Pyx_INCREF(__pyx_t_2); __pyx_t_7 = 0;
       __pyx_t_8 = NULL;
     } else {
-      __pyx_t_7 = -1; __pyx_t_2 = PyObject_GetIter(__pyx_t_1); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 22; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_7 = -1; __pyx_t_2 = PyObject_GetIter(__pyx_t_1); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 21; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_GOTREF(__pyx_t_2);
-      __pyx_t_8 = Py_TYPE(__pyx_t_2)->tp_iternext; if (unlikely(!__pyx_t_8)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 22; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_8 = Py_TYPE(__pyx_t_2)->tp_iternext; if (unlikely(!__pyx_t_8)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 21; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     }
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
     for (;;) {
@@ -1654,17 +1648,17 @@ static PyObject *__pyx_pf_12phagedisplay_7cluster_10DistMatrix_readMatrix(CYTHON
         if (likely(PyList_CheckExact(__pyx_t_2))) {
           if (__pyx_t_7 >= PyList_GET_SIZE(__pyx_t_2)) break;
           #if CYTHON_COMPILING_IN_CPYTHON
-          __pyx_t_1 = PyList_GET_ITEM(__pyx_t_2, __pyx_t_7); __Pyx_INCREF(__pyx_t_1); __pyx_t_7++; if (unlikely(0 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 22; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+          __pyx_t_1 = PyList_GET_ITEM(__pyx_t_2, __pyx_t_7); __Pyx_INCREF(__pyx_t_1); __pyx_t_7++; if (unlikely(0 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 21; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
           #else
-          __pyx_t_1 = PySequence_ITEM(__pyx_t_2, __pyx_t_7); __pyx_t_7++; if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 22; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+          __pyx_t_1 = PySequence_ITEM(__pyx_t_2, __pyx_t_7); __pyx_t_7++; if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 21; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
           __Pyx_GOTREF(__pyx_t_1);
           #endif
         } else {
           if (__pyx_t_7 >= PyTuple_GET_SIZE(__pyx_t_2)) break;
           #if CYTHON_COMPILING_IN_CPYTHON
-          __pyx_t_1 = PyTuple_GET_ITEM(__pyx_t_2, __pyx_t_7); __Pyx_INCREF(__pyx_t_1); __pyx_t_7++; if (unlikely(0 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 22; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+          __pyx_t_1 = PyTuple_GET_ITEM(__pyx_t_2, __pyx_t_7); __Pyx_INCREF(__pyx_t_1); __pyx_t_7++; if (unlikely(0 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 21; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
           #else
-          __pyx_t_1 = PySequence_ITEM(__pyx_t_2, __pyx_t_7); __pyx_t_7++; if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 22; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+          __pyx_t_1 = PySequence_ITEM(__pyx_t_2, __pyx_t_7); __pyx_t_7++; if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 21; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
           __Pyx_GOTREF(__pyx_t_1);
           #endif
         }
@@ -1674,7 +1668,7 @@ static PyObject *__pyx_pf_12phagedisplay_7cluster_10DistMatrix_readMatrix(CYTHON
           PyObject* exc_type = PyErr_Occurred();
           if (exc_type) {
             if (likely(exc_type == PyExc_StopIteration || PyErr_GivenExceptionMatches(exc_type, PyExc_StopIteration))) PyErr_Clear();
-            else {__pyx_filename = __pyx_f[0]; __pyx_lineno = 22; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+            else {__pyx_filename = __pyx_f[0]; __pyx_lineno = 21; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
           }
           break;
         }
@@ -1683,36 +1677,36 @@ static PyObject *__pyx_pf_12phagedisplay_7cluster_10DistMatrix_readMatrix(CYTHON
       __Pyx_XDECREF_SET(__pyx_v_j, __pyx_t_1);
       __pyx_t_1 = 0;
 
-      /* "phagedisplay/cluster/DistMatrix.pyx":23
+      /* "DistMatrix.pyx":22
  *         line = line.strip('/n/r').split()
  *         for j in range(1, len(line)):
  *             b = seq[j-1]             # <<<<<<<<<<<<<<
  *             matrix[(line[0], b)] = int(line[j])
  * 
  */
-      __pyx_t_1 = PyNumber_Subtract(__pyx_v_j, __pyx_int_1); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 23; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_1 = PyNumber_Subtract(__pyx_v_j, __pyx_int_1); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 22; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_GOTREF(__pyx_t_1);
-      __pyx_t_6 = PyObject_GetItem(__pyx_v_seq, __pyx_t_1); if (unlikely(__pyx_t_6 == NULL)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 23; __pyx_clineno = __LINE__; goto __pyx_L1_error;};
+      __pyx_t_6 = PyObject_GetItem(__pyx_v_seq, __pyx_t_1); if (unlikely(__pyx_t_6 == NULL)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 22; __pyx_clineno = __LINE__; goto __pyx_L1_error;};
       __Pyx_GOTREF(__pyx_t_6);
       __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
       __Pyx_XDECREF_SET(__pyx_v_b, __pyx_t_6);
       __pyx_t_6 = 0;
 
-      /* "phagedisplay/cluster/DistMatrix.pyx":24
+      /* "DistMatrix.pyx":23
  *         for j in range(1, len(line)):
  *             b = seq[j-1]
  *             matrix[(line[0], b)] = int(line[j])             # <<<<<<<<<<<<<<
  * 
  *     return matrix
  */
-      __pyx_t_6 = PyObject_GetItem(__pyx_v_line, __pyx_v_j); if (unlikely(__pyx_t_6 == NULL)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 24; __pyx_clineno = __LINE__; goto __pyx_L1_error;};
+      __pyx_t_6 = PyObject_GetItem(__pyx_v_line, __pyx_v_j); if (unlikely(__pyx_t_6 == NULL)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 23; __pyx_clineno = __LINE__; goto __pyx_L1_error;};
       __Pyx_GOTREF(__pyx_t_6);
-      __pyx_t_1 = PyNumber_Int(__pyx_t_6); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 24; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_1 = PyNumber_Int(__pyx_t_6); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 23; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_GOTREF(__pyx_t_1);
       __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-      __pyx_t_6 = __Pyx_GetItemInt(__pyx_v_line, 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(__pyx_t_6 == NULL)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 24; __pyx_clineno = __LINE__; goto __pyx_L1_error;};
+      __pyx_t_6 = __Pyx_GetItemInt(__pyx_v_line, 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(__pyx_t_6 == NULL)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 23; __pyx_clineno = __LINE__; goto __pyx_L1_error;};
       __Pyx_GOTREF(__pyx_t_6);
-      __pyx_t_9 = PyTuple_New(2); if (unlikely(!__pyx_t_9)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 24; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_9 = PyTuple_New(2); if (unlikely(!__pyx_t_9)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 23; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_GOTREF(__pyx_t_9);
       __Pyx_GIVEREF(__pyx_t_6);
       PyTuple_SET_ITEM(__pyx_t_9, 0, __pyx_t_6);
@@ -1720,11 +1714,11 @@ static PyObject *__pyx_pf_12phagedisplay_7cluster_10DistMatrix_readMatrix(CYTHON
       __Pyx_GIVEREF(__pyx_v_b);
       PyTuple_SET_ITEM(__pyx_t_9, 1, __pyx_v_b);
       __pyx_t_6 = 0;
-      if (unlikely(PyDict_SetItem(__pyx_v_matrix, __pyx_t_9, __pyx_t_1) < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 24; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      if (unlikely(PyDict_SetItem(__pyx_v_matrix, __pyx_t_9, __pyx_t_1) < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 23; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
       __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-      /* "phagedisplay/cluster/DistMatrix.pyx":22
+      /* "DistMatrix.pyx":21
  *     for line in data[1:]:
  *         line = line.strip('/n/r').split()
  *         for j in range(1, len(line)):             # <<<<<<<<<<<<<<
@@ -1734,7 +1728,7 @@ static PyObject *__pyx_pf_12phagedisplay_7cluster_10DistMatrix_readMatrix(CYTHON
     }
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-    /* "phagedisplay/cluster/DistMatrix.pyx":20
+    /* "DistMatrix.pyx":19
  *     matrix = {}
  * 
  *     for line in data[1:]:             # <<<<<<<<<<<<<<
@@ -1744,7 +1738,7 @@ static PyObject *__pyx_pf_12phagedisplay_7cluster_10DistMatrix_readMatrix(CYTHON
   }
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
 
-  /* "phagedisplay/cluster/DistMatrix.pyx":26
+  /* "DistMatrix.pyx":25
  *             matrix[(line[0], b)] = int(line[j])
  * 
  *     return matrix             # <<<<<<<<<<<<<<
@@ -1756,7 +1750,7 @@ static PyObject *__pyx_pf_12phagedisplay_7cluster_10DistMatrix_readMatrix(CYTHON
   __pyx_r = __pyx_v_matrix;
   goto __pyx_L0;
 
-  /* "phagedisplay/cluster/DistMatrix.pyx":10
+  /* "DistMatrix.pyx":9
  * from cython.parallel cimport prange
  * 
  * def readMatrix(fileName):             # <<<<<<<<<<<<<<
@@ -1771,7 +1765,7 @@ static PyObject *__pyx_pf_12phagedisplay_7cluster_10DistMatrix_readMatrix(CYTHON
   __Pyx_XDECREF(__pyx_t_3);
   __Pyx_XDECREF(__pyx_t_6);
   __Pyx_XDECREF(__pyx_t_9);
-  __Pyx_AddTraceback("phagedisplay.cluster.DistMatrix.readMatrix", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("DistMatrix.readMatrix", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
   __Pyx_XDECREF(__pyx_v_data);
@@ -1785,7 +1779,7 @@ static PyObject *__pyx_pf_12phagedisplay_7cluster_10DistMatrix_readMatrix(CYTHON
   return __pyx_r;
 }
 
-/* "phagedisplay/cluster/DistMatrix.pyx":46
+/* "DistMatrix.pyx":45
  *     cdef _scoring, _matrix
  * 
  *     def __init__(self, phage_file, scoring = None, seq = None):             # <<<<<<<<<<<<<<
@@ -1794,8 +1788,8 @@ static PyObject *__pyx_pf_12phagedisplay_7cluster_10DistMatrix_readMatrix(CYTHON
  */
 
 /* Python wrapper */
-static int __pyx_pw_12phagedisplay_7cluster_10DistMatrix_10DistMatrix_1__init__(PyObject *__pyx_v_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
-static int __pyx_pw_12phagedisplay_7cluster_10DistMatrix_10DistMatrix_1__init__(PyObject *__pyx_v_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
+static int __pyx_pw_10DistMatrix_10DistMatrix_1__init__(PyObject *__pyx_v_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
+static int __pyx_pw_10DistMatrix_10DistMatrix_1__init__(PyObject *__pyx_v_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
   PyObject *__pyx_v_phage_file = 0;
   PyObject *__pyx_v_scoring = 0;
   PyObject *__pyx_v_seq = 0;
@@ -1837,7 +1831,7 @@ static int __pyx_pw_12phagedisplay_7cluster_10DistMatrix_10DistMatrix_1__init__(
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "__init__") < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 46; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "__init__") < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 45; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
       }
     } else {
       switch (PyTuple_GET_SIZE(__pyx_args)) {
@@ -1854,20 +1848,20 @@ static int __pyx_pw_12phagedisplay_7cluster_10DistMatrix_10DistMatrix_1__init__(
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("__init__", 0, 1, 3, PyTuple_GET_SIZE(__pyx_args)); {__pyx_filename = __pyx_f[0]; __pyx_lineno = 46; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
+  __Pyx_RaiseArgtupleInvalid("__init__", 0, 1, 3, PyTuple_GET_SIZE(__pyx_args)); {__pyx_filename = __pyx_f[0]; __pyx_lineno = 45; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
   __pyx_L3_error:;
-  __Pyx_AddTraceback("phagedisplay.cluster.DistMatrix.DistMatrix.__init__", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("DistMatrix.DistMatrix.__init__", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
   return -1;
   __pyx_L4_argument_unpacking_done:;
-  __pyx_r = __pyx_pf_12phagedisplay_7cluster_10DistMatrix_10DistMatrix___init__(((struct __pyx_obj_12phagedisplay_7cluster_10DistMatrix_DistMatrix *)__pyx_v_self), __pyx_v_phage_file, __pyx_v_scoring, __pyx_v_seq);
+  __pyx_r = __pyx_pf_10DistMatrix_10DistMatrix___init__(((struct __pyx_obj_10DistMatrix_DistMatrix *)__pyx_v_self), __pyx_v_phage_file, __pyx_v_scoring, __pyx_v_seq);
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static int __pyx_pf_12phagedisplay_7cluster_10DistMatrix_10DistMatrix___init__(struct __pyx_obj_12phagedisplay_7cluster_10DistMatrix_DistMatrix *__pyx_v_self, PyObject *__pyx_v_phage_file, PyObject *__pyx_v_scoring, PyObject *__pyx_v_seq) {
+static int __pyx_pf_10DistMatrix_10DistMatrix___init__(struct __pyx_obj_10DistMatrix_DistMatrix *__pyx_v_self, PyObject *__pyx_v_phage_file, PyObject *__pyx_v_scoring, PyObject *__pyx_v_seq) {
   CYTHON_UNUSED PyObject *__pyx_v__matrix = NULL;
   int __pyx_r;
   __Pyx_RefNannyDeclarations
@@ -1878,14 +1872,14 @@ static int __pyx_pf_12phagedisplay_7cluster_10DistMatrix_10DistMatrix___init__(s
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("__init__", 0);
 
-  /* "phagedisplay/cluster/DistMatrix.pyx":47
+  /* "DistMatrix.pyx":46
  * 
  *     def __init__(self, phage_file, scoring = None, seq = None):
  *         self._phage_file = phage_file             # <<<<<<<<<<<<<<
  *         self._scoring = scoring
  *         self._seq = seq
  */
-  if (!(likely(PyString_CheckExact(__pyx_v_phage_file))||((__pyx_v_phage_file) == Py_None)||(PyErr_Format(PyExc_TypeError, "Expected %.16s, got %.200s", "str", Py_TYPE(__pyx_v_phage_file)->tp_name), 0))) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 47; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if (!(likely(PyString_CheckExact(__pyx_v_phage_file))||((__pyx_v_phage_file) == Py_None)||(PyErr_Format(PyExc_TypeError, "Expected %.16s, got %.200s", "str", Py_TYPE(__pyx_v_phage_file)->tp_name), 0))) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 46; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __pyx_t_1 = __pyx_v_phage_file;
   __Pyx_INCREF(__pyx_t_1);
   __Pyx_GIVEREF(__pyx_t_1);
@@ -1894,7 +1888,7 @@ static int __pyx_pf_12phagedisplay_7cluster_10DistMatrix_10DistMatrix___init__(s
   __pyx_v_self->_phage_file = ((PyObject*)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "phagedisplay/cluster/DistMatrix.pyx":48
+  /* "DistMatrix.pyx":47
  *     def __init__(self, phage_file, scoring = None, seq = None):
  *         self._phage_file = phage_file
  *         self._scoring = scoring             # <<<<<<<<<<<<<<
@@ -1907,14 +1901,14 @@ static int __pyx_pf_12phagedisplay_7cluster_10DistMatrix_10DistMatrix___init__(s
   __Pyx_DECREF(__pyx_v_self->_scoring);
   __pyx_v_self->_scoring = __pyx_v_scoring;
 
-  /* "phagedisplay/cluster/DistMatrix.pyx":49
+  /* "DistMatrix.pyx":48
  *         self._phage_file = phage_file
  *         self._scoring = scoring
  *         self._seq = seq             # <<<<<<<<<<<<<<
  *         _matrix = readMatrix('blosum62.txt')
  * 
  */
-  if (!(likely(PyString_CheckExact(__pyx_v_seq))||((__pyx_v_seq) == Py_None)||(PyErr_Format(PyExc_TypeError, "Expected %.16s, got %.200s", "str", Py_TYPE(__pyx_v_seq)->tp_name), 0))) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 49; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if (!(likely(PyString_CheckExact(__pyx_v_seq))||((__pyx_v_seq) == Py_None)||(PyErr_Format(PyExc_TypeError, "Expected %.16s, got %.200s", "str", Py_TYPE(__pyx_v_seq)->tp_name), 0))) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 48; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __pyx_t_1 = __pyx_v_seq;
   __Pyx_INCREF(__pyx_t_1);
   __Pyx_GIVEREF(__pyx_t_1);
@@ -1923,22 +1917,22 @@ static int __pyx_pf_12phagedisplay_7cluster_10DistMatrix_10DistMatrix___init__(s
   __pyx_v_self->_seq = ((PyObject*)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "phagedisplay/cluster/DistMatrix.pyx":50
+  /* "DistMatrix.pyx":49
  *         self._scoring = scoring
  *         self._seq = seq
  *         _matrix = readMatrix('blosum62.txt')             # <<<<<<<<<<<<<<
  * 
  *     cpdef createSeqList(self):
  */
-  __pyx_t_1 = __Pyx_GetModuleGlobalName(__pyx_n_s_readMatrix); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 50; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __Pyx_GetModuleGlobalName(__pyx_n_s_readMatrix); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 49; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_1, __pyx_tuple__4, NULL); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 50; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_1, __pyx_tuple__4, NULL); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 49; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_v__matrix = __pyx_t_2;
   __pyx_t_2 = 0;
 
-  /* "phagedisplay/cluster/DistMatrix.pyx":46
+  /* "DistMatrix.pyx":45
  *     cdef _scoring, _matrix
  * 
  *     def __init__(self, phage_file, scoring = None, seq = None):             # <<<<<<<<<<<<<<
@@ -1952,7 +1946,7 @@ static int __pyx_pf_12phagedisplay_7cluster_10DistMatrix_10DistMatrix___init__(s
   __pyx_L1_error:;
   __Pyx_XDECREF(__pyx_t_1);
   __Pyx_XDECREF(__pyx_t_2);
-  __Pyx_AddTraceback("phagedisplay.cluster.DistMatrix.DistMatrix.__init__", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("DistMatrix.DistMatrix.__init__", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = -1;
   __pyx_L0:;
   __Pyx_XDECREF(__pyx_v__matrix);
@@ -1960,7 +1954,7 @@ static int __pyx_pf_12phagedisplay_7cluster_10DistMatrix_10DistMatrix___init__(s
   return __pyx_r;
 }
 
-/* "phagedisplay/cluster/DistMatrix.pyx":52
+/* "DistMatrix.pyx":51
  *         _matrix = readMatrix('blosum62.txt')
  * 
  *     cpdef createSeqList(self):             # <<<<<<<<<<<<<<
@@ -1968,8 +1962,8 @@ static int __pyx_pf_12phagedisplay_7cluster_10DistMatrix_10DistMatrix___init__(s
  *         Creates a list of sequences from a file with a k_independent greater than 1.00
  */
 
-static PyObject *__pyx_pw_12phagedisplay_7cluster_10DistMatrix_10DistMatrix_3createSeqList(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused); /*proto*/
-static PyObject *__pyx_f_12phagedisplay_7cluster_10DistMatrix_10DistMatrix_createSeqList(struct __pyx_obj_12phagedisplay_7cluster_10DistMatrix_DistMatrix *__pyx_v_self, int __pyx_skip_dispatch) {
+static PyObject *__pyx_pw_10DistMatrix_10DistMatrix_3createSeqList(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused); /*proto*/
+static PyObject *__pyx_f_10DistMatrix_10DistMatrix_createSeqList(struct __pyx_obj_10DistMatrix_DistMatrix *__pyx_v_self, int __pyx_skip_dispatch) {
   PyObject *__pyx_v_phage_data = 0;
   PyObject *__pyx_v_data = NULL;
   PyObject *__pyx_v_line = NULL;
@@ -2009,9 +2003,9 @@ static PyObject *__pyx_f_12phagedisplay_7cluster_10DistMatrix_10DistMatrix_creat
   if (unlikely(__pyx_skip_dispatch)) ;
   /* Check if overridden in Python */
   else if (unlikely(Py_TYPE(((PyObject *)__pyx_v_self))->tp_dictoffset != 0)) {
-    __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_createSeqList); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 52; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_createSeqList); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 51; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_1);
-    if (!PyCFunction_Check(__pyx_t_1) || (PyCFunction_GET_FUNCTION(__pyx_t_1) != (PyCFunction)__pyx_pw_12phagedisplay_7cluster_10DistMatrix_10DistMatrix_3createSeqList)) {
+    if (!PyCFunction_Check(__pyx_t_1) || (PyCFunction_GET_FUNCTION(__pyx_t_1) != (PyCFunction)__pyx_pw_10DistMatrix_10DistMatrix_3createSeqList)) {
       __Pyx_XDECREF(__pyx_r);
       __Pyx_INCREF(__pyx_t_1);
       __pyx_t_3 = __pyx_t_1; __pyx_t_4 = NULL;
@@ -2025,10 +2019,10 @@ static PyObject *__pyx_f_12phagedisplay_7cluster_10DistMatrix_10DistMatrix_creat
         }
       }
       if (__pyx_t_4) {
-        __pyx_t_2 = __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_t_4); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 52; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+        __pyx_t_2 = __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_t_4); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 51; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
         __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
       } else {
-        __pyx_t_2 = __Pyx_PyObject_CallNoArg(__pyx_t_3); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 52; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+        __pyx_t_2 = __Pyx_PyObject_CallNoArg(__pyx_t_3); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 51; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       }
       __Pyx_GOTREF(__pyx_t_2);
       __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
@@ -2040,30 +2034,30 @@ static PyObject *__pyx_f_12phagedisplay_7cluster_10DistMatrix_10DistMatrix_creat
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   }
 
-  /* "phagedisplay/cluster/DistMatrix.pyx":58
+  /* "DistMatrix.pyx":57
  *         """
  * 
  *         cdef phage_data = []             # <<<<<<<<<<<<<<
  * 
  *         if self._seq == 'no':
  */
-  __pyx_t_1 = PyList_New(0); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 58; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = PyList_New(0); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 57; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_v_phage_data = __pyx_t_1;
   __pyx_t_1 = 0;
 
-  /* "phagedisplay/cluster/DistMatrix.pyx":60
+  /* "DistMatrix.pyx":59
  *         cdef phage_data = []
  * 
  *         if self._seq == 'no':             # <<<<<<<<<<<<<<
  *             with open(self._phage_file) as data:
  *                 next(data)
  */
-  __pyx_t_5 = (__Pyx_PyString_Equals(__pyx_v_self->_seq, __pyx_n_s_no, Py_EQ)); if (unlikely(__pyx_t_5 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 60; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_5 = (__Pyx_PyString_Equals(__pyx_v_self->_seq, __pyx_n_s_no, Py_EQ)); if (unlikely(__pyx_t_5 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 59; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __pyx_t_6 = (__pyx_t_5 != 0);
   if (__pyx_t_6) {
 
-    /* "phagedisplay/cluster/DistMatrix.pyx":61
+    /* "DistMatrix.pyx":60
  * 
  *         if self._seq == 'no':
  *             with open(self._phage_file) as data:             # <<<<<<<<<<<<<<
@@ -2071,17 +2065,17 @@ static PyObject *__pyx_f_12phagedisplay_7cluster_10DistMatrix_10DistMatrix_creat
  *                 for line in data:
  */
     /*with:*/ {
-      __pyx_t_1 = PyTuple_New(1); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 61; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_1 = PyTuple_New(1); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 60; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_GOTREF(__pyx_t_1);
       __Pyx_INCREF(__pyx_v_self->_phage_file);
       __Pyx_GIVEREF(__pyx_v_self->_phage_file);
       PyTuple_SET_ITEM(__pyx_t_1, 0, __pyx_v_self->_phage_file);
-      __pyx_t_2 = __Pyx_PyObject_Call(__pyx_builtin_open, __pyx_t_1, NULL); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 61; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_2 = __Pyx_PyObject_Call(__pyx_builtin_open, __pyx_t_1, NULL); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 60; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_GOTREF(__pyx_t_2);
       __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-      __pyx_t_7 = __Pyx_PyObject_LookupSpecial(__pyx_t_2, __pyx_n_s_exit); if (unlikely(!__pyx_t_7)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 61; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_7 = __Pyx_PyObject_LookupSpecial(__pyx_t_2, __pyx_n_s_exit); if (unlikely(!__pyx_t_7)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 60; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_GOTREF(__pyx_t_7);
-      __pyx_t_3 = __Pyx_PyObject_LookupSpecial(__pyx_t_2, __pyx_n_s_enter); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 61; __pyx_clineno = __LINE__; goto __pyx_L4_error;}
+      __pyx_t_3 = __Pyx_PyObject_LookupSpecial(__pyx_t_2, __pyx_n_s_enter); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 60; __pyx_clineno = __LINE__; goto __pyx_L4_error;}
       __Pyx_GOTREF(__pyx_t_3);
       __pyx_t_4 = NULL;
       if (CYTHON_COMPILING_IN_CPYTHON && likely(PyMethod_Check(__pyx_t_3))) {
@@ -2094,10 +2088,10 @@ static PyObject *__pyx_f_12phagedisplay_7cluster_10DistMatrix_10DistMatrix_creat
         }
       }
       if (__pyx_t_4) {
-        __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_t_4); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 61; __pyx_clineno = __LINE__; goto __pyx_L4_error;}
+        __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_t_4); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 60; __pyx_clineno = __LINE__; goto __pyx_L4_error;}
         __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
       } else {
-        __pyx_t_1 = __Pyx_PyObject_CallNoArg(__pyx_t_3); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 61; __pyx_clineno = __LINE__; goto __pyx_L4_error;}
+        __pyx_t_1 = __Pyx_PyObject_CallNoArg(__pyx_t_3); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 60; __pyx_clineno = __LINE__; goto __pyx_L4_error;}
       }
       __Pyx_GOTREF(__pyx_t_1);
       __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
@@ -2114,48 +2108,48 @@ static PyObject *__pyx_f_12phagedisplay_7cluster_10DistMatrix_10DistMatrix_creat
             __pyx_v_data = __pyx_t_3;
             __pyx_t_3 = 0;
 
-            /* "phagedisplay/cluster/DistMatrix.pyx":62
+            /* "DistMatrix.pyx":61
  *         if self._seq == 'no':
  *             with open(self._phage_file) as data:
  *                 next(data)             # <<<<<<<<<<<<<<
  *                 for line in data:
  *                     num, seq, k_glob, theta_glob, k_ind, theta_ind = line.split()
  */
-            __pyx_t_3 = __Pyx_PyIter_Next(__pyx_v_data); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 62; __pyx_clineno = __LINE__; goto __pyx_L8_error;}
+            __pyx_t_3 = __Pyx_PyIter_Next(__pyx_v_data); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 61; __pyx_clineno = __LINE__; goto __pyx_L8_error;}
             __Pyx_GOTREF(__pyx_t_3);
             __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
 
-            /* "phagedisplay/cluster/DistMatrix.pyx":63
+            /* "DistMatrix.pyx":62
  *             with open(self._phage_file) as data:
  *                 next(data)
  *                 for line in data:             # <<<<<<<<<<<<<<
  *                     num, seq, k_glob, theta_glob, k_ind, theta_ind = line.split()
- *                     phage_data.append(seq) if float(k_ind) < 1.000000000e+00 else None
+ *                     phage_data.append(seq) if float(k_ind) > 1.000000000e+00 else None
  */
             if (likely(PyList_CheckExact(__pyx_v_data)) || PyTuple_CheckExact(__pyx_v_data)) {
               __pyx_t_3 = __pyx_v_data; __Pyx_INCREF(__pyx_t_3); __pyx_t_11 = 0;
               __pyx_t_12 = NULL;
             } else {
-              __pyx_t_11 = -1; __pyx_t_3 = PyObject_GetIter(__pyx_v_data); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 63; __pyx_clineno = __LINE__; goto __pyx_L8_error;}
+              __pyx_t_11 = -1; __pyx_t_3 = PyObject_GetIter(__pyx_v_data); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 62; __pyx_clineno = __LINE__; goto __pyx_L8_error;}
               __Pyx_GOTREF(__pyx_t_3);
-              __pyx_t_12 = Py_TYPE(__pyx_t_3)->tp_iternext; if (unlikely(!__pyx_t_12)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 63; __pyx_clineno = __LINE__; goto __pyx_L8_error;}
+              __pyx_t_12 = Py_TYPE(__pyx_t_3)->tp_iternext; if (unlikely(!__pyx_t_12)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 62; __pyx_clineno = __LINE__; goto __pyx_L8_error;}
             }
             for (;;) {
               if (likely(!__pyx_t_12)) {
                 if (likely(PyList_CheckExact(__pyx_t_3))) {
                   if (__pyx_t_11 >= PyList_GET_SIZE(__pyx_t_3)) break;
                   #if CYTHON_COMPILING_IN_CPYTHON
-                  __pyx_t_2 = PyList_GET_ITEM(__pyx_t_3, __pyx_t_11); __Pyx_INCREF(__pyx_t_2); __pyx_t_11++; if (unlikely(0 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 63; __pyx_clineno = __LINE__; goto __pyx_L8_error;}
+                  __pyx_t_2 = PyList_GET_ITEM(__pyx_t_3, __pyx_t_11); __Pyx_INCREF(__pyx_t_2); __pyx_t_11++; if (unlikely(0 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 62; __pyx_clineno = __LINE__; goto __pyx_L8_error;}
                   #else
-                  __pyx_t_2 = PySequence_ITEM(__pyx_t_3, __pyx_t_11); __pyx_t_11++; if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 63; __pyx_clineno = __LINE__; goto __pyx_L8_error;}
+                  __pyx_t_2 = PySequence_ITEM(__pyx_t_3, __pyx_t_11); __pyx_t_11++; if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 62; __pyx_clineno = __LINE__; goto __pyx_L8_error;}
                   __Pyx_GOTREF(__pyx_t_2);
                   #endif
                 } else {
                   if (__pyx_t_11 >= PyTuple_GET_SIZE(__pyx_t_3)) break;
                   #if CYTHON_COMPILING_IN_CPYTHON
-                  __pyx_t_2 = PyTuple_GET_ITEM(__pyx_t_3, __pyx_t_11); __Pyx_INCREF(__pyx_t_2); __pyx_t_11++; if (unlikely(0 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 63; __pyx_clineno = __LINE__; goto __pyx_L8_error;}
+                  __pyx_t_2 = PyTuple_GET_ITEM(__pyx_t_3, __pyx_t_11); __Pyx_INCREF(__pyx_t_2); __pyx_t_11++; if (unlikely(0 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 62; __pyx_clineno = __LINE__; goto __pyx_L8_error;}
                   #else
-                  __pyx_t_2 = PySequence_ITEM(__pyx_t_3, __pyx_t_11); __pyx_t_11++; if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 63; __pyx_clineno = __LINE__; goto __pyx_L8_error;}
+                  __pyx_t_2 = PySequence_ITEM(__pyx_t_3, __pyx_t_11); __pyx_t_11++; if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 62; __pyx_clineno = __LINE__; goto __pyx_L8_error;}
                   __Pyx_GOTREF(__pyx_t_2);
                   #endif
                 }
@@ -2165,7 +2159,7 @@ static PyObject *__pyx_f_12phagedisplay_7cluster_10DistMatrix_10DistMatrix_creat
                   PyObject* exc_type = PyErr_Occurred();
                   if (exc_type) {
                     if (likely(exc_type == PyExc_StopIteration || PyErr_GivenExceptionMatches(exc_type, PyExc_StopIteration))) PyErr_Clear();
-                    else {__pyx_filename = __pyx_f[0]; __pyx_lineno = 63; __pyx_clineno = __LINE__; goto __pyx_L8_error;}
+                    else {__pyx_filename = __pyx_f[0]; __pyx_lineno = 62; __pyx_clineno = __LINE__; goto __pyx_L8_error;}
                   }
                   break;
                 }
@@ -2174,14 +2168,14 @@ static PyObject *__pyx_f_12phagedisplay_7cluster_10DistMatrix_10DistMatrix_creat
               __Pyx_XDECREF_SET(__pyx_v_line, __pyx_t_2);
               __pyx_t_2 = 0;
 
-              /* "phagedisplay/cluster/DistMatrix.pyx":64
+              /* "DistMatrix.pyx":63
  *                 next(data)
  *                 for line in data:
  *                     num, seq, k_glob, theta_glob, k_ind, theta_ind = line.split()             # <<<<<<<<<<<<<<
- *                     phage_data.append(seq) if float(k_ind) < 1.000000000e+00 else None
+ *                     phage_data.append(seq) if float(k_ind) > 1.000000000e+00 else None
  *             return phage_data
  */
-              __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_line, __pyx_n_s_split); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 64; __pyx_clineno = __LINE__; goto __pyx_L8_error;}
+              __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_line, __pyx_n_s_split); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 63; __pyx_clineno = __LINE__; goto __pyx_L8_error;}
               __Pyx_GOTREF(__pyx_t_1);
               __pyx_t_4 = NULL;
               if (CYTHON_COMPILING_IN_CPYTHON && likely(PyMethod_Check(__pyx_t_1))) {
@@ -2194,10 +2188,10 @@ static PyObject *__pyx_f_12phagedisplay_7cluster_10DistMatrix_10DistMatrix_creat
                 }
               }
               if (__pyx_t_4) {
-                __pyx_t_2 = __Pyx_PyObject_CallOneArg(__pyx_t_1, __pyx_t_4); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 64; __pyx_clineno = __LINE__; goto __pyx_L8_error;}
+                __pyx_t_2 = __Pyx_PyObject_CallOneArg(__pyx_t_1, __pyx_t_4); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 63; __pyx_clineno = __LINE__; goto __pyx_L8_error;}
                 __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
               } else {
-                __pyx_t_2 = __Pyx_PyObject_CallNoArg(__pyx_t_1); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 64; __pyx_clineno = __LINE__; goto __pyx_L8_error;}
+                __pyx_t_2 = __Pyx_PyObject_CallNoArg(__pyx_t_1); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 63; __pyx_clineno = __LINE__; goto __pyx_L8_error;}
               }
               __Pyx_GOTREF(__pyx_t_2);
               __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
@@ -2211,7 +2205,7 @@ static PyObject *__pyx_f_12phagedisplay_7cluster_10DistMatrix_10DistMatrix_creat
                 if (unlikely(size != 6)) {
                   if (size > 6) __Pyx_RaiseTooManyValuesError(6);
                   else if (size >= 0) __Pyx_RaiseNeedMoreValuesError(size);
-                  {__pyx_filename = __pyx_f[0]; __pyx_lineno = 64; __pyx_clineno = __LINE__; goto __pyx_L8_error;}
+                  {__pyx_filename = __pyx_f[0]; __pyx_lineno = 63; __pyx_clineno = __LINE__; goto __pyx_L8_error;}
                 }
                 #if CYTHON_COMPILING_IN_CPYTHON
                 if (likely(PyTuple_CheckExact(sequence))) {
@@ -2240,7 +2234,7 @@ static PyObject *__pyx_f_12phagedisplay_7cluster_10DistMatrix_10DistMatrix_creat
                   Py_ssize_t i;
                   PyObject** temps[6] = {&__pyx_t_1,&__pyx_t_4,&__pyx_t_13,&__pyx_t_14,&__pyx_t_15,&__pyx_t_16};
                   for (i=0; i < 6; i++) {
-                    PyObject* item = PySequence_ITEM(sequence, i); if (unlikely(!item)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 64; __pyx_clineno = __LINE__; goto __pyx_L8_error;}
+                    PyObject* item = PySequence_ITEM(sequence, i); if (unlikely(!item)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 63; __pyx_clineno = __LINE__; goto __pyx_L8_error;}
                     __Pyx_GOTREF(item);
                     *(temps[i]) = item;
                   }
@@ -2250,7 +2244,7 @@ static PyObject *__pyx_f_12phagedisplay_7cluster_10DistMatrix_10DistMatrix_creat
               } else {
                 Py_ssize_t index = -1;
                 PyObject** temps[6] = {&__pyx_t_1,&__pyx_t_4,&__pyx_t_13,&__pyx_t_14,&__pyx_t_15,&__pyx_t_16};
-                __pyx_t_17 = PyObject_GetIter(__pyx_t_2); if (unlikely(!__pyx_t_17)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 64; __pyx_clineno = __LINE__; goto __pyx_L8_error;}
+                __pyx_t_17 = PyObject_GetIter(__pyx_t_2); if (unlikely(!__pyx_t_17)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 63; __pyx_clineno = __LINE__; goto __pyx_L8_error;}
                 __Pyx_GOTREF(__pyx_t_17);
                 __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
                 __pyx_t_18 = Py_TYPE(__pyx_t_17)->tp_iternext;
@@ -2259,7 +2253,7 @@ static PyObject *__pyx_f_12phagedisplay_7cluster_10DistMatrix_10DistMatrix_creat
                   __Pyx_GOTREF(item);
                   *(temps[index]) = item;
                 }
-                if (__Pyx_IternextUnpackEndCheck(__pyx_t_18(__pyx_t_17), 6) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 64; __pyx_clineno = __LINE__; goto __pyx_L8_error;}
+                if (__Pyx_IternextUnpackEndCheck(__pyx_t_18(__pyx_t_17), 6) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 63; __pyx_clineno = __LINE__; goto __pyx_L8_error;}
                 __pyx_t_18 = NULL;
                 __Pyx_DECREF(__pyx_t_17); __pyx_t_17 = 0;
                 goto __pyx_L19_unpacking_done;
@@ -2267,7 +2261,7 @@ static PyObject *__pyx_f_12phagedisplay_7cluster_10DistMatrix_10DistMatrix_creat
                 __Pyx_DECREF(__pyx_t_17); __pyx_t_17 = 0;
                 __pyx_t_18 = NULL;
                 if (__Pyx_IterFinish() == 0) __Pyx_RaiseNeedMoreValuesError(index);
-                {__pyx_filename = __pyx_f[0]; __pyx_lineno = 64; __pyx_clineno = __LINE__; goto __pyx_L8_error;}
+                {__pyx_filename = __pyx_f[0]; __pyx_lineno = 63; __pyx_clineno = __LINE__; goto __pyx_L8_error;}
                 __pyx_L19_unpacking_done:;
               }
               __Pyx_XDECREF_SET(__pyx_v_num, __pyx_t_1);
@@ -2283,16 +2277,16 @@ static PyObject *__pyx_f_12phagedisplay_7cluster_10DistMatrix_10DistMatrix_creat
               __Pyx_XDECREF_SET(__pyx_v_theta_ind, __pyx_t_16);
               __pyx_t_16 = 0;
 
-              /* "phagedisplay/cluster/DistMatrix.pyx":65
+              /* "DistMatrix.pyx":64
  *                 for line in data:
  *                     num, seq, k_glob, theta_glob, k_ind, theta_ind = line.split()
- *                     phage_data.append(seq) if float(k_ind) < 1.000000000e+00 else None             # <<<<<<<<<<<<<<
+ *                     phage_data.append(seq) if float(k_ind) > 1.000000000e+00 else None             # <<<<<<<<<<<<<<
  *             return phage_data
  *         elif self._seq == 'yes':
  */
-              __pyx_t_19 = __Pyx_PyObject_AsDouble(__pyx_v_k_ind); if (unlikely(__pyx_t_19 == ((double)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 65; __pyx_clineno = __LINE__; goto __pyx_L8_error;}
-              if (((__pyx_t_19 < 1.000000000e+00) != 0)) {
-                __pyx_t_15 = __Pyx_PyObject_GetAttrStr(__pyx_v_phage_data, __pyx_n_s_append); if (unlikely(!__pyx_t_15)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 65; __pyx_clineno = __LINE__; goto __pyx_L8_error;}
+              __pyx_t_19 = __Pyx_PyObject_AsDouble(__pyx_v_k_ind); if (unlikely(__pyx_t_19 == ((double)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 64; __pyx_clineno = __LINE__; goto __pyx_L8_error;}
+              if (((__pyx_t_19 > 1.000000000e+00) != 0)) {
+                __pyx_t_15 = __Pyx_PyObject_GetAttrStr(__pyx_v_phage_data, __pyx_n_s_append); if (unlikely(!__pyx_t_15)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 64; __pyx_clineno = __LINE__; goto __pyx_L8_error;}
                 __Pyx_GOTREF(__pyx_t_15);
                 __pyx_t_14 = NULL;
                 if (CYTHON_COMPILING_IN_CPYTHON && likely(PyMethod_Check(__pyx_t_15))) {
@@ -2305,16 +2299,16 @@ static PyObject *__pyx_f_12phagedisplay_7cluster_10DistMatrix_10DistMatrix_creat
                   }
                 }
                 if (!__pyx_t_14) {
-                  __pyx_t_16 = __Pyx_PyObject_CallOneArg(__pyx_t_15, __pyx_v_seq); if (unlikely(!__pyx_t_16)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 65; __pyx_clineno = __LINE__; goto __pyx_L8_error;}
+                  __pyx_t_16 = __Pyx_PyObject_CallOneArg(__pyx_t_15, __pyx_v_seq); if (unlikely(!__pyx_t_16)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 64; __pyx_clineno = __LINE__; goto __pyx_L8_error;}
                   __Pyx_GOTREF(__pyx_t_16);
                 } else {
-                  __pyx_t_13 = PyTuple_New(1+1); if (unlikely(!__pyx_t_13)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 65; __pyx_clineno = __LINE__; goto __pyx_L8_error;}
+                  __pyx_t_13 = PyTuple_New(1+1); if (unlikely(!__pyx_t_13)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 64; __pyx_clineno = __LINE__; goto __pyx_L8_error;}
                   __Pyx_GOTREF(__pyx_t_13);
                   __Pyx_GIVEREF(__pyx_t_14); PyTuple_SET_ITEM(__pyx_t_13, 0, __pyx_t_14); __pyx_t_14 = NULL;
                   __Pyx_INCREF(__pyx_v_seq);
                   __Pyx_GIVEREF(__pyx_v_seq);
                   PyTuple_SET_ITEM(__pyx_t_13, 0+1, __pyx_v_seq);
-                  __pyx_t_16 = __Pyx_PyObject_Call(__pyx_t_15, __pyx_t_13, NULL); if (unlikely(!__pyx_t_16)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 65; __pyx_clineno = __LINE__; goto __pyx_L8_error;}
+                  __pyx_t_16 = __Pyx_PyObject_Call(__pyx_t_15, __pyx_t_13, NULL); if (unlikely(!__pyx_t_16)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 64; __pyx_clineno = __LINE__; goto __pyx_L8_error;}
                   __Pyx_GOTREF(__pyx_t_16);
                   __Pyx_DECREF(__pyx_t_13); __pyx_t_13 = 0;
                 }
@@ -2327,12 +2321,12 @@ static PyObject *__pyx_f_12phagedisplay_7cluster_10DistMatrix_10DistMatrix_creat
               }
               __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-              /* "phagedisplay/cluster/DistMatrix.pyx":63
+              /* "DistMatrix.pyx":62
  *             with open(self._phage_file) as data:
  *                 next(data)
  *                 for line in data:             # <<<<<<<<<<<<<<
  *                     num, seq, k_glob, theta_glob, k_ind, theta_ind = line.split()
- *                     phage_data.append(seq) if float(k_ind) < 1.000000000e+00 else None
+ *                     phage_data.append(seq) if float(k_ind) > 1.000000000e+00 else None
  */
             }
             __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
@@ -2352,7 +2346,7 @@ static PyObject *__pyx_f_12phagedisplay_7cluster_10DistMatrix_10DistMatrix_creat
           __Pyx_XDECREF(__pyx_t_2); __pyx_t_2 = 0;
           __Pyx_XDECREF(__pyx_t_3); __pyx_t_3 = 0;
 
-          /* "phagedisplay/cluster/DistMatrix.pyx":61
+          /* "DistMatrix.pyx":60
  * 
  *         if self._seq == 'no':
  *             with open(self._phage_file) as data:             # <<<<<<<<<<<<<<
@@ -2360,21 +2354,21 @@ static PyObject *__pyx_f_12phagedisplay_7cluster_10DistMatrix_10DistMatrix_creat
  *                 for line in data:
  */
           /*except:*/ {
-            __Pyx_AddTraceback("phagedisplay.cluster.DistMatrix.DistMatrix.createSeqList", __pyx_clineno, __pyx_lineno, __pyx_filename);
-            if (__Pyx_GetException(&__pyx_t_3, &__pyx_t_2, &__pyx_t_16) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 61; __pyx_clineno = __LINE__; goto __pyx_L10_except_error;}
+            __Pyx_AddTraceback("DistMatrix.DistMatrix.createSeqList", __pyx_clineno, __pyx_lineno, __pyx_filename);
+            if (__Pyx_GetException(&__pyx_t_3, &__pyx_t_2, &__pyx_t_16) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 60; __pyx_clineno = __LINE__; goto __pyx_L10_except_error;}
             __Pyx_GOTREF(__pyx_t_3);
             __Pyx_GOTREF(__pyx_t_2);
             __Pyx_GOTREF(__pyx_t_16);
-            __pyx_t_15 = PyTuple_Pack(3, __pyx_t_3, __pyx_t_2, __pyx_t_16); if (unlikely(!__pyx_t_15)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 61; __pyx_clineno = __LINE__; goto __pyx_L10_except_error;}
+            __pyx_t_15 = PyTuple_Pack(3, __pyx_t_3, __pyx_t_2, __pyx_t_16); if (unlikely(!__pyx_t_15)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 60; __pyx_clineno = __LINE__; goto __pyx_L10_except_error;}
             __Pyx_GOTREF(__pyx_t_15);
             __pyx_t_20 = __Pyx_PyObject_Call(__pyx_t_7, __pyx_t_15, NULL);
             __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
             __Pyx_DECREF(__pyx_t_15); __pyx_t_15 = 0;
-            if (unlikely(!__pyx_t_20)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 61; __pyx_clineno = __LINE__; goto __pyx_L10_except_error;}
+            if (unlikely(!__pyx_t_20)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 60; __pyx_clineno = __LINE__; goto __pyx_L10_except_error;}
             __Pyx_GOTREF(__pyx_t_20);
             __pyx_t_6 = __Pyx_PyObject_IsTrue(__pyx_t_20);
             __Pyx_DECREF(__pyx_t_20); __pyx_t_20 = 0;
-            if (__pyx_t_6 < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 61; __pyx_clineno = __LINE__; goto __pyx_L10_except_error;}
+            if (__pyx_t_6 < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 60; __pyx_clineno = __LINE__; goto __pyx_L10_except_error;}
             __pyx_t_5 = ((!(__pyx_t_6 != 0)) != 0);
             if (__pyx_t_5) {
               __Pyx_GIVEREF(__pyx_t_3);
@@ -2382,7 +2376,7 @@ static PyObject *__pyx_f_12phagedisplay_7cluster_10DistMatrix_10DistMatrix_creat
               __Pyx_XGIVEREF(__pyx_t_16);
               __Pyx_ErrRestore(__pyx_t_3, __pyx_t_2, __pyx_t_16);
               __pyx_t_3 = 0; __pyx_t_2 = 0; __pyx_t_16 = 0; 
-              {__pyx_filename = __pyx_f[0]; __pyx_lineno = 61; __pyx_clineno = __LINE__; goto __pyx_L10_except_error;}
+              {__pyx_filename = __pyx_f[0]; __pyx_lineno = 60; __pyx_clineno = __LINE__; goto __pyx_L10_except_error;}
             }
             __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
             __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
@@ -2408,7 +2402,7 @@ static PyObject *__pyx_f_12phagedisplay_7cluster_10DistMatrix_10DistMatrix_creat
           if (__pyx_t_7) {
             __pyx_t_10 = __Pyx_PyObject_Call(__pyx_t_7, __pyx_tuple__5, NULL);
             __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
-            if (unlikely(!__pyx_t_10)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 61; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+            if (unlikely(!__pyx_t_10)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 60; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
             __Pyx_GOTREF(__pyx_t_10);
             __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
           }
@@ -2423,9 +2417,9 @@ static PyObject *__pyx_f_12phagedisplay_7cluster_10DistMatrix_10DistMatrix_creat
       __pyx_L23:;
     }
 
-    /* "phagedisplay/cluster/DistMatrix.pyx":66
+    /* "DistMatrix.pyx":65
  *                     num, seq, k_glob, theta_glob, k_ind, theta_ind = line.split()
- *                     phage_data.append(seq) if float(k_ind) < 1.000000000e+00 else None
+ *                     phage_data.append(seq) if float(k_ind) > 1.000000000e+00 else None
  *             return phage_data             # <<<<<<<<<<<<<<
  *         elif self._seq == 'yes':
  *             return [line.strip() for line in open(self._phage_file)]
@@ -2436,18 +2430,18 @@ static PyObject *__pyx_f_12phagedisplay_7cluster_10DistMatrix_10DistMatrix_creat
     goto __pyx_L0;
   }
 
-  /* "phagedisplay/cluster/DistMatrix.pyx":67
- *                     phage_data.append(seq) if float(k_ind) < 1.000000000e+00 else None
+  /* "DistMatrix.pyx":66
+ *                     phage_data.append(seq) if float(k_ind) > 1.000000000e+00 else None
  *             return phage_data
  *         elif self._seq == 'yes':             # <<<<<<<<<<<<<<
  *             return [line.strip() for line in open(self._phage_file)]
  *         else:
  */
-  __pyx_t_5 = (__Pyx_PyString_Equals(__pyx_v_self->_seq, __pyx_n_s_yes, Py_EQ)); if (unlikely(__pyx_t_5 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 67; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_5 = (__Pyx_PyString_Equals(__pyx_v_self->_seq, __pyx_n_s_yes, Py_EQ)); if (unlikely(__pyx_t_5 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 66; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __pyx_t_6 = (__pyx_t_5 != 0);
   if (__pyx_t_6) {
 
-    /* "phagedisplay/cluster/DistMatrix.pyx":68
+    /* "DistMatrix.pyx":67
  *             return phage_data
  *         elif self._seq == 'yes':
  *             return [line.strip() for line in open(self._phage_file)]             # <<<<<<<<<<<<<<
@@ -2455,23 +2449,23 @@ static PyObject *__pyx_f_12phagedisplay_7cluster_10DistMatrix_10DistMatrix_creat
  *             raise ValueError("invalid entry!")
  */
     __Pyx_XDECREF(__pyx_r);
-    __pyx_t_16 = PyList_New(0); if (unlikely(!__pyx_t_16)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 68; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_16 = PyList_New(0); if (unlikely(!__pyx_t_16)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 67; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_16);
-    __pyx_t_2 = PyTuple_New(1); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 68; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_2 = PyTuple_New(1); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 67; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_2);
     __Pyx_INCREF(__pyx_v_self->_phage_file);
     __Pyx_GIVEREF(__pyx_v_self->_phage_file);
     PyTuple_SET_ITEM(__pyx_t_2, 0, __pyx_v_self->_phage_file);
-    __pyx_t_3 = __Pyx_PyObject_Call(__pyx_builtin_open, __pyx_t_2, NULL); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 68; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_3 = __Pyx_PyObject_Call(__pyx_builtin_open, __pyx_t_2, NULL); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 67; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_3);
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
     if (likely(PyList_CheckExact(__pyx_t_3)) || PyTuple_CheckExact(__pyx_t_3)) {
       __pyx_t_2 = __pyx_t_3; __Pyx_INCREF(__pyx_t_2); __pyx_t_11 = 0;
       __pyx_t_12 = NULL;
     } else {
-      __pyx_t_11 = -1; __pyx_t_2 = PyObject_GetIter(__pyx_t_3); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 68; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_11 = -1; __pyx_t_2 = PyObject_GetIter(__pyx_t_3); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 67; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_GOTREF(__pyx_t_2);
-      __pyx_t_12 = Py_TYPE(__pyx_t_2)->tp_iternext; if (unlikely(!__pyx_t_12)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 68; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_12 = Py_TYPE(__pyx_t_2)->tp_iternext; if (unlikely(!__pyx_t_12)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 67; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     }
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
     for (;;) {
@@ -2479,17 +2473,17 @@ static PyObject *__pyx_f_12phagedisplay_7cluster_10DistMatrix_10DistMatrix_creat
         if (likely(PyList_CheckExact(__pyx_t_2))) {
           if (__pyx_t_11 >= PyList_GET_SIZE(__pyx_t_2)) break;
           #if CYTHON_COMPILING_IN_CPYTHON
-          __pyx_t_3 = PyList_GET_ITEM(__pyx_t_2, __pyx_t_11); __Pyx_INCREF(__pyx_t_3); __pyx_t_11++; if (unlikely(0 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 68; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+          __pyx_t_3 = PyList_GET_ITEM(__pyx_t_2, __pyx_t_11); __Pyx_INCREF(__pyx_t_3); __pyx_t_11++; if (unlikely(0 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 67; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
           #else
-          __pyx_t_3 = PySequence_ITEM(__pyx_t_2, __pyx_t_11); __pyx_t_11++; if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 68; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+          __pyx_t_3 = PySequence_ITEM(__pyx_t_2, __pyx_t_11); __pyx_t_11++; if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 67; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
           __Pyx_GOTREF(__pyx_t_3);
           #endif
         } else {
           if (__pyx_t_11 >= PyTuple_GET_SIZE(__pyx_t_2)) break;
           #if CYTHON_COMPILING_IN_CPYTHON
-          __pyx_t_3 = PyTuple_GET_ITEM(__pyx_t_2, __pyx_t_11); __Pyx_INCREF(__pyx_t_3); __pyx_t_11++; if (unlikely(0 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 68; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+          __pyx_t_3 = PyTuple_GET_ITEM(__pyx_t_2, __pyx_t_11); __Pyx_INCREF(__pyx_t_3); __pyx_t_11++; if (unlikely(0 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 67; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
           #else
-          __pyx_t_3 = PySequence_ITEM(__pyx_t_2, __pyx_t_11); __pyx_t_11++; if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 68; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+          __pyx_t_3 = PySequence_ITEM(__pyx_t_2, __pyx_t_11); __pyx_t_11++; if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 67; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
           __Pyx_GOTREF(__pyx_t_3);
           #endif
         }
@@ -2499,7 +2493,7 @@ static PyObject *__pyx_f_12phagedisplay_7cluster_10DistMatrix_10DistMatrix_creat
           PyObject* exc_type = PyErr_Occurred();
           if (exc_type) {
             if (likely(exc_type == PyExc_StopIteration || PyErr_GivenExceptionMatches(exc_type, PyExc_StopIteration))) PyErr_Clear();
-            else {__pyx_filename = __pyx_f[0]; __pyx_lineno = 68; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+            else {__pyx_filename = __pyx_f[0]; __pyx_lineno = 67; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
           }
           break;
         }
@@ -2507,7 +2501,7 @@ static PyObject *__pyx_f_12phagedisplay_7cluster_10DistMatrix_10DistMatrix_creat
       }
       __Pyx_XDECREF_SET(__pyx_v_line, __pyx_t_3);
       __pyx_t_3 = 0;
-      __pyx_t_15 = __Pyx_PyObject_GetAttrStr(__pyx_v_line, __pyx_n_s_strip); if (unlikely(!__pyx_t_15)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 68; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_15 = __Pyx_PyObject_GetAttrStr(__pyx_v_line, __pyx_n_s_strip); if (unlikely(!__pyx_t_15)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 67; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_GOTREF(__pyx_t_15);
       __pyx_t_13 = NULL;
       if (CYTHON_COMPILING_IN_CPYTHON && likely(PyMethod_Check(__pyx_t_15))) {
@@ -2520,14 +2514,14 @@ static PyObject *__pyx_f_12phagedisplay_7cluster_10DistMatrix_10DistMatrix_creat
         }
       }
       if (__pyx_t_13) {
-        __pyx_t_3 = __Pyx_PyObject_CallOneArg(__pyx_t_15, __pyx_t_13); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 68; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+        __pyx_t_3 = __Pyx_PyObject_CallOneArg(__pyx_t_15, __pyx_t_13); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 67; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
         __Pyx_DECREF(__pyx_t_13); __pyx_t_13 = 0;
       } else {
-        __pyx_t_3 = __Pyx_PyObject_CallNoArg(__pyx_t_15); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 68; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+        __pyx_t_3 = __Pyx_PyObject_CallNoArg(__pyx_t_15); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 67; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       }
       __Pyx_GOTREF(__pyx_t_3);
       __Pyx_DECREF(__pyx_t_15); __pyx_t_15 = 0;
-      if (unlikely(__Pyx_ListComp_Append(__pyx_t_16, (PyObject*)__pyx_t_3))) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 68; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      if (unlikely(__Pyx_ListComp_Append(__pyx_t_16, (PyObject*)__pyx_t_3))) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 67; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
     }
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
@@ -2537,21 +2531,21 @@ static PyObject *__pyx_f_12phagedisplay_7cluster_10DistMatrix_10DistMatrix_creat
   }
   /*else*/ {
 
-    /* "phagedisplay/cluster/DistMatrix.pyx":70
+    /* "DistMatrix.pyx":69
  *             return [line.strip() for line in open(self._phage_file)]
  *         else:
  *             raise ValueError("invalid entry!")             # <<<<<<<<<<<<<<
  * 
  *     @cython.wraparound(False)
  */
-    __pyx_t_16 = __Pyx_PyObject_Call(__pyx_builtin_ValueError, __pyx_tuple__6, NULL); if (unlikely(!__pyx_t_16)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 70; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_16 = __Pyx_PyObject_Call(__pyx_builtin_ValueError, __pyx_tuple__6, NULL); if (unlikely(!__pyx_t_16)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 69; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_16);
     __Pyx_Raise(__pyx_t_16, 0, 0, 0);
     __Pyx_DECREF(__pyx_t_16); __pyx_t_16 = 0;
-    {__pyx_filename = __pyx_f[0]; __pyx_lineno = 70; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    {__pyx_filename = __pyx_f[0]; __pyx_lineno = 69; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   }
 
-  /* "phagedisplay/cluster/DistMatrix.pyx":52
+  /* "DistMatrix.pyx":51
  *         _matrix = readMatrix('blosum62.txt')
  * 
  *     cpdef createSeqList(self):             # <<<<<<<<<<<<<<
@@ -2570,7 +2564,7 @@ static PyObject *__pyx_f_12phagedisplay_7cluster_10DistMatrix_10DistMatrix_creat
   __Pyx_XDECREF(__pyx_t_15);
   __Pyx_XDECREF(__pyx_t_16);
   __Pyx_XDECREF(__pyx_t_17);
-  __Pyx_AddTraceback("phagedisplay.cluster.DistMatrix.DistMatrix.createSeqList", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("DistMatrix.DistMatrix.createSeqList", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = 0;
   __pyx_L0:;
   __Pyx_XDECREF(__pyx_v_phage_data);
@@ -2588,20 +2582,20 @@ static PyObject *__pyx_f_12phagedisplay_7cluster_10DistMatrix_10DistMatrix_creat
 }
 
 /* Python wrapper */
-static PyObject *__pyx_pw_12phagedisplay_7cluster_10DistMatrix_10DistMatrix_3createSeqList(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused); /*proto*/
-static char __pyx_doc_12phagedisplay_7cluster_10DistMatrix_10DistMatrix_2createSeqList[] = "\n        Creates a list of sequences from a file with a k_independent greater than 1.00\n        If phage file is already a list of sequences, outputs that as a list.\n        ";
-static PyObject *__pyx_pw_12phagedisplay_7cluster_10DistMatrix_10DistMatrix_3createSeqList(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused) {
+static PyObject *__pyx_pw_10DistMatrix_10DistMatrix_3createSeqList(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused); /*proto*/
+static char __pyx_doc_10DistMatrix_10DistMatrix_2createSeqList[] = "\n        Creates a list of sequences from a file with a k_independent greater than 1.00\n        If phage file is already a list of sequences, outputs that as a list.\n        ";
+static PyObject *__pyx_pw_10DistMatrix_10DistMatrix_3createSeqList(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused) {
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("createSeqList (wrapper)", 0);
-  __pyx_r = __pyx_pf_12phagedisplay_7cluster_10DistMatrix_10DistMatrix_2createSeqList(((struct __pyx_obj_12phagedisplay_7cluster_10DistMatrix_DistMatrix *)__pyx_v_self));
+  __pyx_r = __pyx_pf_10DistMatrix_10DistMatrix_2createSeqList(((struct __pyx_obj_10DistMatrix_DistMatrix *)__pyx_v_self));
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_12phagedisplay_7cluster_10DistMatrix_10DistMatrix_2createSeqList(struct __pyx_obj_12phagedisplay_7cluster_10DistMatrix_DistMatrix *__pyx_v_self) {
+static PyObject *__pyx_pf_10DistMatrix_10DistMatrix_2createSeqList(struct __pyx_obj_10DistMatrix_DistMatrix *__pyx_v_self) {
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
@@ -2610,7 +2604,7 @@ static PyObject *__pyx_pf_12phagedisplay_7cluster_10DistMatrix_10DistMatrix_2cre
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("createSeqList", 0);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_f_12phagedisplay_7cluster_10DistMatrix_10DistMatrix_createSeqList(__pyx_v_self, 1); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 52; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __pyx_f_10DistMatrix_10DistMatrix_createSeqList(__pyx_v_self, 1); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 51; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -2619,7 +2613,7 @@ static PyObject *__pyx_pf_12phagedisplay_7cluster_10DistMatrix_10DistMatrix_2cre
   /* function exit code */
   __pyx_L1_error:;
   __Pyx_XDECREF(__pyx_t_1);
-  __Pyx_AddTraceback("phagedisplay.cluster.DistMatrix.DistMatrix.createSeqList", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("DistMatrix.DistMatrix.createSeqList", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
   __Pyx_XGIVEREF(__pyx_r);
@@ -2627,7 +2621,7 @@ static PyObject *__pyx_pf_12phagedisplay_7cluster_10DistMatrix_10DistMatrix_2cre
   return __pyx_r;
 }
 
-/* "phagedisplay/cluster/DistMatrix.pyx":74
+/* "DistMatrix.pyx":73
  *     @cython.wraparound(False)
  *     @cython.boundscheck(False)
  *     cdef double scorePairwise(self, seq1, seq2):             # <<<<<<<<<<<<<<
@@ -2635,7 +2629,7 @@ static PyObject *__pyx_pf_12phagedisplay_7cluster_10DistMatrix_10DistMatrix_2cre
  *         calculate score between two sequences using a given scoring matrix.
  */
 
-static double __pyx_f_12phagedisplay_7cluster_10DistMatrix_10DistMatrix_scorePairwise(struct __pyx_obj_12phagedisplay_7cluster_10DistMatrix_DistMatrix *__pyx_v_self, PyObject *__pyx_v_seq1, PyObject *__pyx_v_seq2) {
+static double __pyx_f_10DistMatrix_10DistMatrix_scorePairwise(struct __pyx_obj_10DistMatrix_DistMatrix *__pyx_v_self, PyObject *__pyx_v_seq1, PyObject *__pyx_v_seq2) {
   double __pyx_v_score;
   PyObject *__pyx_v_i = 0;
   PyObject *__pyx_v_j = 0;
@@ -2656,7 +2650,7 @@ static double __pyx_f_12phagedisplay_7cluster_10DistMatrix_10DistMatrix_scorePai
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("scorePairwise", 0);
 
-  /* "phagedisplay/cluster/DistMatrix.pyx":78
+  /* "DistMatrix.pyx":77
  *         calculate score between two sequences using a given scoring matrix.
  *         """
  *         cdef double score = 0.0             # <<<<<<<<<<<<<<
@@ -2665,24 +2659,24 @@ static double __pyx_f_12phagedisplay_7cluster_10DistMatrix_10DistMatrix_scorePai
  */
   __pyx_v_score = 0.0;
 
-  /* "phagedisplay/cluster/DistMatrix.pyx":82
+  /* "DistMatrix.pyx":81
  * 
  * 
  *         if self._scoring == 'hamming':             # <<<<<<<<<<<<<<
  *             for i, j in zip(seq1, seq2):
  *                 score += 0.0 if i == j else 1.0
  */
-  __pyx_t_1 = (__Pyx_PyString_Equals(__pyx_v_self->_scoring, __pyx_n_s_hamming, Py_EQ)); if (unlikely(__pyx_t_1 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 82; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = (__Pyx_PyString_Equals(__pyx_v_self->_scoring, __pyx_n_s_hamming, Py_EQ)); if (unlikely(__pyx_t_1 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 81; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   if (__pyx_t_1) {
 
-    /* "phagedisplay/cluster/DistMatrix.pyx":83
+    /* "DistMatrix.pyx":82
  * 
  *         if self._scoring == 'hamming':
  *             for i, j in zip(seq1, seq2):             # <<<<<<<<<<<<<<
  *                 score += 0.0 if i == j else 1.0
  *         elif self._scoring == 'weighted':
  */
-    __pyx_t_2 = PyTuple_New(2); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 83; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_2 = PyTuple_New(2); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 82; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_2);
     __Pyx_INCREF(__pyx_v_seq1);
     __Pyx_GIVEREF(__pyx_v_seq1);
@@ -2690,16 +2684,16 @@ static double __pyx_f_12phagedisplay_7cluster_10DistMatrix_10DistMatrix_scorePai
     __Pyx_INCREF(__pyx_v_seq2);
     __Pyx_GIVEREF(__pyx_v_seq2);
     PyTuple_SET_ITEM(__pyx_t_2, 1, __pyx_v_seq2);
-    __pyx_t_3 = __Pyx_PyObject_Call(__pyx_builtin_zip, __pyx_t_2, NULL); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 83; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_3 = __Pyx_PyObject_Call(__pyx_builtin_zip, __pyx_t_2, NULL); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 82; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_3);
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
     if (likely(PyList_CheckExact(__pyx_t_3)) || PyTuple_CheckExact(__pyx_t_3)) {
       __pyx_t_2 = __pyx_t_3; __Pyx_INCREF(__pyx_t_2); __pyx_t_4 = 0;
       __pyx_t_5 = NULL;
     } else {
-      __pyx_t_4 = -1; __pyx_t_2 = PyObject_GetIter(__pyx_t_3); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 83; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_4 = -1; __pyx_t_2 = PyObject_GetIter(__pyx_t_3); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 82; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_GOTREF(__pyx_t_2);
-      __pyx_t_5 = Py_TYPE(__pyx_t_2)->tp_iternext; if (unlikely(!__pyx_t_5)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 83; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_5 = Py_TYPE(__pyx_t_2)->tp_iternext; if (unlikely(!__pyx_t_5)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 82; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     }
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
     for (;;) {
@@ -2707,17 +2701,17 @@ static double __pyx_f_12phagedisplay_7cluster_10DistMatrix_10DistMatrix_scorePai
         if (likely(PyList_CheckExact(__pyx_t_2))) {
           if (__pyx_t_4 >= PyList_GET_SIZE(__pyx_t_2)) break;
           #if CYTHON_COMPILING_IN_CPYTHON
-          __pyx_t_3 = PyList_GET_ITEM(__pyx_t_2, __pyx_t_4); __Pyx_INCREF(__pyx_t_3); __pyx_t_4++; if (unlikely(0 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 83; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+          __pyx_t_3 = PyList_GET_ITEM(__pyx_t_2, __pyx_t_4); __Pyx_INCREF(__pyx_t_3); __pyx_t_4++; if (unlikely(0 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 82; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
           #else
-          __pyx_t_3 = PySequence_ITEM(__pyx_t_2, __pyx_t_4); __pyx_t_4++; if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 83; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+          __pyx_t_3 = PySequence_ITEM(__pyx_t_2, __pyx_t_4); __pyx_t_4++; if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 82; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
           __Pyx_GOTREF(__pyx_t_3);
           #endif
         } else {
           if (__pyx_t_4 >= PyTuple_GET_SIZE(__pyx_t_2)) break;
           #if CYTHON_COMPILING_IN_CPYTHON
-          __pyx_t_3 = PyTuple_GET_ITEM(__pyx_t_2, __pyx_t_4); __Pyx_INCREF(__pyx_t_3); __pyx_t_4++; if (unlikely(0 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 83; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+          __pyx_t_3 = PyTuple_GET_ITEM(__pyx_t_2, __pyx_t_4); __Pyx_INCREF(__pyx_t_3); __pyx_t_4++; if (unlikely(0 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 82; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
           #else
-          __pyx_t_3 = PySequence_ITEM(__pyx_t_2, __pyx_t_4); __pyx_t_4++; if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 83; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+          __pyx_t_3 = PySequence_ITEM(__pyx_t_2, __pyx_t_4); __pyx_t_4++; if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 82; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
           __Pyx_GOTREF(__pyx_t_3);
           #endif
         }
@@ -2727,7 +2721,7 @@ static double __pyx_f_12phagedisplay_7cluster_10DistMatrix_10DistMatrix_scorePai
           PyObject* exc_type = PyErr_Occurred();
           if (exc_type) {
             if (likely(exc_type == PyExc_StopIteration || PyErr_GivenExceptionMatches(exc_type, PyExc_StopIteration))) PyErr_Clear();
-            else {__pyx_filename = __pyx_f[0]; __pyx_lineno = 83; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+            else {__pyx_filename = __pyx_f[0]; __pyx_lineno = 82; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
           }
           break;
         }
@@ -2743,7 +2737,7 @@ static double __pyx_f_12phagedisplay_7cluster_10DistMatrix_10DistMatrix_scorePai
         if (unlikely(size != 2)) {
           if (size > 2) __Pyx_RaiseTooManyValuesError(2);
           else if (size >= 0) __Pyx_RaiseNeedMoreValuesError(size);
-          {__pyx_filename = __pyx_f[0]; __pyx_lineno = 83; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+          {__pyx_filename = __pyx_f[0]; __pyx_lineno = 82; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
         }
         #if CYTHON_COMPILING_IN_CPYTHON
         if (likely(PyTuple_CheckExact(sequence))) {
@@ -2756,15 +2750,15 @@ static double __pyx_f_12phagedisplay_7cluster_10DistMatrix_10DistMatrix_scorePai
         __Pyx_INCREF(__pyx_t_6);
         __Pyx_INCREF(__pyx_t_7);
         #else
-        __pyx_t_6 = PySequence_ITEM(sequence, 0); if (unlikely(!__pyx_t_6)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 83; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+        __pyx_t_6 = PySequence_ITEM(sequence, 0); if (unlikely(!__pyx_t_6)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 82; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
         __Pyx_GOTREF(__pyx_t_6);
-        __pyx_t_7 = PySequence_ITEM(sequence, 1); if (unlikely(!__pyx_t_7)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 83; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+        __pyx_t_7 = PySequence_ITEM(sequence, 1); if (unlikely(!__pyx_t_7)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 82; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
         __Pyx_GOTREF(__pyx_t_7);
         #endif
         __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
       } else {
         Py_ssize_t index = -1;
-        __pyx_t_8 = PyObject_GetIter(__pyx_t_3); if (unlikely(!__pyx_t_8)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 83; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+        __pyx_t_8 = PyObject_GetIter(__pyx_t_3); if (unlikely(!__pyx_t_8)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 82; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
         __Pyx_GOTREF(__pyx_t_8);
         __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
         __pyx_t_9 = Py_TYPE(__pyx_t_8)->tp_iternext;
@@ -2772,7 +2766,7 @@ static double __pyx_f_12phagedisplay_7cluster_10DistMatrix_10DistMatrix_scorePai
         __Pyx_GOTREF(__pyx_t_6);
         index = 1; __pyx_t_7 = __pyx_t_9(__pyx_t_8); if (unlikely(!__pyx_t_7)) goto __pyx_L6_unpacking_failed;
         __Pyx_GOTREF(__pyx_t_7);
-        if (__Pyx_IternextUnpackEndCheck(__pyx_t_9(__pyx_t_8), 2) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 83; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+        if (__Pyx_IternextUnpackEndCheck(__pyx_t_9(__pyx_t_8), 2) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 82; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
         __pyx_t_9 = NULL;
         __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
         goto __pyx_L7_unpacking_done;
@@ -2780,24 +2774,24 @@ static double __pyx_f_12phagedisplay_7cluster_10DistMatrix_10DistMatrix_scorePai
         __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
         __pyx_t_9 = NULL;
         if (__Pyx_IterFinish() == 0) __Pyx_RaiseNeedMoreValuesError(index);
-        {__pyx_filename = __pyx_f[0]; __pyx_lineno = 83; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+        {__pyx_filename = __pyx_f[0]; __pyx_lineno = 82; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
         __pyx_L7_unpacking_done:;
       }
-      if (!(likely(PyString_CheckExact(__pyx_t_6))||((__pyx_t_6) == Py_None)||(PyErr_Format(PyExc_TypeError, "Expected %.16s, got %.200s", "str", Py_TYPE(__pyx_t_6)->tp_name), 0))) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 83; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-      if (!(likely(PyString_CheckExact(__pyx_t_7))||((__pyx_t_7) == Py_None)||(PyErr_Format(PyExc_TypeError, "Expected %.16s, got %.200s", "str", Py_TYPE(__pyx_t_7)->tp_name), 0))) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 83; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      if (!(likely(PyString_CheckExact(__pyx_t_6))||((__pyx_t_6) == Py_None)||(PyErr_Format(PyExc_TypeError, "Expected %.16s, got %.200s", "str", Py_TYPE(__pyx_t_6)->tp_name), 0))) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 82; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      if (!(likely(PyString_CheckExact(__pyx_t_7))||((__pyx_t_7) == Py_None)||(PyErr_Format(PyExc_TypeError, "Expected %.16s, got %.200s", "str", Py_TYPE(__pyx_t_7)->tp_name), 0))) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 82; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_XDECREF_SET(__pyx_v_i, ((PyObject*)__pyx_t_6));
       __pyx_t_6 = 0;
       __Pyx_XDECREF_SET(__pyx_v_j, ((PyObject*)__pyx_t_7));
       __pyx_t_7 = 0;
 
-      /* "phagedisplay/cluster/DistMatrix.pyx":84
+      /* "DistMatrix.pyx":83
  *         if self._scoring == 'hamming':
  *             for i, j in zip(seq1, seq2):
  *                 score += 0.0 if i == j else 1.0             # <<<<<<<<<<<<<<
  *         elif self._scoring == 'weighted':
  *             for i, j in zip(seq1, seq2):
  */
-      __pyx_t_1 = (__Pyx_PyString_Equals(__pyx_v_i, __pyx_v_j, Py_EQ)); if (unlikely(__pyx_t_1 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 84; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_1 = (__Pyx_PyString_Equals(__pyx_v_i, __pyx_v_j, Py_EQ)); if (unlikely(__pyx_t_1 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 83; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       if ((__pyx_t_1 != 0)) {
         __pyx_t_10 = 0.0;
       } else {
@@ -2805,7 +2799,7 @@ static double __pyx_f_12phagedisplay_7cluster_10DistMatrix_10DistMatrix_scorePai
       }
       __pyx_v_score = (__pyx_v_score + __pyx_t_10);
 
-      /* "phagedisplay/cluster/DistMatrix.pyx":83
+      /* "DistMatrix.pyx":82
  * 
  *         if self._scoring == 'hamming':
  *             for i, j in zip(seq1, seq2):             # <<<<<<<<<<<<<<
@@ -2817,24 +2811,24 @@ static double __pyx_f_12phagedisplay_7cluster_10DistMatrix_10DistMatrix_scorePai
     goto __pyx_L3;
   }
 
-  /* "phagedisplay/cluster/DistMatrix.pyx":85
+  /* "DistMatrix.pyx":84
  *             for i, j in zip(seq1, seq2):
  *                 score += 0.0 if i == j else 1.0
  *         elif self._scoring == 'weighted':             # <<<<<<<<<<<<<<
  *             for i, j in zip(seq1, seq2):
  *                 score += self._matrix[(i, j)]
  */
-  __pyx_t_1 = (__Pyx_PyString_Equals(__pyx_v_self->_scoring, __pyx_n_s_weighted, Py_EQ)); if (unlikely(__pyx_t_1 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 85; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = (__Pyx_PyString_Equals(__pyx_v_self->_scoring, __pyx_n_s_weighted, Py_EQ)); if (unlikely(__pyx_t_1 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 84; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   if (__pyx_t_1) {
 
-    /* "phagedisplay/cluster/DistMatrix.pyx":86
+    /* "DistMatrix.pyx":85
  *                 score += 0.0 if i == j else 1.0
  *         elif self._scoring == 'weighted':
  *             for i, j in zip(seq1, seq2):             # <<<<<<<<<<<<<<
  *                 score += self._matrix[(i, j)]
  *             score = 1 - exp(score)
  */
-    __pyx_t_2 = PyTuple_New(2); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 86; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_2 = PyTuple_New(2); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 85; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_2);
     __Pyx_INCREF(__pyx_v_seq1);
     __Pyx_GIVEREF(__pyx_v_seq1);
@@ -2842,16 +2836,16 @@ static double __pyx_f_12phagedisplay_7cluster_10DistMatrix_10DistMatrix_scorePai
     __Pyx_INCREF(__pyx_v_seq2);
     __Pyx_GIVEREF(__pyx_v_seq2);
     PyTuple_SET_ITEM(__pyx_t_2, 1, __pyx_v_seq2);
-    __pyx_t_3 = __Pyx_PyObject_Call(__pyx_builtin_zip, __pyx_t_2, NULL); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 86; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_3 = __Pyx_PyObject_Call(__pyx_builtin_zip, __pyx_t_2, NULL); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 85; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_3);
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
     if (likely(PyList_CheckExact(__pyx_t_3)) || PyTuple_CheckExact(__pyx_t_3)) {
       __pyx_t_2 = __pyx_t_3; __Pyx_INCREF(__pyx_t_2); __pyx_t_4 = 0;
       __pyx_t_5 = NULL;
     } else {
-      __pyx_t_4 = -1; __pyx_t_2 = PyObject_GetIter(__pyx_t_3); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 86; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_4 = -1; __pyx_t_2 = PyObject_GetIter(__pyx_t_3); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 85; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_GOTREF(__pyx_t_2);
-      __pyx_t_5 = Py_TYPE(__pyx_t_2)->tp_iternext; if (unlikely(!__pyx_t_5)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 86; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_5 = Py_TYPE(__pyx_t_2)->tp_iternext; if (unlikely(!__pyx_t_5)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 85; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     }
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
     for (;;) {
@@ -2859,17 +2853,17 @@ static double __pyx_f_12phagedisplay_7cluster_10DistMatrix_10DistMatrix_scorePai
         if (likely(PyList_CheckExact(__pyx_t_2))) {
           if (__pyx_t_4 >= PyList_GET_SIZE(__pyx_t_2)) break;
           #if CYTHON_COMPILING_IN_CPYTHON
-          __pyx_t_3 = PyList_GET_ITEM(__pyx_t_2, __pyx_t_4); __Pyx_INCREF(__pyx_t_3); __pyx_t_4++; if (unlikely(0 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 86; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+          __pyx_t_3 = PyList_GET_ITEM(__pyx_t_2, __pyx_t_4); __Pyx_INCREF(__pyx_t_3); __pyx_t_4++; if (unlikely(0 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 85; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
           #else
-          __pyx_t_3 = PySequence_ITEM(__pyx_t_2, __pyx_t_4); __pyx_t_4++; if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 86; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+          __pyx_t_3 = PySequence_ITEM(__pyx_t_2, __pyx_t_4); __pyx_t_4++; if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 85; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
           __Pyx_GOTREF(__pyx_t_3);
           #endif
         } else {
           if (__pyx_t_4 >= PyTuple_GET_SIZE(__pyx_t_2)) break;
           #if CYTHON_COMPILING_IN_CPYTHON
-          __pyx_t_3 = PyTuple_GET_ITEM(__pyx_t_2, __pyx_t_4); __Pyx_INCREF(__pyx_t_3); __pyx_t_4++; if (unlikely(0 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 86; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+          __pyx_t_3 = PyTuple_GET_ITEM(__pyx_t_2, __pyx_t_4); __Pyx_INCREF(__pyx_t_3); __pyx_t_4++; if (unlikely(0 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 85; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
           #else
-          __pyx_t_3 = PySequence_ITEM(__pyx_t_2, __pyx_t_4); __pyx_t_4++; if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 86; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+          __pyx_t_3 = PySequence_ITEM(__pyx_t_2, __pyx_t_4); __pyx_t_4++; if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 85; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
           __Pyx_GOTREF(__pyx_t_3);
           #endif
         }
@@ -2879,7 +2873,7 @@ static double __pyx_f_12phagedisplay_7cluster_10DistMatrix_10DistMatrix_scorePai
           PyObject* exc_type = PyErr_Occurred();
           if (exc_type) {
             if (likely(exc_type == PyExc_StopIteration || PyErr_GivenExceptionMatches(exc_type, PyExc_StopIteration))) PyErr_Clear();
-            else {__pyx_filename = __pyx_f[0]; __pyx_lineno = 86; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+            else {__pyx_filename = __pyx_f[0]; __pyx_lineno = 85; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
           }
           break;
         }
@@ -2895,7 +2889,7 @@ static double __pyx_f_12phagedisplay_7cluster_10DistMatrix_10DistMatrix_scorePai
         if (unlikely(size != 2)) {
           if (size > 2) __Pyx_RaiseTooManyValuesError(2);
           else if (size >= 0) __Pyx_RaiseNeedMoreValuesError(size);
-          {__pyx_filename = __pyx_f[0]; __pyx_lineno = 86; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+          {__pyx_filename = __pyx_f[0]; __pyx_lineno = 85; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
         }
         #if CYTHON_COMPILING_IN_CPYTHON
         if (likely(PyTuple_CheckExact(sequence))) {
@@ -2908,15 +2902,15 @@ static double __pyx_f_12phagedisplay_7cluster_10DistMatrix_10DistMatrix_scorePai
         __Pyx_INCREF(__pyx_t_7);
         __Pyx_INCREF(__pyx_t_6);
         #else
-        __pyx_t_7 = PySequence_ITEM(sequence, 0); if (unlikely(!__pyx_t_7)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 86; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+        __pyx_t_7 = PySequence_ITEM(sequence, 0); if (unlikely(!__pyx_t_7)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 85; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
         __Pyx_GOTREF(__pyx_t_7);
-        __pyx_t_6 = PySequence_ITEM(sequence, 1); if (unlikely(!__pyx_t_6)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 86; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+        __pyx_t_6 = PySequence_ITEM(sequence, 1); if (unlikely(!__pyx_t_6)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 85; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
         __Pyx_GOTREF(__pyx_t_6);
         #endif
         __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
       } else {
         Py_ssize_t index = -1;
-        __pyx_t_8 = PyObject_GetIter(__pyx_t_3); if (unlikely(!__pyx_t_8)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 86; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+        __pyx_t_8 = PyObject_GetIter(__pyx_t_3); if (unlikely(!__pyx_t_8)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 85; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
         __Pyx_GOTREF(__pyx_t_8);
         __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
         __pyx_t_9 = Py_TYPE(__pyx_t_8)->tp_iternext;
@@ -2924,7 +2918,7 @@ static double __pyx_f_12phagedisplay_7cluster_10DistMatrix_10DistMatrix_scorePai
         __Pyx_GOTREF(__pyx_t_7);
         index = 1; __pyx_t_6 = __pyx_t_9(__pyx_t_8); if (unlikely(!__pyx_t_6)) goto __pyx_L10_unpacking_failed;
         __Pyx_GOTREF(__pyx_t_6);
-        if (__Pyx_IternextUnpackEndCheck(__pyx_t_9(__pyx_t_8), 2) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 86; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+        if (__Pyx_IternextUnpackEndCheck(__pyx_t_9(__pyx_t_8), 2) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 85; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
         __pyx_t_9 = NULL;
         __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
         goto __pyx_L11_unpacking_done;
@@ -2932,26 +2926,26 @@ static double __pyx_f_12phagedisplay_7cluster_10DistMatrix_10DistMatrix_scorePai
         __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
         __pyx_t_9 = NULL;
         if (__Pyx_IterFinish() == 0) __Pyx_RaiseNeedMoreValuesError(index);
-        {__pyx_filename = __pyx_f[0]; __pyx_lineno = 86; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+        {__pyx_filename = __pyx_f[0]; __pyx_lineno = 85; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
         __pyx_L11_unpacking_done:;
       }
-      if (!(likely(PyString_CheckExact(__pyx_t_7))||((__pyx_t_7) == Py_None)||(PyErr_Format(PyExc_TypeError, "Expected %.16s, got %.200s", "str", Py_TYPE(__pyx_t_7)->tp_name), 0))) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 86; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-      if (!(likely(PyString_CheckExact(__pyx_t_6))||((__pyx_t_6) == Py_None)||(PyErr_Format(PyExc_TypeError, "Expected %.16s, got %.200s", "str", Py_TYPE(__pyx_t_6)->tp_name), 0))) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 86; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      if (!(likely(PyString_CheckExact(__pyx_t_7))||((__pyx_t_7) == Py_None)||(PyErr_Format(PyExc_TypeError, "Expected %.16s, got %.200s", "str", Py_TYPE(__pyx_t_7)->tp_name), 0))) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 85; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      if (!(likely(PyString_CheckExact(__pyx_t_6))||((__pyx_t_6) == Py_None)||(PyErr_Format(PyExc_TypeError, "Expected %.16s, got %.200s", "str", Py_TYPE(__pyx_t_6)->tp_name), 0))) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 85; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_XDECREF_SET(__pyx_v_i, ((PyObject*)__pyx_t_7));
       __pyx_t_7 = 0;
       __Pyx_XDECREF_SET(__pyx_v_j, ((PyObject*)__pyx_t_6));
       __pyx_t_6 = 0;
 
-      /* "phagedisplay/cluster/DistMatrix.pyx":87
+      /* "DistMatrix.pyx":86
  *         elif self._scoring == 'weighted':
  *             for i, j in zip(seq1, seq2):
  *                 score += self._matrix[(i, j)]             # <<<<<<<<<<<<<<
  *             score = 1 - exp(score)
  *         else:
  */
-      __pyx_t_3 = PyFloat_FromDouble(__pyx_v_score); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 87; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_3 = PyFloat_FromDouble(__pyx_v_score); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 86; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_GOTREF(__pyx_t_3);
-      __pyx_t_6 = PyTuple_New(2); if (unlikely(!__pyx_t_6)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 87; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_6 = PyTuple_New(2); if (unlikely(!__pyx_t_6)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 86; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_GOTREF(__pyx_t_6);
       __Pyx_INCREF(__pyx_v_i);
       __Pyx_GIVEREF(__pyx_v_i);
@@ -2959,18 +2953,18 @@ static double __pyx_f_12phagedisplay_7cluster_10DistMatrix_10DistMatrix_scorePai
       __Pyx_INCREF(__pyx_v_j);
       __Pyx_GIVEREF(__pyx_v_j);
       PyTuple_SET_ITEM(__pyx_t_6, 1, __pyx_v_j);
-      __pyx_t_7 = PyObject_GetItem(__pyx_v_self->_matrix, __pyx_t_6); if (unlikely(__pyx_t_7 == NULL)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 87; __pyx_clineno = __LINE__; goto __pyx_L1_error;};
+      __pyx_t_7 = PyObject_GetItem(__pyx_v_self->_matrix, __pyx_t_6); if (unlikely(__pyx_t_7 == NULL)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 86; __pyx_clineno = __LINE__; goto __pyx_L1_error;};
       __Pyx_GOTREF(__pyx_t_7);
       __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-      __pyx_t_6 = PyNumber_InPlaceAdd(__pyx_t_3, __pyx_t_7); if (unlikely(!__pyx_t_6)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 87; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_6 = PyNumber_InPlaceAdd(__pyx_t_3, __pyx_t_7); if (unlikely(!__pyx_t_6)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 86; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_GOTREF(__pyx_t_6);
       __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
       __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
-      __pyx_t_10 = __pyx_PyFloat_AsDouble(__pyx_t_6); if (unlikely((__pyx_t_10 == (double)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 87; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_10 = __pyx_PyFloat_AsDouble(__pyx_t_6); if (unlikely((__pyx_t_10 == (double)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 86; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
       __pyx_v_score = __pyx_t_10;
 
-      /* "phagedisplay/cluster/DistMatrix.pyx":86
+      /* "DistMatrix.pyx":85
  *                 score += 0.0 if i == j else 1.0
  *         elif self._scoring == 'weighted':
  *             for i, j in zip(seq1, seq2):             # <<<<<<<<<<<<<<
@@ -2980,7 +2974,7 @@ static double __pyx_f_12phagedisplay_7cluster_10DistMatrix_10DistMatrix_scorePai
     }
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-    /* "phagedisplay/cluster/DistMatrix.pyx":88
+    /* "DistMatrix.pyx":87
  *             for i, j in zip(seq1, seq2):
  *                 score += self._matrix[(i, j)]
  *             score = 1 - exp(score)             # <<<<<<<<<<<<<<
@@ -2992,22 +2986,22 @@ static double __pyx_f_12phagedisplay_7cluster_10DistMatrix_10DistMatrix_scorePai
   }
   /*else*/ {
 
-    /* "phagedisplay/cluster/DistMatrix.pyx":90
+    /* "DistMatrix.pyx":89
  *             score = 1 - exp(score)
  *         else:
  *             raise ValueError('not an option')             # <<<<<<<<<<<<<<
  * 
  *         return score
  */
-    __pyx_t_2 = __Pyx_PyObject_Call(__pyx_builtin_ValueError, __pyx_tuple__7, NULL); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 90; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_2 = __Pyx_PyObject_Call(__pyx_builtin_ValueError, __pyx_tuple__7, NULL); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 89; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_2);
     __Pyx_Raise(__pyx_t_2, 0, 0, 0);
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-    {__pyx_filename = __pyx_f[0]; __pyx_lineno = 90; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    {__pyx_filename = __pyx_f[0]; __pyx_lineno = 89; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   }
   __pyx_L3:;
 
-  /* "phagedisplay/cluster/DistMatrix.pyx":92
+  /* "DistMatrix.pyx":91
  *             raise ValueError('not an option')
  * 
  *         return score             # <<<<<<<<<<<<<<
@@ -3017,7 +3011,7 @@ static double __pyx_f_12phagedisplay_7cluster_10DistMatrix_10DistMatrix_scorePai
   __pyx_r = __pyx_v_score;
   goto __pyx_L0;
 
-  /* "phagedisplay/cluster/DistMatrix.pyx":74
+  /* "DistMatrix.pyx":73
  *     @cython.wraparound(False)
  *     @cython.boundscheck(False)
  *     cdef double scorePairwise(self, seq1, seq2):             # <<<<<<<<<<<<<<
@@ -3032,7 +3026,7 @@ static double __pyx_f_12phagedisplay_7cluster_10DistMatrix_10DistMatrix_scorePai
   __Pyx_XDECREF(__pyx_t_6);
   __Pyx_XDECREF(__pyx_t_7);
   __Pyx_XDECREF(__pyx_t_8);
-  __Pyx_WriteUnraisable("phagedisplay.cluster.DistMatrix.DistMatrix.scorePairwise", __pyx_clineno, __pyx_lineno, __pyx_filename, 0, 0);
+  __Pyx_WriteUnraisable("DistMatrix.DistMatrix.scorePairwise", __pyx_clineno, __pyx_lineno, __pyx_filename, 0, 0);
   __pyx_r = 0;
   __pyx_L0:;
   __Pyx_XDECREF(__pyx_v_i);
@@ -3041,7 +3035,7 @@ static double __pyx_f_12phagedisplay_7cluster_10DistMatrix_10DistMatrix_scorePai
   return __pyx_r;
 }
 
-/* "phagedisplay/cluster/DistMatrix.pyx":96
+/* "DistMatrix.pyx":95
  *     @cython.wraparound(False)
  *     @cython.boundscheck(False)
  *     def calcDistMatrix(self):             # <<<<<<<<<<<<<<
@@ -3050,20 +3044,20 @@ static double __pyx_f_12phagedisplay_7cluster_10DistMatrix_10DistMatrix_scorePai
  */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_12phagedisplay_7cluster_10DistMatrix_10DistMatrix_5calcDistMatrix(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused); /*proto*/
-static char __pyx_doc_12phagedisplay_7cluster_10DistMatrix_10DistMatrix_4calcDistMatrix[] = "\n        calculates pairwise distance between sequences in a given file and returns a distance matrix.\n        ";
-static PyObject *__pyx_pw_12phagedisplay_7cluster_10DistMatrix_10DistMatrix_5calcDistMatrix(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused) {
+static PyObject *__pyx_pw_10DistMatrix_10DistMatrix_5calcDistMatrix(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused); /*proto*/
+static char __pyx_doc_10DistMatrix_10DistMatrix_4calcDistMatrix[] = "\n        calculates pairwise distance between sequences in a given file and returns a distance matrix.\n        ";
+static PyObject *__pyx_pw_10DistMatrix_10DistMatrix_5calcDistMatrix(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused) {
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("calcDistMatrix (wrapper)", 0);
-  __pyx_r = __pyx_pf_12phagedisplay_7cluster_10DistMatrix_10DistMatrix_4calcDistMatrix(((struct __pyx_obj_12phagedisplay_7cluster_10DistMatrix_DistMatrix *)__pyx_v_self));
+  __pyx_r = __pyx_pf_10DistMatrix_10DistMatrix_4calcDistMatrix(((struct __pyx_obj_10DistMatrix_DistMatrix *)__pyx_v_self));
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_12phagedisplay_7cluster_10DistMatrix_10DistMatrix_4calcDistMatrix(struct __pyx_obj_12phagedisplay_7cluster_10DistMatrix_DistMatrix *__pyx_v_self) {
+static PyObject *__pyx_pf_10DistMatrix_10DistMatrix_4calcDistMatrix(struct __pyx_obj_10DistMatrix_DistMatrix *__pyx_v_self) {
   PyArrayObject *__pyx_v_sequences = 0;
   int __pyx_v_i;
   int __pyx_v_j;
@@ -3098,19 +3092,19 @@ static PyObject *__pyx_pf_12phagedisplay_7cluster_10DistMatrix_10DistMatrix_4cal
   __pyx_pybuffernd_D.data = NULL;
   __pyx_pybuffernd_D.rcbuffer = &__pyx_pybuffer_D;
 
-  /* "phagedisplay/cluster/DistMatrix.pyx":101
+  /* "DistMatrix.pyx":100
  *         """
  *         cdef:
  *             np.ndarray sequences = np.array(self.createSeqList())             # <<<<<<<<<<<<<<
  *             int i, j, nrow = sequences.shape[0]
  *             np.ndarray[dtype=double, ndim=2] D = np.zeros((nrow, nrow))
  */
-  __pyx_t_2 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 101; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_2 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 100; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_array); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 101; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_array); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 100; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __pyx_t_2 = ((struct __pyx_vtabstruct_12phagedisplay_7cluster_10DistMatrix_DistMatrix *)__pyx_v_self->__pyx_vtab)->createSeqList(__pyx_v_self, 0); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 101; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_2 = ((struct __pyx_vtabstruct_10DistMatrix_DistMatrix *)__pyx_v_self->__pyx_vtab)->createSeqList(__pyx_v_self, 0); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 100; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_2);
   __pyx_t_4 = NULL;
   if (CYTHON_COMPILING_IN_CPYTHON && unlikely(PyMethod_Check(__pyx_t_3))) {
@@ -3123,26 +3117,26 @@ static PyObject *__pyx_pf_12phagedisplay_7cluster_10DistMatrix_10DistMatrix_4cal
     }
   }
   if (!__pyx_t_4) {
-    __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_t_2); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 101; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_t_2); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 100; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
     __Pyx_GOTREF(__pyx_t_1);
   } else {
-    __pyx_t_5 = PyTuple_New(1+1); if (unlikely(!__pyx_t_5)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 101; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_5 = PyTuple_New(1+1); if (unlikely(!__pyx_t_5)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 100; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_5);
     __Pyx_GIVEREF(__pyx_t_4); PyTuple_SET_ITEM(__pyx_t_5, 0, __pyx_t_4); __pyx_t_4 = NULL;
     __Pyx_GIVEREF(__pyx_t_2);
     PyTuple_SET_ITEM(__pyx_t_5, 0+1, __pyx_t_2);
     __pyx_t_2 = 0;
-    __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_3, __pyx_t_5, NULL); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 101; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_3, __pyx_t_5, NULL); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 100; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
   }
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  if (!(likely(((__pyx_t_1) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_1, __pyx_ptype_5numpy_ndarray))))) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 101; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if (!(likely(((__pyx_t_1) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_1, __pyx_ptype_5numpy_ndarray))))) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 100; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __pyx_v_sequences = ((PyArrayObject *)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "phagedisplay/cluster/DistMatrix.pyx":102
+  /* "DistMatrix.pyx":101
  *         cdef:
  *             np.ndarray sequences = np.array(self.createSeqList())
  *             int i, j, nrow = sequences.shape[0]             # <<<<<<<<<<<<<<
@@ -3151,23 +3145,23 @@ static PyObject *__pyx_pf_12phagedisplay_7cluster_10DistMatrix_10DistMatrix_4cal
  */
   __pyx_v_nrow = (__pyx_v_sequences->dimensions[0]);
 
-  /* "phagedisplay/cluster/DistMatrix.pyx":103
+  /* "DistMatrix.pyx":102
  *             np.ndarray sequences = np.array(self.createSeqList())
  *             int i, j, nrow = sequences.shape[0]
  *             np.ndarray[dtype=double, ndim=2] D = np.zeros((nrow, nrow))             # <<<<<<<<<<<<<<
  * 
  *             double temp
  */
-  __pyx_t_3 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 103; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_3 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 102; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_3);
-  __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_zeros); if (unlikely(!__pyx_t_5)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 103; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_zeros); if (unlikely(!__pyx_t_5)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 102; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_5);
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  __pyx_t_3 = __Pyx_PyInt_From_int(__pyx_v_nrow); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 103; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_3 = __Pyx_PyInt_From_int(__pyx_v_nrow); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 102; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_3);
-  __pyx_t_2 = __Pyx_PyInt_From_int(__pyx_v_nrow); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 103; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_2 = __Pyx_PyInt_From_int(__pyx_v_nrow); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 102; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_4 = PyTuple_New(2); if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 103; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_4 = PyTuple_New(2); if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 102; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_4);
   __Pyx_GIVEREF(__pyx_t_3);
   PyTuple_SET_ITEM(__pyx_t_4, 0, __pyx_t_3);
@@ -3186,28 +3180,28 @@ static PyObject *__pyx_pf_12phagedisplay_7cluster_10DistMatrix_10DistMatrix_4cal
     }
   }
   if (!__pyx_t_2) {
-    __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_t_5, __pyx_t_4); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 103; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_t_5, __pyx_t_4); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 102; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
     __Pyx_GOTREF(__pyx_t_1);
   } else {
-    __pyx_t_3 = PyTuple_New(1+1); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 103; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_3 = PyTuple_New(1+1); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 102; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_3);
     __Pyx_GIVEREF(__pyx_t_2); PyTuple_SET_ITEM(__pyx_t_3, 0, __pyx_t_2); __pyx_t_2 = NULL;
     __Pyx_GIVEREF(__pyx_t_4);
     PyTuple_SET_ITEM(__pyx_t_3, 0+1, __pyx_t_4);
     __pyx_t_4 = 0;
-    __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_5, __pyx_t_3, NULL); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 103; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_5, __pyx_t_3, NULL); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 102; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   }
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-  if (!(likely(((__pyx_t_1) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_1, __pyx_ptype_5numpy_ndarray))))) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 103; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if (!(likely(((__pyx_t_1) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_1, __pyx_ptype_5numpy_ndarray))))) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 102; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __pyx_t_6 = ((PyArrayObject *)__pyx_t_1);
   {
     __Pyx_BufFmt_StackElem __pyx_stack[1];
     if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_D.rcbuffer->pybuffer, (PyObject*)__pyx_t_6, &__Pyx_TypeInfo_double, PyBUF_FORMAT| PyBUF_STRIDES| PyBUF_WRITABLE, 2, 0, __pyx_stack) == -1)) {
       __pyx_v_D = ((PyArrayObject *)Py_None); __Pyx_INCREF(Py_None); __pyx_pybuffernd_D.rcbuffer->pybuffer.buf = NULL;
-      {__pyx_filename = __pyx_f[0]; __pyx_lineno = 103; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      {__pyx_filename = __pyx_f[0]; __pyx_lineno = 102; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     } else {__pyx_pybuffernd_D.diminfo[0].strides = __pyx_pybuffernd_D.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_D.diminfo[0].shape = __pyx_pybuffernd_D.rcbuffer->pybuffer.shape[0]; __pyx_pybuffernd_D.diminfo[1].strides = __pyx_pybuffernd_D.rcbuffer->pybuffer.strides[1]; __pyx_pybuffernd_D.diminfo[1].shape = __pyx_pybuffernd_D.rcbuffer->pybuffer.shape[1];
     }
   }
@@ -3215,7 +3209,7 @@ static PyObject *__pyx_pf_12phagedisplay_7cluster_10DistMatrix_10DistMatrix_4cal
   __pyx_v_D = ((PyArrayObject *)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "phagedisplay/cluster/DistMatrix.pyx":108
+  /* "DistMatrix.pyx":107
  * 
  *         #for i in prange(nrow, nogil = True, schedule = 'guided'):
  *         for i in range(nrow):             # <<<<<<<<<<<<<<
@@ -3226,7 +3220,7 @@ static PyObject *__pyx_pf_12phagedisplay_7cluster_10DistMatrix_10DistMatrix_4cal
   for (__pyx_t_8 = 0; __pyx_t_8 < __pyx_t_7; __pyx_t_8+=1) {
     __pyx_v_i = __pyx_t_8;
 
-    /* "phagedisplay/cluster/DistMatrix.pyx":109
+    /* "DistMatrix.pyx":108
  *         #for i in prange(nrow, nogil = True, schedule = 'guided'):
  *         for i in range(nrow):
  *             for j in range(i + 1, nrow):             # <<<<<<<<<<<<<<
@@ -3237,22 +3231,22 @@ static PyObject *__pyx_pf_12phagedisplay_7cluster_10DistMatrix_10DistMatrix_4cal
     for (__pyx_t_10 = (__pyx_v_i + 1); __pyx_t_10 < __pyx_t_9; __pyx_t_10+=1) {
       __pyx_v_j = __pyx_t_10;
 
-      /* "phagedisplay/cluster/DistMatrix.pyx":111
+      /* "DistMatrix.pyx":110
  *             for j in range(i + 1, nrow):
  *                 #with gil:
  *                 temp = self.scorePairwise(sequences[i], sequences[j])             # <<<<<<<<<<<<<<
  *                 D[i, j] = temp
  *                 D[j, i] = temp
  */
-      __pyx_t_1 = __Pyx_GetItemInt(((PyObject *)__pyx_v_sequences), __pyx_v_i, int, 1, __Pyx_PyInt_From_int, 0, 0, 0); if (unlikely(__pyx_t_1 == NULL)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 111; __pyx_clineno = __LINE__; goto __pyx_L1_error;};
+      __pyx_t_1 = __Pyx_GetItemInt(((PyObject *)__pyx_v_sequences), __pyx_v_i, int, 1, __Pyx_PyInt_From_int, 0, 0, 0); if (unlikely(__pyx_t_1 == NULL)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 110; __pyx_clineno = __LINE__; goto __pyx_L1_error;};
       __Pyx_GOTREF(__pyx_t_1);
-      __pyx_t_5 = __Pyx_GetItemInt(((PyObject *)__pyx_v_sequences), __pyx_v_j, int, 1, __Pyx_PyInt_From_int, 0, 0, 0); if (unlikely(__pyx_t_5 == NULL)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 111; __pyx_clineno = __LINE__; goto __pyx_L1_error;};
+      __pyx_t_5 = __Pyx_GetItemInt(((PyObject *)__pyx_v_sequences), __pyx_v_j, int, 1, __Pyx_PyInt_From_int, 0, 0, 0); if (unlikely(__pyx_t_5 == NULL)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 110; __pyx_clineno = __LINE__; goto __pyx_L1_error;};
       __Pyx_GOTREF(__pyx_t_5);
-      __pyx_v_temp = ((struct __pyx_vtabstruct_12phagedisplay_7cluster_10DistMatrix_DistMatrix *)__pyx_v_self->__pyx_vtab)->scorePairwise(__pyx_v_self, __pyx_t_1, __pyx_t_5);
+      __pyx_v_temp = ((struct __pyx_vtabstruct_10DistMatrix_DistMatrix *)__pyx_v_self->__pyx_vtab)->scorePairwise(__pyx_v_self, __pyx_t_1, __pyx_t_5);
       __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
       __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
 
-      /* "phagedisplay/cluster/DistMatrix.pyx":112
+      /* "DistMatrix.pyx":111
  *                 #with gil:
  *                 temp = self.scorePairwise(sequences[i], sequences[j])
  *                 D[i, j] = temp             # <<<<<<<<<<<<<<
@@ -3263,7 +3257,7 @@ static PyObject *__pyx_pf_12phagedisplay_7cluster_10DistMatrix_10DistMatrix_4cal
       __pyx_t_12 = __pyx_v_j;
       *__Pyx_BufPtrStrided2d(double *, __pyx_pybuffernd_D.rcbuffer->pybuffer.buf, __pyx_t_11, __pyx_pybuffernd_D.diminfo[0].strides, __pyx_t_12, __pyx_pybuffernd_D.diminfo[1].strides) = __pyx_v_temp;
 
-      /* "phagedisplay/cluster/DistMatrix.pyx":113
+      /* "DistMatrix.pyx":112
  *                 temp = self.scorePairwise(sequences[i], sequences[j])
  *                 D[i, j] = temp
  *                 D[j, i] = temp             # <<<<<<<<<<<<<<
@@ -3276,28 +3270,28 @@ static PyObject *__pyx_pf_12phagedisplay_7cluster_10DistMatrix_10DistMatrix_4cal
     }
   }
 
-  /* "phagedisplay/cluster/DistMatrix.pyx":115
+  /* "DistMatrix.pyx":114
  *                 D[j, i] = temp
  * 
  *         dist_matrix = pd.DataFrame(D, index = sequences, columns = sequences)             # <<<<<<<<<<<<<<
  * 
  *         return dist_matrix
  */
-  __pyx_t_5 = __Pyx_GetModuleGlobalName(__pyx_n_s_pd); if (unlikely(!__pyx_t_5)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 115; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_5 = __Pyx_GetModuleGlobalName(__pyx_n_s_pd); if (unlikely(!__pyx_t_5)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 114; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_5);
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_t_5, __pyx_n_s_DataFrame); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 115; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_t_5, __pyx_n_s_DataFrame); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 114; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-  __pyx_t_5 = PyTuple_New(1); if (unlikely(!__pyx_t_5)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 115; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_5 = PyTuple_New(1); if (unlikely(!__pyx_t_5)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 114; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_5);
   __Pyx_INCREF(((PyObject *)__pyx_v_D));
   __Pyx_GIVEREF(((PyObject *)__pyx_v_D));
   PyTuple_SET_ITEM(__pyx_t_5, 0, ((PyObject *)__pyx_v_D));
-  __pyx_t_3 = PyDict_New(); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 115; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_3 = PyDict_New(); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 114; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_3);
-  if (PyDict_SetItem(__pyx_t_3, __pyx_n_s_index, ((PyObject *)__pyx_v_sequences)) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 115; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-  if (PyDict_SetItem(__pyx_t_3, __pyx_n_s_columns, ((PyObject *)__pyx_v_sequences)) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 115; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-  __pyx_t_4 = __Pyx_PyObject_Call(__pyx_t_1, __pyx_t_5, __pyx_t_3); if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 115; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if (PyDict_SetItem(__pyx_t_3, __pyx_n_s_index, ((PyObject *)__pyx_v_sequences)) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 114; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if (PyDict_SetItem(__pyx_t_3, __pyx_n_s_columns, ((PyObject *)__pyx_v_sequences)) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 114; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_4 = __Pyx_PyObject_Call(__pyx_t_1, __pyx_t_5, __pyx_t_3); if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 114; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_4);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
@@ -3305,7 +3299,7 @@ static PyObject *__pyx_pf_12phagedisplay_7cluster_10DistMatrix_10DistMatrix_4cal
   __pyx_v_dist_matrix = __pyx_t_4;
   __pyx_t_4 = 0;
 
-  /* "phagedisplay/cluster/DistMatrix.pyx":117
+  /* "DistMatrix.pyx":116
  *         dist_matrix = pd.DataFrame(D, index = sequences, columns = sequences)
  * 
  *         return dist_matrix             # <<<<<<<<<<<<<<
@@ -3315,7 +3309,7 @@ static PyObject *__pyx_pf_12phagedisplay_7cluster_10DistMatrix_10DistMatrix_4cal
   __pyx_r = __pyx_v_dist_matrix;
   goto __pyx_L0;
 
-  /* "phagedisplay/cluster/DistMatrix.pyx":96
+  /* "DistMatrix.pyx":95
  *     @cython.wraparound(False)
  *     @cython.boundscheck(False)
  *     def calcDistMatrix(self):             # <<<<<<<<<<<<<<
@@ -3334,7 +3328,7 @@ static PyObject *__pyx_pf_12phagedisplay_7cluster_10DistMatrix_10DistMatrix_4cal
     __Pyx_ErrFetch(&__pyx_type, &__pyx_value, &__pyx_tb);
     __Pyx_SafeReleaseBuffer(&__pyx_pybuffernd_D.rcbuffer->pybuffer);
   __Pyx_ErrRestore(__pyx_type, __pyx_value, __pyx_tb);}
-  __Pyx_AddTraceback("phagedisplay.cluster.DistMatrix.DistMatrix.calcDistMatrix", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("DistMatrix.DistMatrix.calcDistMatrix", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   goto __pyx_L2;
   __pyx_L0:;
@@ -5350,10 +5344,10 @@ static CYTHON_INLINE PyObject *__pyx_f_5numpy_get_array_base(PyArrayObject *__py
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
-static struct __pyx_vtabstruct_12phagedisplay_7cluster_10DistMatrix_DistMatrix __pyx_vtable_12phagedisplay_7cluster_10DistMatrix_DistMatrix;
+static struct __pyx_vtabstruct_10DistMatrix_DistMatrix __pyx_vtable_10DistMatrix_DistMatrix;
 
-static PyObject *__pyx_tp_new_12phagedisplay_7cluster_10DistMatrix_DistMatrix(PyTypeObject *t, CYTHON_UNUSED PyObject *a, CYTHON_UNUSED PyObject *k) {
-  struct __pyx_obj_12phagedisplay_7cluster_10DistMatrix_DistMatrix *p;
+static PyObject *__pyx_tp_new_10DistMatrix_DistMatrix(PyTypeObject *t, CYTHON_UNUSED PyObject *a, CYTHON_UNUSED PyObject *k) {
+  struct __pyx_obj_10DistMatrix_DistMatrix *p;
   PyObject *o;
   if (likely((t->tp_flags & Py_TPFLAGS_IS_ABSTRACT) == 0)) {
     o = (*t->tp_alloc)(t, 0);
@@ -5361,8 +5355,8 @@ static PyObject *__pyx_tp_new_12phagedisplay_7cluster_10DistMatrix_DistMatrix(Py
     o = (PyObject *) PyBaseObject_Type.tp_new(t, __pyx_empty_tuple, 0);
   }
   if (unlikely(!o)) return 0;
-  p = ((struct __pyx_obj_12phagedisplay_7cluster_10DistMatrix_DistMatrix *)o);
-  p->__pyx_vtab = __pyx_vtabptr_12phagedisplay_7cluster_10DistMatrix_DistMatrix;
+  p = ((struct __pyx_obj_10DistMatrix_DistMatrix *)o);
+  p->__pyx_vtab = __pyx_vtabptr_10DistMatrix_DistMatrix;
   p->_phage_file = ((PyObject*)Py_None); Py_INCREF(Py_None);
   p->_seq = ((PyObject*)Py_None); Py_INCREF(Py_None);
   p->_scoring = Py_None; Py_INCREF(Py_None);
@@ -5370,8 +5364,8 @@ static PyObject *__pyx_tp_new_12phagedisplay_7cluster_10DistMatrix_DistMatrix(Py
   return o;
 }
 
-static void __pyx_tp_dealloc_12phagedisplay_7cluster_10DistMatrix_DistMatrix(PyObject *o) {
-  struct __pyx_obj_12phagedisplay_7cluster_10DistMatrix_DistMatrix *p = (struct __pyx_obj_12phagedisplay_7cluster_10DistMatrix_DistMatrix *)o;
+static void __pyx_tp_dealloc_10DistMatrix_DistMatrix(PyObject *o) {
+  struct __pyx_obj_10DistMatrix_DistMatrix *p = (struct __pyx_obj_10DistMatrix_DistMatrix *)o;
   #if PY_VERSION_HEX >= 0x030400a1
   if (unlikely(Py_TYPE(o)->tp_finalize) && !_PyGC_FINALIZED(o)) {
     if (PyObject_CallFinalizerFromDealloc(o)) return;
@@ -5385,9 +5379,9 @@ static void __pyx_tp_dealloc_12phagedisplay_7cluster_10DistMatrix_DistMatrix(PyO
   (*Py_TYPE(o)->tp_free)(o);
 }
 
-static int __pyx_tp_traverse_12phagedisplay_7cluster_10DistMatrix_DistMatrix(PyObject *o, visitproc v, void *a) {
+static int __pyx_tp_traverse_10DistMatrix_DistMatrix(PyObject *o, visitproc v, void *a) {
   int e;
-  struct __pyx_obj_12phagedisplay_7cluster_10DistMatrix_DistMatrix *p = (struct __pyx_obj_12phagedisplay_7cluster_10DistMatrix_DistMatrix *)o;
+  struct __pyx_obj_10DistMatrix_DistMatrix *p = (struct __pyx_obj_10DistMatrix_DistMatrix *)o;
   if (p->_scoring) {
     e = (*v)(p->_scoring, a); if (e) return e;
   }
@@ -5397,9 +5391,9 @@ static int __pyx_tp_traverse_12phagedisplay_7cluster_10DistMatrix_DistMatrix(PyO
   return 0;
 }
 
-static int __pyx_tp_clear_12phagedisplay_7cluster_10DistMatrix_DistMatrix(PyObject *o) {
+static int __pyx_tp_clear_10DistMatrix_DistMatrix(PyObject *o) {
   PyObject* tmp;
-  struct __pyx_obj_12phagedisplay_7cluster_10DistMatrix_DistMatrix *p = (struct __pyx_obj_12phagedisplay_7cluster_10DistMatrix_DistMatrix *)o;
+  struct __pyx_obj_10DistMatrix_DistMatrix *p = (struct __pyx_obj_10DistMatrix_DistMatrix *)o;
   tmp = ((PyObject*)p->_scoring);
   p->_scoring = Py_None; Py_INCREF(Py_None);
   Py_XDECREF(tmp);
@@ -5409,18 +5403,18 @@ static int __pyx_tp_clear_12phagedisplay_7cluster_10DistMatrix_DistMatrix(PyObje
   return 0;
 }
 
-static PyMethodDef __pyx_methods_12phagedisplay_7cluster_10DistMatrix_DistMatrix[] = {
-  {"createSeqList", (PyCFunction)__pyx_pw_12phagedisplay_7cluster_10DistMatrix_10DistMatrix_3createSeqList, METH_NOARGS, __pyx_doc_12phagedisplay_7cluster_10DistMatrix_10DistMatrix_2createSeqList},
-  {"calcDistMatrix", (PyCFunction)__pyx_pw_12phagedisplay_7cluster_10DistMatrix_10DistMatrix_5calcDistMatrix, METH_NOARGS, __pyx_doc_12phagedisplay_7cluster_10DistMatrix_10DistMatrix_4calcDistMatrix},
+static PyMethodDef __pyx_methods_10DistMatrix_DistMatrix[] = {
+  {"createSeqList", (PyCFunction)__pyx_pw_10DistMatrix_10DistMatrix_3createSeqList, METH_NOARGS, __pyx_doc_10DistMatrix_10DistMatrix_2createSeqList},
+  {"calcDistMatrix", (PyCFunction)__pyx_pw_10DistMatrix_10DistMatrix_5calcDistMatrix, METH_NOARGS, __pyx_doc_10DistMatrix_10DistMatrix_4calcDistMatrix},
   {0, 0, 0, 0}
 };
 
-static PyTypeObject __pyx_type_12phagedisplay_7cluster_10DistMatrix_DistMatrix = {
+static PyTypeObject __pyx_type_10DistMatrix_DistMatrix = {
   PyVarObject_HEAD_INIT(0, 0)
-  "phagedisplay.cluster.DistMatrix.DistMatrix", /*tp_name*/
-  sizeof(struct __pyx_obj_12phagedisplay_7cluster_10DistMatrix_DistMatrix), /*tp_basicsize*/
+  "DistMatrix.DistMatrix", /*tp_name*/
+  sizeof(struct __pyx_obj_10DistMatrix_DistMatrix), /*tp_basicsize*/
   0, /*tp_itemsize*/
-  __pyx_tp_dealloc_12phagedisplay_7cluster_10DistMatrix_DistMatrix, /*tp_dealloc*/
+  __pyx_tp_dealloc_10DistMatrix_DistMatrix, /*tp_dealloc*/
   0, /*tp_print*/
   0, /*tp_getattr*/
   0, /*tp_setattr*/
@@ -5441,13 +5435,13 @@ static PyTypeObject __pyx_type_12phagedisplay_7cluster_10DistMatrix_DistMatrix =
   0, /*tp_as_buffer*/
   Py_TPFLAGS_DEFAULT|Py_TPFLAGS_HAVE_VERSION_TAG|Py_TPFLAGS_CHECKTYPES|Py_TPFLAGS_HAVE_NEWBUFFER|Py_TPFLAGS_BASETYPE|Py_TPFLAGS_HAVE_GC, /*tp_flags*/
   "\n    Takes a file, makes a list of sequences, and computes a distance matrix.\n    Distance matrix computed using 1 - exp(probability_score).\n    \n    args:\n            matrix: the biopython matrix to use for pairwise scoring. Can score using hamming distance \n                    if 'hamming' or weighted blosum scoring if 'weighted'.\n            \n            seq (optional): if not declared, assumes file is already a list of sequences. If seq = 'no' declared then\n            list of sequence is pulled out from phage data file.\n            \n            phage_file: the file containing the sequences to be calculated into a distance matrix.\n    ", /*tp_doc*/
-  __pyx_tp_traverse_12phagedisplay_7cluster_10DistMatrix_DistMatrix, /*tp_traverse*/
-  __pyx_tp_clear_12phagedisplay_7cluster_10DistMatrix_DistMatrix, /*tp_clear*/
+  __pyx_tp_traverse_10DistMatrix_DistMatrix, /*tp_traverse*/
+  __pyx_tp_clear_10DistMatrix_DistMatrix, /*tp_clear*/
   0, /*tp_richcompare*/
   0, /*tp_weaklistoffset*/
   0, /*tp_iter*/
   0, /*tp_iternext*/
-  __pyx_methods_12phagedisplay_7cluster_10DistMatrix_DistMatrix, /*tp_methods*/
+  __pyx_methods_10DistMatrix_DistMatrix, /*tp_methods*/
   0, /*tp_members*/
   0, /*tp_getset*/
   0, /*tp_base*/
@@ -5455,9 +5449,9 @@ static PyTypeObject __pyx_type_12phagedisplay_7cluster_10DistMatrix_DistMatrix =
   0, /*tp_descr_get*/
   0, /*tp_descr_set*/
   0, /*tp_dictoffset*/
-  __pyx_pw_12phagedisplay_7cluster_10DistMatrix_10DistMatrix_1__init__, /*tp_init*/
+  __pyx_pw_10DistMatrix_10DistMatrix_1__init__, /*tp_init*/
   0, /*tp_alloc*/
-  __pyx_tp_new_12phagedisplay_7cluster_10DistMatrix_DistMatrix, /*tp_new*/
+  __pyx_tp_new_10DistMatrix_DistMatrix, /*tp_new*/
   0, /*tp_free*/
   0, /*tp_is_gc*/
   0, /*tp_bases*/
@@ -5475,154 +5469,6 @@ static PyTypeObject __pyx_type_12phagedisplay_7cluster_10DistMatrix_DistMatrix =
 static PyMethodDef __pyx_methods[] = {
   {0, 0, 0, 0}
 };
-
-static int __pyx_import_star_set(PyObject *o, PyObject* py_name, char *name) {
-  static const char* internal_type_names[] = {
-    "DistMatrix",
-    "__pyx_ctuple___dunderpyx_ctuple_int__dunderand_int",
-    "__pyx_ctuple___dunderpyx_ctuple_int__dunderand_int_struct",
-    "__pyx_ctuple_int",
-    "__pyx_ctuple_int__and_int",
-    "__pyx_ctuple_int__and_int_struct",
-    "__pyx_ctuple_int_struct",
-    "__pyx_ctuple_long__and_Py_ssize_t",
-    "__pyx_ctuple_long__and_Py_ssize_t_struct",
-    "__pyx_ctuple_long__and_int",
-    "__pyx_ctuple_long__and_int_struct",
-    0
-  };
-  const char** type_name = internal_type_names;
-  while (*type_name) {
-    if (__Pyx_StrEq(name, *type_name)) {
-      PyErr_Format(PyExc_TypeError, "Cannot overwrite C type %s", name);
-      goto bad;
-    }
-    type_name++;
-  }
-  if (0);
-  else {
-    if (PyObject_SetAttr(__pyx_m, py_name, o) < 0) goto bad;
-  }
-  return 0;
-  bad:
-  return -1;
-}
-
-
-/* import_all_from is an unexposed function from ceval.c */
-
-static int
-__Pyx_import_all_from(PyObject *locals, PyObject *v)
-{
-    PyObject *all = PyObject_GetAttrString(v, "__all__");
-    PyObject *dict, *name, *value;
-    int skip_leading_underscores = 0;
-    int pos, err;
-
-    if (all == NULL) {
-        if (!PyErr_ExceptionMatches(PyExc_AttributeError))
-            return -1; /* Unexpected error */
-        PyErr_Clear();
-        dict = PyObject_GetAttrString(v, "__dict__");
-        if (dict == NULL) {
-            if (!PyErr_ExceptionMatches(PyExc_AttributeError))
-                return -1;
-            PyErr_SetString(PyExc_ImportError,
-            "from-import-* object has no __dict__ and no __all__");
-            return -1;
-        }
-#if PY_MAJOR_VERSION < 3
-        all = PyObject_CallMethod(dict, (char *)"keys", NULL);
-#else
-        all = PyMapping_Keys(dict);
-#endif
-        Py_DECREF(dict);
-        if (all == NULL)
-            return -1;
-        skip_leading_underscores = 1;
-    }
-
-    for (pos = 0, err = 0; ; pos++) {
-        name = PySequence_GetItem(all, pos);
-        if (name == NULL) {
-            if (!PyErr_ExceptionMatches(PyExc_IndexError))
-                err = -1;
-            else
-                PyErr_Clear();
-            break;
-        }
-        if (skip_leading_underscores &&
-#if PY_MAJOR_VERSION < 3
-            PyString_Check(name) &&
-            PyString_AS_STRING(name)[0] == '_')
-#else
-            PyUnicode_Check(name) &&
-            PyUnicode_AS_UNICODE(name)[0] == '_')
-#endif
-        {
-            Py_DECREF(name);
-            continue;
-        }
-        value = PyObject_GetAttr(v, name);
-        if (value == NULL)
-            err = -1;
-        else if (PyDict_CheckExact(locals))
-            err = PyDict_SetItem(locals, name, value);
-        else
-            err = PyObject_SetItem(locals, name, value);
-        Py_DECREF(name);
-        Py_XDECREF(value);
-        if (err != 0)
-            break;
-    }
-    Py_DECREF(all);
-    return err;
-}
-
-
-static int __pyx_import_star(PyObject* m) {
-
-    int i;
-    int ret = -1;
-    char* s;
-    PyObject *locals = 0;
-    PyObject *list = 0;
-#if PY_MAJOR_VERSION >= 3
-    PyObject *utf8_name = 0;
-#endif
-    PyObject *name;
-    PyObject *item;
-
-    locals = PyDict_New();              if (!locals) goto bad;
-    if (__Pyx_import_all_from(locals, m) < 0) goto bad;
-    list = PyDict_Items(locals);        if (!list) goto bad;
-
-    for(i=0; i<PyList_GET_SIZE(list); i++) {
-        name = PyTuple_GET_ITEM(PyList_GET_ITEM(list, i), 0);
-        item = PyTuple_GET_ITEM(PyList_GET_ITEM(list, i), 1);
-#if PY_MAJOR_VERSION >= 3
-        utf8_name = PyUnicode_AsUTF8String(name);
-        if (!utf8_name) goto bad;
-        s = PyBytes_AS_STRING(utf8_name);
-        if (__pyx_import_star_set(item, name, s) < 0) goto bad;
-        Py_DECREF(utf8_name); utf8_name = 0;
-#else
-        s = PyString_AsString(name);
-        if (!s) goto bad;
-        if (__pyx_import_star_set(item, name, s) < 0) goto bad;
-#endif
-    }
-    ret = 0;
-
-bad:
-    Py_XDECREF(locals);
-    Py_XDECREF(list);
-#if PY_MAJOR_VERSION >= 3
-    Py_XDECREF(utf8_name);
-#endif
-    return ret;
-}
-
 
 #if PY_MAJOR_VERSION >= 3
 static struct PyModuleDef __pyx_moduledef = {
@@ -5644,13 +5490,13 @@ static struct PyModuleDef __pyx_moduledef = {
 
 static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s_DataFrame, __pyx_k_DataFrame, sizeof(__pyx_k_DataFrame), 0, 0, 1, 1},
+  {&__pyx_n_s_DistMatrix, __pyx_k_DistMatrix, sizeof(__pyx_k_DistMatrix), 0, 0, 1, 1},
   {&__pyx_kp_u_Format_string_allocated_too_shor, __pyx_k_Format_string_allocated_too_shor, sizeof(__pyx_k_Format_string_allocated_too_shor), 0, 1, 0, 0},
   {&__pyx_kp_u_Format_string_allocated_too_shor_2, __pyx_k_Format_string_allocated_too_shor_2, sizeof(__pyx_k_Format_string_allocated_too_shor_2), 0, 1, 0, 0},
   {&__pyx_kp_u_Non_native_byte_order_not_suppor, __pyx_k_Non_native_byte_order_not_suppor, sizeof(__pyx_k_Non_native_byte_order_not_suppor), 0, 1, 0, 0},
   {&__pyx_n_s_RuntimeError, __pyx_k_RuntimeError, sizeof(__pyx_k_RuntimeError), 0, 0, 1, 1},
   {&__pyx_kp_s_Users_hrnmy_Documents_Harms_pha, __pyx_k_Users_hrnmy_Documents_Harms_pha, sizeof(__pyx_k_Users_hrnmy_Documents_Harms_pha), 0, 0, 1, 0},
   {&__pyx_n_s_ValueError, __pyx_k_ValueError, sizeof(__pyx_k_ValueError), 0, 0, 1, 1},
-  {&__pyx_n_s__14, __pyx_k__14, sizeof(__pyx_k__14), 0, 0, 1, 1},
   {&__pyx_n_s_append, __pyx_k_append, sizeof(__pyx_k_append), 0, 0, 1, 1},
   {&__pyx_n_s_array, __pyx_k_array, sizeof(__pyx_k_array), 0, 0, 1, 1},
   {&__pyx_n_s_b, __pyx_k_b, sizeof(__pyx_k_b), 0, 0, 1, 1},
@@ -5680,12 +5526,10 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s_pandas, __pyx_k_pandas, sizeof(__pyx_k_pandas), 0, 0, 1, 1},
   {&__pyx_n_s_pd, __pyx_k_pd, sizeof(__pyx_k_pd), 0, 0, 1, 1},
   {&__pyx_n_s_phage_file, __pyx_k_phage_file, sizeof(__pyx_k_phage_file), 0, 0, 1, 1},
-  {&__pyx_n_s_phagedisplay_cluster_DistMatrix, __pyx_k_phagedisplay_cluster_DistMatrix, sizeof(__pyx_k_phagedisplay_cluster_DistMatrix), 0, 0, 1, 1},
   {&__pyx_n_s_pyx_vtable, __pyx_k_pyx_vtable, sizeof(__pyx_k_pyx_vtable), 0, 0, 1, 1},
   {&__pyx_n_s_range, __pyx_k_range, sizeof(__pyx_k_range), 0, 0, 1, 1},
   {&__pyx_n_s_readMatrix, __pyx_k_readMatrix, sizeof(__pyx_k_readMatrix), 0, 0, 1, 1},
   {&__pyx_n_s_readlines, __pyx_k_readlines, sizeof(__pyx_k_readlines), 0, 0, 1, 1},
-  {&__pyx_n_s_scipy_spatial_distance, __pyx_k_scipy_spatial_distance, sizeof(__pyx_k_scipy_spatial_distance), 0, 0, 1, 1},
   {&__pyx_n_s_scoring, __pyx_k_scoring, sizeof(__pyx_k_scoring), 0, 0, 1, 1},
   {&__pyx_n_s_seq, __pyx_k_seq, sizeof(__pyx_k_seq), 0, 0, 1, 1},
   {&__pyx_n_s_split, __pyx_k_split, sizeof(__pyx_k_split), 0, 0, 1, 1},
@@ -5699,10 +5543,10 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {0, 0, 0, 0, 0, 0, 0}
 };
 static int __Pyx_InitCachedBuiltins(void) {
-  __pyx_builtin_open = __Pyx_GetBuiltinName(__pyx_n_s_open); if (!__pyx_builtin_open) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 15; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-  __pyx_builtin_range = __Pyx_GetBuiltinName(__pyx_n_s_range); if (!__pyx_builtin_range) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 22; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-  __pyx_builtin_ValueError = __Pyx_GetBuiltinName(__pyx_n_s_ValueError); if (!__pyx_builtin_ValueError) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 70; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-  __pyx_builtin_zip = __Pyx_GetBuiltinName(__pyx_n_s_zip); if (!__pyx_builtin_zip) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 83; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_builtin_open = __Pyx_GetBuiltinName(__pyx_n_s_open); if (!__pyx_builtin_open) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 14; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_builtin_range = __Pyx_GetBuiltinName(__pyx_n_s_range); if (!__pyx_builtin_range) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 21; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_builtin_ValueError = __Pyx_GetBuiltinName(__pyx_n_s_ValueError); if (!__pyx_builtin_ValueError) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 69; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_builtin_zip = __Pyx_GetBuiltinName(__pyx_n_s_zip); if (!__pyx_builtin_zip) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 82; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __pyx_builtin_RuntimeError = __Pyx_GetBuiltinName(__pyx_n_s_RuntimeError); if (!__pyx_builtin_RuntimeError) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 802; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   return 0;
   __pyx_L1_error:;
@@ -5713,80 +5557,80 @@ static int __Pyx_InitCachedConstants(void) {
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__Pyx_InitCachedConstants", 0);
 
-  /* "phagedisplay/cluster/DistMatrix.pyx":16
+  /* "DistMatrix.pyx":15
  * 
  *     data = open(fileName).readlines()
  *     seq = data[0].strip('/n/r').split()             # <<<<<<<<<<<<<<
  * 
  *     matrix = {}
  */
-  __pyx_tuple_ = PyTuple_Pack(1, __pyx_kp_s_n_r); if (unlikely(!__pyx_tuple_)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 16; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_tuple_ = PyTuple_Pack(1, __pyx_kp_s_n_r); if (unlikely(!__pyx_tuple_)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 15; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_tuple_);
   __Pyx_GIVEREF(__pyx_tuple_);
 
-  /* "phagedisplay/cluster/DistMatrix.pyx":20
+  /* "DistMatrix.pyx":19
  *     matrix = {}
  * 
  *     for line in data[1:]:             # <<<<<<<<<<<<<<
  *         line = line.strip('/n/r').split()
  *         for j in range(1, len(line)):
  */
-  __pyx_slice__2 = PySlice_New(__pyx_int_1, Py_None, Py_None); if (unlikely(!__pyx_slice__2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 20; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_slice__2 = PySlice_New(__pyx_int_1, Py_None, Py_None); if (unlikely(!__pyx_slice__2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 19; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_slice__2);
   __Pyx_GIVEREF(__pyx_slice__2);
 
-  /* "phagedisplay/cluster/DistMatrix.pyx":21
+  /* "DistMatrix.pyx":20
  * 
  *     for line in data[1:]:
  *         line = line.strip('/n/r').split()             # <<<<<<<<<<<<<<
  *         for j in range(1, len(line)):
  *             b = seq[j-1]
  */
-  __pyx_tuple__3 = PyTuple_Pack(1, __pyx_kp_s_n_r); if (unlikely(!__pyx_tuple__3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 21; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_tuple__3 = PyTuple_Pack(1, __pyx_kp_s_n_r); if (unlikely(!__pyx_tuple__3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 20; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_tuple__3);
   __Pyx_GIVEREF(__pyx_tuple__3);
 
-  /* "phagedisplay/cluster/DistMatrix.pyx":50
+  /* "DistMatrix.pyx":49
  *         self._scoring = scoring
  *         self._seq = seq
  *         _matrix = readMatrix('blosum62.txt')             # <<<<<<<<<<<<<<
  * 
  *     cpdef createSeqList(self):
  */
-  __pyx_tuple__4 = PyTuple_Pack(1, __pyx_kp_s_blosum62_txt); if (unlikely(!__pyx_tuple__4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 50; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_tuple__4 = PyTuple_Pack(1, __pyx_kp_s_blosum62_txt); if (unlikely(!__pyx_tuple__4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 49; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_tuple__4);
   __Pyx_GIVEREF(__pyx_tuple__4);
 
-  /* "phagedisplay/cluster/DistMatrix.pyx":61
+  /* "DistMatrix.pyx":60
  * 
  *         if self._seq == 'no':
  *             with open(self._phage_file) as data:             # <<<<<<<<<<<<<<
  *                 next(data)
  *                 for line in data:
  */
-  __pyx_tuple__5 = PyTuple_Pack(3, Py_None, Py_None, Py_None); if (unlikely(!__pyx_tuple__5)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 61; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_tuple__5 = PyTuple_Pack(3, Py_None, Py_None, Py_None); if (unlikely(!__pyx_tuple__5)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 60; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_tuple__5);
   __Pyx_GIVEREF(__pyx_tuple__5);
 
-  /* "phagedisplay/cluster/DistMatrix.pyx":70
+  /* "DistMatrix.pyx":69
  *             return [line.strip() for line in open(self._phage_file)]
  *         else:
  *             raise ValueError("invalid entry!")             # <<<<<<<<<<<<<<
  * 
  *     @cython.wraparound(False)
  */
-  __pyx_tuple__6 = PyTuple_Pack(1, __pyx_kp_s_invalid_entry); if (unlikely(!__pyx_tuple__6)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 70; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_tuple__6 = PyTuple_Pack(1, __pyx_kp_s_invalid_entry); if (unlikely(!__pyx_tuple__6)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 69; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_tuple__6);
   __Pyx_GIVEREF(__pyx_tuple__6);
 
-  /* "phagedisplay/cluster/DistMatrix.pyx":90
+  /* "DistMatrix.pyx":89
  *             score = 1 - exp(score)
  *         else:
  *             raise ValueError('not an option')             # <<<<<<<<<<<<<<
  * 
  *         return score
  */
-  __pyx_tuple__7 = PyTuple_Pack(1, __pyx_kp_s_not_an_option); if (unlikely(!__pyx_tuple__7)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 90; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_tuple__7 = PyTuple_Pack(1, __pyx_kp_s_not_an_option); if (unlikely(!__pyx_tuple__7)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 89; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_tuple__7);
   __Pyx_GIVEREF(__pyx_tuple__7);
 
@@ -5856,17 +5700,17 @@ static int __Pyx_InitCachedConstants(void) {
   __Pyx_GOTREF(__pyx_tuple__13);
   __Pyx_GIVEREF(__pyx_tuple__13);
 
-  /* "phagedisplay/cluster/DistMatrix.pyx":10
+  /* "DistMatrix.pyx":9
  * from cython.parallel cimport prange
  * 
  * def readMatrix(fileName):             # <<<<<<<<<<<<<<
  *     """
  *     read matrix text file into dictionary for scoring.
  */
-  __pyx_tuple__15 = PyTuple_Pack(7, __pyx_n_s_fileName, __pyx_n_s_data, __pyx_n_s_seq, __pyx_n_s_matrix, __pyx_n_s_line, __pyx_n_s_j, __pyx_n_s_b); if (unlikely(!__pyx_tuple__15)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 10; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-  __Pyx_GOTREF(__pyx_tuple__15);
-  __Pyx_GIVEREF(__pyx_tuple__15);
-  __pyx_codeobj__16 = (PyObject*)__Pyx_PyCode_New(1, 0, 7, 0, 0, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__15, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_Users_hrnmy_Documents_Harms_pha, __pyx_n_s_readMatrix, 10, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__16)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 10; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_tuple__14 = PyTuple_Pack(7, __pyx_n_s_fileName, __pyx_n_s_data, __pyx_n_s_seq, __pyx_n_s_matrix, __pyx_n_s_line, __pyx_n_s_j, __pyx_n_s_b); if (unlikely(!__pyx_tuple__14)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 9; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __Pyx_GOTREF(__pyx_tuple__14);
+  __Pyx_GIVEREF(__pyx_tuple__14);
+  __pyx_codeobj__15 = (PyObject*)__Pyx_PyCode_New(1, 0, 7, 0, 0, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__14, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_Users_hrnmy_Documents_Harms_pha, __pyx_n_s_readMatrix, 9, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__15)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 9; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_RefNannyFinishContext();
   return 0;
   __pyx_L1_error:;
@@ -5898,7 +5742,6 @@ PyMODINIT_FUNC PyInit_DistMatrix(void)
 #endif
 {
   PyObject *__pyx_t_1 = NULL;
-  PyObject *__pyx_t_2 = NULL;
   int __pyx_lineno = 0;
   const char *__pyx_filename = NULL;
   int __pyx_clineno = 0;
@@ -5951,14 +5794,14 @@ PyMODINIT_FUNC PyInit_DistMatrix(void)
   #if PY_MAJOR_VERSION < 3 && (__PYX_DEFAULT_STRING_ENCODING_IS_ASCII || __PYX_DEFAULT_STRING_ENCODING_IS_DEFAULT)
   if (__Pyx_init_sys_getdefaultencoding_params() < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   #endif
-  if (__pyx_module_is_main_phagedisplay__cluster__DistMatrix) {
+  if (__pyx_module_is_main_DistMatrix) {
     if (PyObject_SetAttrString(__pyx_m, "__name__", __pyx_n_s_main) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1; __pyx_clineno = __LINE__; goto __pyx_L1_error;};
   }
   #if PY_MAJOR_VERSION >= 3
   {
     PyObject *modules = PyImport_GetModuleDict(); if (unlikely(!modules)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-    if (!PyDict_GetItemString(modules, "phagedisplay.cluster.DistMatrix")) {
-      if (unlikely(PyDict_SetItemString(modules, "phagedisplay.cluster.DistMatrix", __pyx_m) < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    if (!PyDict_GetItemString(modules, "DistMatrix")) {
+      if (unlikely(PyDict_SetItemString(modules, "DistMatrix", __pyx_m) < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     }
   }
   #endif
@@ -5970,14 +5813,14 @@ PyMODINIT_FUNC PyInit_DistMatrix(void)
   /*--- Variable export code ---*/
   /*--- Function export code ---*/
   /*--- Type init code ---*/
-  __pyx_vtabptr_12phagedisplay_7cluster_10DistMatrix_DistMatrix = &__pyx_vtable_12phagedisplay_7cluster_10DistMatrix_DistMatrix;
-  __pyx_vtable_12phagedisplay_7cluster_10DistMatrix_DistMatrix.createSeqList = (PyObject *(*)(struct __pyx_obj_12phagedisplay_7cluster_10DistMatrix_DistMatrix *, int __pyx_skip_dispatch))__pyx_f_12phagedisplay_7cluster_10DistMatrix_10DistMatrix_createSeqList;
-  __pyx_vtable_12phagedisplay_7cluster_10DistMatrix_DistMatrix.scorePairwise = (double (*)(struct __pyx_obj_12phagedisplay_7cluster_10DistMatrix_DistMatrix *, PyObject *, PyObject *))__pyx_f_12phagedisplay_7cluster_10DistMatrix_10DistMatrix_scorePairwise;
-  if (PyType_Ready(&__pyx_type_12phagedisplay_7cluster_10DistMatrix_DistMatrix) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 28; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-  __pyx_type_12phagedisplay_7cluster_10DistMatrix_DistMatrix.tp_print = 0;
-  if (__Pyx_SetVtable(__pyx_type_12phagedisplay_7cluster_10DistMatrix_DistMatrix.tp_dict, __pyx_vtabptr_12phagedisplay_7cluster_10DistMatrix_DistMatrix) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 28; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-  if (PyObject_SetAttrString(__pyx_m, "DistMatrix", (PyObject *)&__pyx_type_12phagedisplay_7cluster_10DistMatrix_DistMatrix) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 28; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-  __pyx_ptype_12phagedisplay_7cluster_10DistMatrix_DistMatrix = &__pyx_type_12phagedisplay_7cluster_10DistMatrix_DistMatrix;
+  __pyx_vtabptr_10DistMatrix_DistMatrix = &__pyx_vtable_10DistMatrix_DistMatrix;
+  __pyx_vtable_10DistMatrix_DistMatrix.createSeqList = (PyObject *(*)(struct __pyx_obj_10DistMatrix_DistMatrix *, int __pyx_skip_dispatch))__pyx_f_10DistMatrix_10DistMatrix_createSeqList;
+  __pyx_vtable_10DistMatrix_DistMatrix.scorePairwise = (double (*)(struct __pyx_obj_10DistMatrix_DistMatrix *, PyObject *, PyObject *))__pyx_f_10DistMatrix_10DistMatrix_scorePairwise;
+  if (PyType_Ready(&__pyx_type_10DistMatrix_DistMatrix) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 27; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_type_10DistMatrix_DistMatrix.tp_print = 0;
+  if (__Pyx_SetVtable(__pyx_type_10DistMatrix_DistMatrix.tp_dict, __pyx_vtabptr_10DistMatrix_DistMatrix) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 27; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if (PyObject_SetAttrString(__pyx_m, "DistMatrix", (PyObject *)&__pyx_type_10DistMatrix_DistMatrix) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 27; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_ptype_10DistMatrix_DistMatrix = &__pyx_type_10DistMatrix_DistMatrix;
   /*--- Type import code ---*/
   __pyx_ptype_7cpython_4type_type = __Pyx_ImportType(__Pyx_BUILTIN_MODULE_NAME, "type", 
   #if CYTHON_COMPILING_IN_PYPY
@@ -5995,7 +5838,7 @@ PyMODINIT_FUNC PyInit_DistMatrix(void)
   /*--- Function import code ---*/
   /*--- Execution code ---*/
 
-  /* "phagedisplay/cluster/DistMatrix.pyx":2
+  /* "DistMatrix.pyx":2
  * from libc.math cimport exp
  * import numpy as np             # <<<<<<<<<<<<<<
  * cimport numpy as np
@@ -6006,57 +5849,39 @@ PyMODINIT_FUNC PyInit_DistMatrix(void)
   if (PyDict_SetItem(__pyx_d, __pyx_n_s_np, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 2; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "phagedisplay/cluster/DistMatrix.pyx":4
+  /* "DistMatrix.pyx":4
  * import numpy as np
  * cimport numpy as np
  * import pandas as pd             # <<<<<<<<<<<<<<
- * from scipy.spatial.distance import *
  * 
+ * cimport cython
  */
   __pyx_t_1 = __Pyx_Import(__pyx_n_s_pandas, 0, -1); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 4; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
   if (PyDict_SetItem(__pyx_d, __pyx_n_s_pd, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 4; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "phagedisplay/cluster/DistMatrix.pyx":5
- * cimport numpy as np
- * import pandas as pd
- * from scipy.spatial.distance import *             # <<<<<<<<<<<<<<
- * 
- * cimport cython
- */
-  __pyx_t_1 = PyList_New(1); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 5; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-  __Pyx_GOTREF(__pyx_t_1);
-  __Pyx_INCREF(__pyx_n_s__14);
-  __Pyx_GIVEREF(__pyx_n_s__14);
-  PyList_SET_ITEM(__pyx_t_1, 0, __pyx_n_s__14);
-  __pyx_t_2 = __Pyx_Import(__pyx_n_s_scipy_spatial_distance, __pyx_t_1, -1); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 5; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-  __Pyx_GOTREF(__pyx_t_2);
-  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  if (__pyx_import_star(__pyx_t_2) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 5; __pyx_clineno = __LINE__; goto __pyx_L1_error;};
-  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-
-  /* "phagedisplay/cluster/DistMatrix.pyx":10
+  /* "DistMatrix.pyx":9
  * from cython.parallel cimport prange
  * 
  * def readMatrix(fileName):             # <<<<<<<<<<<<<<
  *     """
  *     read matrix text file into dictionary for scoring.
  */
-  __pyx_t_2 = PyCFunction_NewEx(&__pyx_mdef_12phagedisplay_7cluster_10DistMatrix_1readMatrix, NULL, __pyx_n_s_phagedisplay_cluster_DistMatrix); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 10; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-  __Pyx_GOTREF(__pyx_t_2);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_readMatrix, __pyx_t_2) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 10; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+  __pyx_t_1 = PyCFunction_NewEx(&__pyx_mdef_10DistMatrix_1readMatrix, NULL, __pyx_n_s_DistMatrix); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 9; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __Pyx_GOTREF(__pyx_t_1);
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_readMatrix, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 9; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "phagedisplay/cluster/DistMatrix.pyx":1
+  /* "DistMatrix.pyx":1
  * from libc.math cimport exp             # <<<<<<<<<<<<<<
  * import numpy as np
  * cimport numpy as np
  */
-  __pyx_t_2 = PyDict_New(); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-  __Pyx_GOTREF(__pyx_t_2);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_test, __pyx_t_2) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+  __pyx_t_1 = PyDict_New(); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __Pyx_GOTREF(__pyx_t_1);
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_test, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
   /* "../../../../../anaconda3/lib/python3.4/site-packages/Cython/Includes/numpy/__init__.pxd":979
  *      arr.base = baseptr
@@ -6071,14 +5896,13 @@ PyMODINIT_FUNC PyInit_DistMatrix(void)
   goto __pyx_L0;
   __pyx_L1_error:;
   __Pyx_XDECREF(__pyx_t_1);
-  __Pyx_XDECREF(__pyx_t_2);
   if (__pyx_m) {
     if (__pyx_d) {
-      __Pyx_AddTraceback("init phagedisplay.cluster.DistMatrix", __pyx_clineno, __pyx_lineno, __pyx_filename);
+      __Pyx_AddTraceback("init DistMatrix", __pyx_clineno, __pyx_lineno, __pyx_filename);
     }
     Py_DECREF(__pyx_m); __pyx_m = 0;
   } else if (!PyErr_Occurred()) {
-    PyErr_SetString(PyExc_ImportError, "init phagedisplay.cluster.DistMatrix");
+    PyErr_SetString(PyExc_ImportError, "init DistMatrix");
   }
   __pyx_L0:;
   __Pyx_RefNannyFinishContext();
@@ -8459,11 +8283,6 @@ raise_neg_overflow:
     PyErr_SetString(PyExc_OverflowError,
         "can't convert negative value to long");
     return (long) -1;
-}
-
-static CYTHON_INLINE int __Pyx_StrEq(const char *s1, const char *s2) {
-     while (*s1 != '\0' && *s1 == *s2) { s1++; s2++; }
-     return *s1 == *s2;
 }
 
 static int __Pyx_check_binary_version(void) {
