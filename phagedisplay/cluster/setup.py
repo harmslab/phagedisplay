@@ -4,16 +4,14 @@ from distutils.extension import Extension
 from Cython.Distutils import build_ext
 import numpy as np
 
-ext_module = Extension(
+extensions = Extension(
     "DistMatrix",
-    ["DistMatrix.pyx"],
-    extra_compile_args=['-fopenmp'],
-    extra_link_args=['-fopenmp']
+    ["DistMatrix.pyx"]
 )
 
 setup(
-    name = 'Hello world app',
+    name = 'DistMatrix',
     cmdclass = {'build_ext': build_ext},
-    ext_modules = [ext_module],
+    ext_modules = cythonize(extensions),
     include_dirs = [np.get_include()]
 )
