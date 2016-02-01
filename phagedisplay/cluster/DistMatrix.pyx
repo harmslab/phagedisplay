@@ -3,6 +3,8 @@ import numpy as np
 cimport numpy as np
 import pandas as pd
 
+import random 
+
 cimport cython
 
 def readMatrix(fileName):
@@ -113,8 +115,6 @@ cdef class DistMatrix:
         dist_matrix = pd.DataFrame(D, index = sequences, columns = sequences)
     
         return dist_matrix
-
-import random 
 
 def genSeqList(N, M, l, q):
     """
