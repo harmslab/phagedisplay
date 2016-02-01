@@ -9,6 +9,7 @@ import scipy.cluster.hierarchy as hcl
 from scipy.spatial.distance import squareform
 
 import numpy as np
+import matplotlib.pyplot as plt
 
 
 class Cluster():
@@ -25,6 +26,14 @@ class Cluster():
         self._dist_matrix = dist_matrix
         self._cluster_alg = cluster_alg
         self._factor = factor
+
+    def freqHist(self):
+        """
+        make histogram plot of frequency of sequence distance scores in the given distance matrix.
+        """
+        
+        plt.figure();
+        self._dist_matrix.plot(kind='hist', legend=False, orientation='horizontal')
 
     def cluster(self):
         """
@@ -57,43 +66,7 @@ class Cluster():
         
     
         return cluster_labels
-
-class ClusterAnalysis():
-    """
-    analysis operations to determine best clustering.
-    """
-
-    def simplek(data):
-        """
-        super basic k approximation.
-        """
         
-        k = sqrt(len(cluster)/2)
-        
-        return k
-
-    def silhouette(data, start, stop):
-        """
-        return silhouette score.
-        Best score is closest to 1, worst score closest to -1, and scores near 0 indicates overlapping clusters.
-        """
-        
-        s = []
-
-        for n_clust in range(start, stop):
-            calc = AgglomerativeClustering(n_clusters = n_clust, affinity = 'precomputed', linkage = 'average').fit(data.as_matrix()) 
-         
-                  
-            labels = calc.labels_
-            
-            sil_score = silhouette_score(data.as_matrix(), labels, metric = 'precomputed')
-            s.append(sil_score)
-        
-        plt.plot(s)
-        plt.ylabel("Silhouette Score")
-        plt.xlabel("k")
-        plt.xlim((start, stop))
-        plt.title("Cluster analysis for Agglomerative)
 
 class Membership():
     """
