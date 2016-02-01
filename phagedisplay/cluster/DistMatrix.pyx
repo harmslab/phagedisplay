@@ -61,7 +61,7 @@ cdef class DistMatrix:
                 next(data)
                 for line in data:
                     num, seq, k_glob, theta_glob, k_ind, theta_ind = line.split()
-                    phage_data.append(seq) if float(k_ind) < 1.000000000e+00 else None
+                    phage_data.append(seq) if float(k_ind) > 1.000000000e+00 else None
             return phage_data
         elif self._seq == 'yes':
             return [line.strip() for line in open(self._phage_file)]
