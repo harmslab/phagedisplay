@@ -24,15 +24,15 @@ def readMatrix(fileName):
             matrix[(line[0], b)] = int(line[j])
 
     return matrix
-
+    
 cdef class DistMatrix:
     """
     Takes a file, makes a list of sequences, and computes a distance matrix.
-    Distance matrix computed using 1 - exp(probability_score).
+    Distance matrix computed using 1 - exp(probability_score) with weighted scoring.
     
     args:
             matrix: the biopython matrix to use for pairwise scoring. Can score using hamming distance 
-                    if 'hamming' or weighted blosum scoring if 'weighted'.
+                    if matrix = 'hamming' or a given matrix.
             
             seq (optional): if not declared, assumes file is already a list of sequences. If seq = 'no' declared then
             list of sequence is pulled out from phage data file.
@@ -47,14 +47,14 @@ cdef class DistMatrix:
         self._phage_file = phage_file
         self._scoring = scoring
         self._seq = seq
-        _matrix = readMatrix('blosum62.txt')
+        self._matrix = readMatrix('blosum62.txt')
         
-    cpdef createSeqList(self):
+    cdef createSeqList(self, length):
         """
         Creates a list of sequences from a file with a k_independent greater than 1.00
         If phage file is already a list of sequences, outputs that as a list.
         """
-    
+
         cdef phage_data = []
         
         if self._seq == 'no':
@@ -63,7 +63,7 @@ cdef class DistMatrix:
                 for line in data:
                     num, seq, k_glob, theta_glob, k_ind, theta_ind = line.split()
                     phage_data.append(seq) if float(k_ind) > 1.000000000e+00 else None
-            return phage_data
+            return phage_data[:length]
         elif self._seq == 'yes':
             return [line.strip() for line in open(self._phage_file)]
         else:
@@ -93,21 +93,19 @@ cdef class DistMatrix:
     
     @cython.wraparound(False)
     @cython.boundscheck(False)
-    def calcDistMatrix(self):
+    def calcDistMatrix(self, length):
         """
         calculates pairwise distance between sequences in a given file and returns a distance matrix.
         """
         cdef:
-            np.ndarray sequences = np.array(self.createSeqList())
+            np.ndarray sequences = np.array(self.createSeqList(length))
             int i, j, nrow = sequences.shape[0]
             np.ndarray[dtype=double, ndim=2] D = np.zeros((nrow, nrow))
             
             double temp
 
-        #for i in prange(nrow, nogil = True, schedule = 'guided'):
         for i in range(nrow):
             for j in range(i + 1, nrow):
-                #with gil:
                 temp = self.scorePairwise(sequences[i], sequences[j])
                 D[i, j] = temp
                 D[j, i] = temp
