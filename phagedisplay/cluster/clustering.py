@@ -1,8 +1,4 @@
-import pyximport
-pyximport.install()
-import DistMatrix
-
-from sklearn.cluster import *
+from sklearn.cluster import DBSCAN
 import scipy.cluster.hierarchy as hcl
 from scipy.spatial.distance import squareform
 
@@ -16,8 +12,9 @@ class Cluster():
     args
         dist_matrix: distance matrix to perform clustering on
         cluster_alg: clustering algorithm to use on matrix
-        factor: for setting a parameter on calculating clusters/number of predicted clusters. (epsilon DBSCAN)
-        num: DBSCAN - min_samples
+        factor: for setting a parameter on calculating clusters.
+        num (optional): number of clusters predicted.
+        
     """
     
     def __init__(self, dist_matrix, cluster_alg, factor = None, num = None):
@@ -25,7 +22,7 @@ class Cluster():
         self._cluster_alg = cluster_alg
         self._factor = factor
         self._num = num
-
+    
     def freqHist(self):
         """
         make histogram plot of frequency of sequence distance scores in the given distance matrix.
@@ -34,10 +31,10 @@ class Cluster():
         plt.figure();
         self._dist_matrix.plot(kind='hist', legend=False, orientation='horizontal')
 
+
     def cluster(self):
         """
-        cluster using DBSCAN or hierarchal clustering. DBSCAN works best on larger datasets
-        while hierarchal works best on smaller datasets.
+        clustering to perform on distance matrix.
         DBSCAN - 
             min_samples: the minimum number of samples for the point to considered to be a central cluster point.
                 a higher number will give a smaller number of large clusters with a large noise (-1) cluster while
@@ -48,12 +45,12 @@ class Cluster():
         """
 
         X = self._dist_matrix
-
+        
         # compute scipy hierarchal clustering
         if self._cluster_alg == 'hierarchal':
             condensed = squareform(X)
             linkage = hcl.average(condensed)
-            clusters = hcl.fcluster(linkage, self._factor, criterion = 'distance')
+            clusters = hcl.fcluster(linkage, self._factor, criterion = 'maxclust')
 
         # compute DBSCAN clustering
         elif self._cluster_alg == 'DBSCAN':
@@ -71,6 +68,8 @@ class Cluster():
         cluster_labels = pd.DataFrame({'Sequences' : X.index, 
                                        'Cluster' : clusters})
         
+        #print(n_clusters)
+        #print(clusters, len(clusters))
     
         return cluster_labels
 
@@ -85,7 +84,7 @@ class Membership():
         
     def getAll(self):
         """
-        return dictionary of all clusters and member IDs. 
+        return dictionary of all clusters and member IDs.
         """
         
         return self._cluster.groups
@@ -99,7 +98,7 @@ class Membership():
     
     def getCount(self):
         """
-        return count of size of each cluster.
+        return count in each cluster.
         """
         
         return self._cluster.count()
@@ -118,7 +117,7 @@ class Membership():
                 percent_overlap = round(((len(np.intersect1d(a.as_matrix(['Sequences']), b.as_matrix(['Sequences'])))
                                          /len(a))*100), 2)
 
-                # returns non-unique values in both arrays.
+                # returns unique values in both arrays.
                 overlap.append((i, j, len(a), len(b), percent_overlap))
 
         col = ['cluster a', 'cluster b', 'length a', 'length b', '% overlap']
@@ -128,7 +127,33 @@ class Membership():
     
     def toCSV(self, cluster, file):
         """
-        save a cluster to a csv or chosen text type file.
+        save a cluster to a csv file.
         """
         
         self.getCluster(cluster)['Sequences'].to_csv(file, index = False)
+
+def num_clust(data):
+    clusters = data['Cluster'].tolist()
+    num = len(np.unique(clusters)) - (1 if -1 in clusters else 0)
+    return num
+
+def eps_analysis(data):
+    
+    epsilon = []
+    clusters = []
+    noise = []
+    
+    for i in range(2, 12):
+        clustering = Cluster(data, 'DBSCAN', factor = i, num = 7).cluster()
+        length = num_clust(clustering)
+        epsilon.append(i)
+        clusters.append(length)
+        
+        outliers = len(clustering[(clustering['Cluster'] == -1)].index)
+        noise.append(outliers)
+            
+        print('# of clusters: {}, epsilon: {}, noise: {}'.format(length, i, outliers))
+        
+    plt.plot(epsilon, clusters)
+    plt.ylabel("clusters")
+    plt.xlabel("epsilon")
