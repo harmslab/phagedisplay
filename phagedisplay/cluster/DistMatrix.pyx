@@ -21,7 +21,7 @@ def readMatrix(fileName):
         line = line.strip('/n/r').split()
         for j in range(1, len(line)):
             b = seq[j-1]
-            matrix[(line[0], b)] = int(line[j])
+            matrix[(line[0], b)] = exp(float(line[j]))
 
     return matrix
     
@@ -75,20 +75,22 @@ cdef class DistMatrix:
         """
         calculate score between two sequences using a given scoring matrix.
         """
-        cdef double score = 0.0
+        cdef double score = 1.0
         cdef str i, j
         
         
         if self._scoring == 'hamming':
             for i, j in zip(seq1, seq2):
                 score += 0.0 if i == j else 1.0
+        if self._scoring == 'damerau':
+            score = jellyfish.damerau_levenshtein_distance(seq1, seq2)
         elif self._scoring == 'weighted':
             for i, j in zip(seq1, seq2):
-                score += self._matrix[(i, j)]
-            score = 1 - exp(score)   
+                score *= self._matrix[(i, j)]
+            score = 1 - score   
         else:
             raise ValueError('not an option')
-
+            
         return score
     
     @cython.wraparound(False)
