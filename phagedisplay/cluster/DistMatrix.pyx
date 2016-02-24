@@ -2,6 +2,7 @@ from libc.math cimport exp
 import numpy as np
 cimport numpy as np
 import pandas as pd
+import jellyfish as jf
 
 import random 
 
@@ -24,7 +25,7 @@ def readMatrix(fileName):
             matrix[(line[0], b)] = exp(float(line[j]))
 
     return matrix
-    
+
 cdef class DistMatrix:
     """
     Takes a file, makes a list of sequences, and computes a distance matrix.
@@ -83,7 +84,7 @@ cdef class DistMatrix:
             for i, j in zip(seq1, seq2):
                 score += 0.0 if i == j else 1.0
         if self._scoring == 'damerau':
-            score = jellyfish.damerau_levenshtein_distance(seq1, seq2)
+            score = jf.damerau_levenshtein_distance(seq1, seq2)
         elif self._scoring == 'weighted':
             for i, j in zip(seq1, seq2):
                 score *= self._matrix[(i, j)]
