@@ -4,7 +4,15 @@ from scipy.spatial.distance import squareform
 
 import numpy as np
 import matplotlib.pyplot as plt
+import pandas as pd
 
+def histogram(dist_matrix):
+        """
+        make histogram plot of frequency of sequence distance scores in the given distance matrix.
+        """
+        
+        plt.figure();
+        dist_matrix.plot(kind='hist', legend=False, orientation='horizontal')
 
 class Cluster():
     """
@@ -22,15 +30,6 @@ class Cluster():
         self._cluster_alg = cluster_alg
         self._factor = factor
         self._num = num
-    
-    def freqHist(self):
-        """
-        make histogram plot of frequency of sequence distance scores in the given distance matrix.
-        """
-        
-        plt.figure();
-        self._dist_matrix.plot(kind='hist', legend=False, orientation='horizontal')
-
 
     def cluster(self):
         """
@@ -67,70 +66,8 @@ class Cluster():
         n_clusters = len(np.unique(clusters)) - (1 if -1 in clusters else 0)
         cluster_labels = pd.DataFrame({'Sequences' : X.index, 
                                        'Cluster' : clusters})
-        
-        #print(n_clusters)
-        #print(clusters, len(clusters))
     
         return cluster_labels
-
-
-class Membership():
-    """
-    accessing cluster membership of given cluster in a pandas dataframe format.
-    """
-    
-    def __init__(self, cluster):
-        self._cluster = cluster.groupby('Cluster')
-        
-    def getAll(self):
-        """
-        return dictionary of all clusters and member IDs.
-        """
-        
-        return self._cluster.groups
-    
-    def getCluster(self, clust_num):
-        """
-        return specified cluster and members.
-        """
-        
-        return self._cluster.get_group(clust_num)
-    
-    def getCount(self):
-        """
-        return count in each cluster.
-        """
-        
-        return self._cluster.count()
-    
-    def getOverlap(self, x, y, clust2):
-        """
-        compare two clusters to see amount of overlap.
-        """
-        
-        overlap = []
-
-        for i in range(x):
-            for j in range(y):
-                a = self.getCluster(i)
-                b = clust2.getCluster(j)
-                percent_overlap = round(((len(np.intersect1d(a.as_matrix(['Sequences']), b.as_matrix(['Sequences'])))
-                                         /len(a))*100), 2)
-
-                # returns unique values in both arrays.
-                overlap.append((i, j, len(a), len(b), percent_overlap))
-
-        col = ['cluster a', 'cluster b', 'length a', 'length b', '% overlap']
-        pd.DataFrame(overlap, columns = col)
-        
-        return overlap
-    
-    def toCSV(self, cluster, file):
-        """
-        save a cluster to a csv file.
-        """
-        
-        self.getCluster(cluster)['Sequences'].to_csv(file, index = False)
 
 def num_clust(data):
     clusters = data['Cluster'].tolist()
@@ -153,7 +90,73 @@ def eps_analysis(data):
         noise.append(outliers)
             
         print('# of clusters: {}, epsilon: {}, noise: {}'.format(length, i, outliers))
-        
+    
+    plt.subplot(2, 1, 1)
     plt.plot(epsilon, clusters)
     plt.ylabel("clusters")
     plt.xlabel("epsilon")
+    
+    plt.subplot(2, 1, 2)
+    plt.plot(noise, clusters)
+    plt.ylabel("clusters")
+    plt.xlabel("noise")
+    
+    plt.show()
+
+class Membership():
+    """
+    accessing cluster membership of given cluster in a pandas dataframe format.
+    """
+    
+    def __init__(self, cluster):
+        self._cluster = cluster.groupby('Cluster')
+        
+    def get_all(self):
+        """
+        return dictionary of all clusters and members.
+        """
+        
+        return self._cluster.groups
+    
+    def get_cluster(self, clust_num):
+        """
+        return specified cluster and members.
+        """
+        
+        return self._cluster.get_group(clust_num)
+    
+    def get_count(self):
+        """
+        return count in each cluster.
+        """
+        
+        return self._cluster.count()
+    
+    def get_overlap(self, x, y, clust2):
+        """
+        compare two clusters to see amount of overlap.
+        """
+        
+        overlap = []
+
+        for i in range(x):
+            for j in range(y):
+                a = self.get_cluster(i)
+                b = clust2.get_cluster(j)
+                percent_overlap = round(((len(np.intersect1d(a.as_matrix(['Sequences']), b.as_matrix(['Sequences'])))
+                                         /len(a))*100), 2)
+
+                # returns unique values in both arrays.
+                overlap.append((i, j, len(a), len(b), percent_overlap))
+
+        col = ['cluster a', 'cluster b', 'length a', 'length b', '% overlap']
+        pd.DataFrame(overlap, columns = col)
+        
+        return overlap
+    
+    def to_csv(self, cluster, file):
+        """
+        save a cluster to a csv file.
+        """
+        
+        self.get_cluster(cluster)['Sequences'].to_csv(file, index = False)
