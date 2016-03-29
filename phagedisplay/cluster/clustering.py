@@ -79,17 +79,25 @@ def eps_analysis(data):
     epsilon = []
     clusters = []
     noise = []
+    max_clust = 1
     
     for i in range(2, 12):
         clustering = Cluster(data, 'DBSCAN', factor = i, num = 7).cluster()
         length = num_clust(clustering)
         epsilon.append(i)
         clusters.append(length)
+        if max_clust < length:
+            max_clust = length
         
         outliers = len(clustering[(clustering['Cluster'] == -1)].index)
         noise.append(outliers)
             
         print('# of clusters: {}, epsilon: {}, noise: {}'.format(length, i, outliers))
+
+    print(max_clust)
+
+    for j in clusters:
+        print(j/max_clust)
     
     plt.subplot(2, 1, 1)
     plt.plot(epsilon, clusters)
