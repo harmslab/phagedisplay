@@ -5,6 +5,7 @@ import pandas as pd
 import jellyfish as jf
 
 import random 
+import pickle
 
 cimport cython
 
@@ -42,16 +43,13 @@ cdef class DistMatrix:
     """
     
     cdef str _phage_file, _seq
-    cdef _scoring, _matrix, _amino_num
+    cdef _scoring, _matrix
     
     def __init__(self, phage_file, scoring = None, seq = None):
         self._phage_file = phage_file
         self._scoring = scoring
         self._seq = seq
         self._matrix = read_matrix('blosum62.txt')
-        self._amino_num = {'G' : 0, 'A' : 1, 'V': 2, 'L' : 3, 'I' : 4, 'P' : 5, 'F' : 6, 'Y' : 7, 'W' : 8, 
-                           'E' : 9, 'D' : 10, 'K' : 11, 'R' : 12, 'H' : 13, 'S' : 14, 'T' : 15, 'C' : 16, 
-                           'M' : 17, 'N' : 18, 'Q' : 19}
         
     
     cpdef aminos_int(self, seq):
@@ -130,42 +128,3 @@ cdef class DistMatrix:
         dist_matrix = pd.DataFrame(D, index = sequences, columns = sequences)
     
         return dist_matrix
-
-def gen_list(l, file_name):
-    """
-    generate dummy data.
-    
-    args:
-        N: number of clusters
-        M: differences in each sequence
-        l: length of sequences
-        q: max number of sequences in each cluster
-    """
-    
-    aminos = ['G', 'A', 'V', 'L', 'I', 'P', 'F', 'Y', 'W', 'E', 'D', 'K', 'R', 'H', 'S', 'T', 'C', 'M', 'N', 'Q']
-    seq_list = []
-    
-    N = random.randint(50, 150)
-    M = random.randint(2, 7)
-    
-    file_save = {'# clusters': N, '# of differences' : M}
-    pickle.dump(file_save, open(file_name, 'wb'))
-    
-    for i in range(N):
-        seq = [random.choice(aminos) for x in range(l)]
-        seq_list.append(''.join(seq))
-        
-        # randomizes number of sequences in each cluster.
-        rand_clust_num = random.randint(5, 250)
-        for j in range(rand_clust_num):
-            seq2 = seq[:]
-            for k in range(M):
-                index = random.randint(0, l-1)
-                seq2[index] = random.choice(aminos)
-            seq_list.append(''.join(seq2))
-        
-    return pd.DataFrame(seq_list)
-
-def to_file(seq_list, file_name):
-    
-    seq_list.to_csv(file_name, index = False, header = False)
