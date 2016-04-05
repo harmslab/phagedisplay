@@ -90,11 +90,11 @@ class EpsAnalysis():
         
         return num
             
-    def graphs(self, eps_file):
+    def graphs(self):
         """
         return epsilon and noise vs clusters graphs.
         """
-        with PdfPages(eps_file) as pdf:
+        with PdfPages('Cluster_test/all_epsilons/eps_noise.pdf') as pdf:
             plt.subplot(2, 1, 1)
             plt.plot(self._epsilon, self._clusters)
             plt.ylabel("clusters")
@@ -109,12 +109,12 @@ class EpsAnalysis():
             pdf.savefig()
             plt.close()
     
-    def epsilon(self, dist_matrix, eps_file, eps_summary):
+    def epsilon(self, dist_matrix, file, cutoff = 0.95):
         """
         return epsilon choice based on threshold N/Nmax > 0.95 and the maximum noise.
         """
     
-        self.graphs(eps_file)
+        self.graphs()
     
         for i in range(2, int(max(dist_matrix.max()))):
             clustering = Cluster(dist_matrix, 'DBSCAN', factor = i, num = 7).cluster()
@@ -130,7 +130,7 @@ class EpsAnalysis():
             if length > 1:
                 # cluster summary for each epsilon
                 count = Membership(clustering).get_count()
-                count.to_pickle('{}/eps{}.pkl'.format(eps_summary, i))
+                count.to_pickle('Cluster_test/all_epsilons/eps{}.pkl'.format(i))
 
         data = np.array(self._all_combo)
 
@@ -141,7 +141,7 @@ class EpsAnalysis():
         clust_thresh = data[:,1]/max_clust
 
         # Get indices in array that satisfy condition 1
-        indices = np.where(clust_thresh[clust_thresh > 0.95])
+        indices = np.where(clust_thresh[clust_thresh > cutoff])
         max_noise = max(data[indices, 2])
 
         # Get indices that satisfy condition 2
