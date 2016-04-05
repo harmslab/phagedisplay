@@ -5,9 +5,11 @@ import pandas as pd
 import jellyfish as jf
 
 import random 
-import pickle
 
 cimport cython
+
+aa_string = '*ACDEFGHIKLMNPQRSTVWYBZX'
+aa_dict = dict([(a, i) for a, i in zip(aa_string, range(len(aa_string)))])
 
 def read_matrix(file_name):
     """
@@ -42,23 +44,21 @@ cdef class DistMatrix:
             phage_file: the file containing the sequences to be calculated into a distance matrix.
     """
     
-    cdef str _phage_file, _seq
+    cdef str _phage_file
     cdef _scoring, _matrix
     
-    def __init__(self, phage_file, scoring = None, seq = None):
+    def __init__(self, phage_file, scoring = None):
         self._phage_file = phage_file
         self._scoring = scoring
-        self._seq = seq
         self._matrix = read_matrix('blosum62.txt')
         
-    
     cpdef aminos_int(self, seq):
         
         int_seq = []
         
         for i in seq:
             for j in i:
-                int_seq.append(self._amino_num[j])
+                int_seq.append(aa_dict[j])
             
         return int_seq
         
@@ -69,18 +69,13 @@ cdef class DistMatrix:
         """
 
         cdef phage_data = []
-        
-        if self._seq == 'no':
-            with open(self._phage_file) as data:
-                next(data)
-                for line in data:
-                    num, seq, k_glob, theta_glob, k_ind, theta_ind = line.split()
-                    phage_data.append(seq) if float(k_ind) > 1.000000000e+00 else None
-            return phage_data
-        elif self._seq == 'yes':
-            return [line.strip() for line in open(self._phage_file)]
-        else:
-            raise ValueError("invalid entry!")
+
+        with open(self._phage_file) as data:
+            next(data)
+            for line in data:
+                num, seq, k_glob, theta_glob, k_ind, theta_ind = line.split()
+                phage_data.append(seq) if float(k_ind) > 1.000000000e+00 else None
+        return phage_data
     
     @cython.wraparound(False)
     @cython.boundscheck(False)
@@ -91,11 +86,10 @@ cdef class DistMatrix:
         cdef double score = 1.0
         cdef str i, j
         
-        
         if self._scoring == 'hamming':
             for i, j in zip(seq1, seq2):
                 score += 0.0 if i == j else 1.0
-        if self._scoring == 'damerau':
+        elif self._scoring == 'damerau':
             score = jf.damerau_levenshtein_distance(seq1, seq2)
         elif self._scoring == 'weighted':
             for i, j in zip(seq1, seq2):
