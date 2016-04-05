@@ -42,15 +42,18 @@ cdef class DistMatrix:
             list of sequence is pulled out from phage data file.
             
             phage_file: the file containing the sequences to be calculated into a distance matrix.
+
+            cutoff = enrichment cutoff for sequences scored.
     """
     
     cdef str _phage_file
-    cdef _scoring, _matrix
+    cdef _scoring, _matrix, cutoff
     
-    def __init__(self, phage_file, scoring = None):
+    def __init__(self, phage_file, scoring = None, cutoff = 1.000000000e+00):
         self._phage_file = phage_file
         self._scoring = scoring
         self._matrix = read_matrix('blosum62.txt')
+        self._cutoff = cutoff
         
     cpdef aminos_int(self, seq):
         
@@ -74,7 +77,7 @@ cdef class DistMatrix:
             next(data)
             for line in data:
                 num, seq, k_glob, theta_glob, k_ind, theta_ind = line.split()
-                phage_data.append(seq) if float(k_ind) > 1.000000000e+00 else None
+                phage_data.append(seq) if float(k_ind) > self._cutoff else None
         return phage_data
     
     @cython.wraparound(False)
