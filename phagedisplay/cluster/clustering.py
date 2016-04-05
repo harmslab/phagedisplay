@@ -6,6 +6,9 @@ import numpy as np
 import matplotlib.pyplot as plt
 import pandas as pd
 
+import pickle
+import makeweblogos as logo
+
 def histogram(dist_matrix):
         """
         make histogram plot of frequency of sequence distance scores in the given distance matrix.
@@ -68,48 +71,84 @@ class Cluster():
                                        'Cluster' : clusters})
     
         return cluster_labels
-
-def num_clust(data):
-    clusters = data['Cluster'].tolist()
-    num = len(np.unique(clusters)) - (1 if -1 in clusters else 0)
-    return num
-
-def eps_analysis(data):
     
-    epsilon = []
-    clusters = []
-    noise = []
-    max_clust = 1
     
-    for i in range(2, 12):
-        clustering = Cluster(data, 'DBSCAN', factor = i, num = 7).cluster()
-        length = num_clust(clustering)
-        epsilon.append(i)
-        clusters.append(length)
-        if max_clust < length:
-            max_clust = length
+class EpsAnalysis():
+    
+    def __init__(self):
+        self._epsilon = []
+        self._clusters = []
+        self._noise = []
+        self._all_combo = []
         
-        outliers = len(clustering[(clustering['Cluster'] == -1)].index)
-        noise.append(outliers)
+    def num_clust(self, matrix_clust):
+        """
+        get number of clusters.
+        """
+        clusters = matrix_clust['Cluster'].tolist()
+        num = len(np.unique(clusters)) - (1 if -1 in clusters else 0)
+        
+        return num
             
-        print('# of clusters: {}, epsilon: {}, noise: {}'.format(length, i, outliers))
+    def graphs(self, eps_file):
+        """
+        return epsilon and noise vs clusters graphs.
+        """
+        with PdfPages(eps_file) as pdf:
+            plt.subplot(2, 1, 1)
+            plt.plot(self._epsilon, self._clusters)
+            plt.ylabel("clusters")
+            plt.xlabel("epsilon")
+            pdf.savefig()
+            plt.close()
 
-    print(max_clust)
+            plt.subplot(2, 1, 2)
+            plt.plot(self._noise, self._clusters)
+            plt.ylabel("clusters")
+            plt.xlabel("noise")
+            pdf.savefig()
+            plt.close()
+    
+    def epsilon(self, dist_matrix, eps_file, eps_summary):
+        """
+        return epsilon choice based on threshold N/Nmax > 0.95 and the maximum noise.
+        """
+    
+        self.graphs(eps_file)
+    
+        for i in range(2, int(max(dist_matrix.max()))):
+            clustering = Cluster(dist_matrix, 'DBSCAN', factor = i, num = 7).cluster()
+            length = self.num_clust(clustering)
+            self._epsilon.append(i)
+            self._clusters.append(length)
+        
+            outliers = len(clustering[(clustering['Cluster'] == -1)].index)
+            self._noise.append(outliers)
 
-    for j in clusters:
-        print(j/max_clust)
-    
-    plt.subplot(2, 1, 1)
-    plt.plot(epsilon, clusters)
-    plt.ylabel("clusters")
-    plt.xlabel("epsilon")
-    
-    plt.subplot(2, 1, 2)
-    plt.plot(noise, clusters)
-    plt.ylabel("clusters")
-    plt.xlabel("noise")
-    
-    plt.show()
+            self._all_combo.append((i, length, outliers))
+        
+            if length > 1:
+                # cluster summary for each epsilon
+                count = Membership(clustering).get_count()
+                count.to_pickle('{}/eps{}.pkl'.format(eps_summary, i))
+
+        data = np.array(self._all_combo)
+
+        # Normalization 
+        max_clust = max(data[:,1])
+
+        # Normalize the number of clusters
+        clust_thresh = data[:,1]/max_clust
+
+        # Get indices in array that satisfy condition 1
+        indices = np.where(clust_thresh[clust_thresh > 0.95])
+        max_noise = max(data[indices, 2])
+
+        # Get indices that satisfy condition 2
+        eps = [self._all_combo[i][0] for i in indices if self._all_combo[i][2] == max_noise]
+
+        return eps[0]
+        
 
 class Membership():
     """
@@ -158,9 +197,8 @@ class Membership():
                 overlap.append((i, j, len(a), len(b), percent_overlap))
 
         col = ['cluster a', 'cluster b', 'length a', 'length b', '% overlap']
-        pd.DataFrame(overlap, columns = col)
         
-        return overlap
+        return  pd.DataFrame(overlap, columns = col)
     
     def to_csv(self, cluster, file):
         """
@@ -168,3 +206,26 @@ class Membership():
         """
         
         self.get_cluster(cluster)['Sequences'].to_csv(file, index = False)
+        
+        
+def cluster_auto(matrix, eps_file, eps_summary, summary_file, clust_loc, logo_loc):
+    """
+    clusters from distance matrix, cluster data output.
+    """
+    
+    clust_test = Cluster(matrix, 'DBSCAN', factor = EpsAnalysis().epsilon(matrix, eps_file, eps_summary), num = 7).cluster()
+    clust_mem = Membership(clust_test)
+    
+    clust_num = EpsAnalysis().num_clust(clust_test)
+    
+    # save cluster size summary
+    count = clust_mem.get_count()
+    count.to_pickle('{}/summary.pkl'.format(summary_file))
+    
+    # save each cluster in csv files
+    for i in range(clust_num):
+        clust_mem.to_csv(i, '{}/{}.csv'.format(clust_loc, i))
+     
+    # save weblogo of each cluster
+    for i in range(clust_num):
+        logo.create_weblogo(clust_mem.get_cluster(i)['Sequences'].tolist(), '{}/clust{}.pdf'.format(logo_loc, i))
