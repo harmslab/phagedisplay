@@ -12,6 +12,7 @@ __all__ = ["base",
            "fastq_to_counts",
            "pickle_dict",
            #"sequencing_error",
+           #"cluster",
            "regress_enrichment"]
 
 from .base import BaseProcessor
@@ -20,4 +21,5 @@ from .fastq_list import FastqListProcessor
 from .fastq_to_counts import FastqToCountsProcessor
 from .pickle_dict import PickleDictProcessor
 #from .sequencing_error import SequencingErrorProcessor
+#from .cluster import ClusterProcessor
 from .regress_enrichment import RegressEnrichmentProcessor
