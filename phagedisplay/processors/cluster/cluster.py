@@ -4,7 +4,8 @@ __description__ = \
 __author__ = "Hiranmayi Duvvuri"
 __date__ = "2016-04-06"
 
-from sklearn.cluster import DBSCAN
+import sklearn
+from sklearn import cluster
 import scipy.cluster.hierarchy as hcl
 from scipy.spatial.distance import squareform
 
@@ -15,100 +16,168 @@ import pandas as pd
 import pickle
 import makeweblogos as logo
 
-def histogram(dist_matrix):
+class Cluster:
     """
-    make histogram plot of frequency of sequence distance scores in the
-    given distance matrix.
+    Base class for clustering distance matrices (DistMatrix instances). 
     """
-        
-    plt.figure();
-    dist_matrix.plot(kind='hist', legend=False, orientation='horizontal')
 
-class Cluster():
-    """
-    Performs a given clustering algorithm on a distance matrix.
-    args
-        dist_matrix: distance matrix to perform clustering on
-        cluster_alg: clustering algorithm to use on matrix
-        factor: for setting a parameter on calculating clusters.
-        num (optional): number of clusters predicted.
-        
-    """
-    
-    def __init__(self, dist_matrix, cluster_alg, factor=None,num=None):
-
-        self._dist_matrix = dist_matrix
-        self._cluster_alg = cluster_alg
-        self._factor = factor
-        self._num = num
-
-    def cluster(self):
+    def __init__(self):
         """
-        Cluster a distance matrix.  
-
-        DBSCAN - 
-            min_samples: the minimum number of samples for the point to be
-                         considered to be a central cluster point. A higher
-                         number will give a smaller number of large clusters
-                         with a large noise (-1) cluster while a lower number
-                         will give a large number of small clusters with a
-                         very small or no noise cluster.
-            epsilon:     use of freqHist can help determine a factor to use,
-                         max distance radius around a point to grab cluster
-                         points from. 
+        Dummy init function.
         """
 
-        X = self._dist_matrix
+        pass
+
+    def generate_clusters(self):
+        """
+        Dummy generate clusters function. This should be defined for each
+        daughter class.
+        """
+
+        self.clust_labels = None
+
+    def write_output(self,out_path):
+        """
+        Write out cluster output.
+        """
+
+        # save cluster size summary
+        count = self.clust_labels.count()
+        count.to_pickle('{}/summary.pickle'.format(out_path))
+    
+        # save each cluster in csv files
+        for i in range(self.num_clusters):
+            csv_file="{}/{}.csv".format(out_path,i)
+            self.cluster_labels.get_group(i)["sequences"].to_csv(csv_file, index = False)
         
-        # compute scipy hierarchal clustering
-        if self._cluster_alg == 'hierarchal':
-            condensed = squareform(X)
-            linkage = hcl.average(condensed)
-            clusters = hcl.fcluster(linkage, self._factor, criterion = 'maxclust')
+        # save weblogo of each cluster
+        for i in range(self.num_clusters):
+            logo.create_weblogo(self.cluster_labels.get_group(i)['sequences'].tolist(),
+                                '{}/clust{}.pdf'.format(out_path, i))
 
-        # compute DBSCAN clustering
-        elif self._cluster_alg == 'DBSCAN':
 
-            db = DBSCAN(eps = self._factor,
-                        min_samples = self._num,
-                        metric = 'precomputed', 
-                        leaf_size = 300,
-                        algorithm = 'ball_tree').fit(X.as_matrix())
+class ClusterDB(Cluster):
+    """
+    Generate clsuters by dbscan.
+    """
 
-            core_samples_mask = np.zeros_like(db.labels_, dtype=bool)
-            core_samples_mask[db.core_sample_indices_] = True
-            clusters = db.labels_
+    def __init__(self,min_samples,epsilon=None,metric="precomputed",leaf_size=300,
+                 algorithm="ball_tree",epsilon_size_cutoff=0.95):
+        """
+        Initialize clustering options.  The options nature of each option can
+        be found in the scikitlearn dbscan documention.
+        """
 
-        else:
-            raise ValueError('algorithm unavailable')
+        self.min_samples = min_samples
+        self.epsilon = epsilon
+        self.metric = metric
+        self.leaf_size = leaf_size
+        self.algorithm = algorithm
+        self.epsilon_size_cutoff = epsilon_size_cutoff
+   
+    def generate_clusters(self,D):
+        """
+        Generate clusters by dbscan.  Takes a DistMatrix instance D as input.
+        """
 
-        # get number of clusters
-        n_clusters = len(np.unique(clusters)) - (1 if -1 in clusters else 0)
-        cluster_labels = pd.DataFrame({'Sequences' : X.index, 
-                                       'Cluster' : clusters})
+        # If the user does not specify epsilon, estimate it.  
+        if self.epsilon == None:
+            self.epsilon = self._estimate_epsilon(D.dist_frame)
+
+        # Initialize a cluster.DBSCAN instance
+        db = cluster.DBSCAN(eps=self.epsilon,
+                            min_samples=self.min_samples,
+                            metric=self.metric, 
+                            leaf_size=self.leaf_size,
+                            algorithm=self.algorithm)
+
+        # Generate clusters
+        db.fit(D.dist_frame.as_matrix())
+
+        # Grab core samples
+        self.core_samples_mask = np.zeros_like(db.labels_, dtype=bool)
+        self.core_samples_mask[db.core_sample_indices_] = True
+        self.clusters = db.labels_
+
+        # Basic cluster stats
+        self.num_clusters = n_clusters = len(np.unique(self.clusters)) - (1 if -1 in clusters else 0)
+        self.cluster_labels = pd.DataFrame({'sequences' : D.dist_frame.index, 
+                                            'cluster' : self.clusters})
+
+    def _estimate_epsilon(self,D)
+        """
+        Choose the value of epsilon that maximizes both number of clusters 
+        (N/Nmax > epsilon_size_cutoff) and maximizes the size of the noise
+        cluster.
+        """
+
+        epsilon_list = []
+        num_clust_list = []
+        noise_list = []
+
+        # Go through a large number of values of epsilon 
+        for i in range(2,int(max(D.dist_frame.max()))):
+
+            # generate clusters at this value of epsilon
+            self.epsilon = i
+            self.generate_clusters(D.dist_frame)
+
+            # record the epsilon, number of clusters, and size of the noise cluster
+            epsilon_list.append(i)
+            num_clust_list.append(self.num_clusters)
+            noise_list.append(len(self.cluster_labels[(self.cluster_labels['cluster'] == -1)].index))
+
+            # if we created more than just one giant cluster, write out the membership
+            if self.num_clusters > 1:
+                count = self.cluster_labels.count()
+                count.to_pickle("junk_{:d}.pickle".format(i))
+
+        # Normalize the number of clusters to the largest number seen
+        clust_thresh = np.array(num_clust_list)/max(num_clust_list)
+
+        # Get indices of each epsilon where the number of clusters is above
+        # epsilon_size_cutoff.
+        indices = np.where(clust_thresh[clust_thresh > self.epsilon_size_cutoff])
+
+        # Now find values of epsilon that maximize the size of the noise cluster
+        max_noise = max(noise_list)
+        eps = [epsilon_list[i] for i in indices if noise_list[i] == max_noise]
+
+        return eps[0]
+
+class ClusterHCL(Cluster):
+    """
+    Cluster by heirarchical clustering. 
+    """
+
+    def __init__(self,factor,criterion="maxclust"):
+        """
+        Perform heirarchical clustering.  See the scipy heirarchical clustering
+        documentation.
+        """
+        
+        self.factor = factor
+        self.criterion = criterion
     
-        return cluster_labels
+    def generate_clusters(self,D):
+        """
+        Generate clusters.  Takes a DistMatrix instance D. 
+        """
+
+        condensed = squareform(D.dist_frame)
+        linkage = hcl.average(condensed)
+        self.clusters = hcl.fcluster(linkage,self.factor,criterion=self.criterion)
+
+        self.num_clusters = n_clusters = len(np.unique(self.clusters)) - (1 if -1 in clusters else 0)
+        self.cluster_labels = pd.DataFrame({'sequences' : D.dist_frame.index, 
+                                            'cluster' : self.clusters})
     
-    
+
 class EpsAnalysis():
     """
-    XX What does this do?
-    """    
-    def __init__(self):
-        self._epsilon = []
-        self._clusters = []
-        self._noise = []
-        self._all_combo = []
-        
-    def num_clust(self, matrix_clust):
-        """
-        get number of clusters.
-        """
-        clusters = matrix_clust['Cluster'].tolist()
-        num = len(np.unique(clusters)) - (1 if -1 in clusters else 0)
-        
-        return num
-            
+    Analyze epsilon.
+    """   
+ 
     def graphs(self):
         """
         return epsilon and noise vs clusters graphs.
@@ -130,134 +199,7 @@ class EpsAnalysis():
             pdf.savefig()
             plt.close()
     
-    def epsilon(self, dist_matrix, file, cutoff = 0.95):
-        """
-        return epsilon choice based on threshold N/Nmax > cutoff and the maximum noise.
-        """
-    
-        self.graphs()
-    
-        for i in range(2, int(max(dist_matrix.max()))):
-
-            clustering = Cluster(dist_matrix,
-                                 'DBSCAN',
-                                 factor = i,
-                                 num = 7).cluster()
-
-            length = self.num_clust(clustering)
-            self._epsilon.append(i)
-            self._clusters.append(length)
         
-            outliers = len(clustering[(clustering['Cluster'] == -1)].index)
-            self._noise.append(outliers)
-
-            self._all_combo.append((i, length, outliers))
-        
-            if length > 1:
-                # cluster summary for each epsilon
-                count = Membership(clustering).get_count()
-                count.to_pickle('Cluster_test/all_epsilons/eps{}.pickle'.format(i))
-
-        data = np.array(self._all_combo)
-
-        # Normalization 
-        max_clust = max(data[:,1])
-
-        # Normalize the number of clusters
-        clust_thresh = data[:,1]/max_clust
-
-        # Get indices in array that satisfy condition 1
-        indices = np.where(clust_thresh[clust_thresh > cutoff])
-        max_noise = max(data[indices, 2])
-
-        # Get indices that satisfy condition 2
-        eps = [self._all_combo[i][0]
-               for i in indices if self._all_combo[i][2] == max_noise]
-
-        return eps[0]
-        
-
-class Membership():
-    """
-    accessing cluster membership of given cluster in a pandas dataframe format.
-    """
-    
-    def __init__(self, cluster):
-        self._cluster = cluster.groupby('Cluster')
-        
-    def get_all(self):
-        """
-        return dictionary of all clusters and members.
-        """
-        
-        return self._cluster.groups
-    
-    def get_cluster(self, clust_num):
-        """
-        return specified cluster and members.
-        """
-        
-        return self._cluster.get_group(clust_num)
-    
-    def get_count(self):
-        """
-        return count in each cluster.
-        """
-        
-        return self._cluster.count()
-    
-    def get_overlap(self, x, y, clust2):
-        """
-        compare two clusters to see amount of overlap.
-        """
-        
-        overlap = []
-
-        for i in range(x):
-            for j in range(y):
-                a = self.get_cluster(i)
-                b = clust2.get_cluster(j)
-                percent_overlap = round(((len(np.intersect1d(a.as_matrix(['Sequences']), b.as_matrix(['Sequences'])))
-                                         /len(a))*100), 2)
-
-                # returns unique values in both arrays.
-                overlap.append((i, j, len(a), len(b), percent_overlap))
-
-        col = ['cluster a', 'cluster b', 'length a', 'length b', '% overlap']
-        
-        return  pd.DataFrame(overlap, columns = col)
-    
-    def to_csv(self, cluster, file):
-        """
-        save a cluster to a csv file.
-        """
-        
-        self.get_cluster(cluster)['Sequences'].to_csv(file, index = False)
-        
-        
-def cluster_auto(matrix, eps_file, eps_summary, summary_file, clust_loc, logo_loc):
-    """
-    clusters from distance matrix, cluster data output.
-    """
-    
-    clust_test = Cluster(matrix, 'DBSCAN', factor = EpsAnalysis().epsilon(matrix, eps_file, eps_summary), num = 7).cluster()
-    clust_mem = Membership(clust_test)
-    
-    clust_num = EpsAnalysis().num_clust(clust_test)
-    
-    # save cluster size summary
-    count = clust_mem.get_count()
-    count.to_pickle('{}/summary.pickle'.format(summary_file))
-    
-    # save each cluster in csv files
-    for i in range(clust_num):
-        clust_mem.to_csv(i, '{}/{}.csv'.format(clust_loc, i))
-     
-    # save weblogo of each cluster
-    for i in range(clust_num):
-        logo.create_weblogo(clust_mem.get_cluster(i)['Sequences'].tolist(), '{}/clust{}.pdf'.format(logo_loc, i))
-
-
 class ClusterProcessor(BaseProcessor):
     """
     """

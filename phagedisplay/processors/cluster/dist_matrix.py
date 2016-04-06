@@ -10,6 +10,8 @@ import random
 import scipy
 from scipy import spatial
 
+import pandas as pd
+
 try:
     import jellyfish as jf
 except ImportError:
@@ -66,16 +68,20 @@ class DistMatrix:
         """
 
         self.data_vector = []
+        self.seq_strings = []
         with open(phage_file) as data:
 
             next(data)
             for line in data:
                 num, seq, k_glob, theta_glob, k_ind, theta_ind = line.split()
                 if float(k_ind) > k_cutoff:
+
+                    self.seq_strings.append(seq)
+
                     self.data_vector.append(
                         np.array([self._alphabet_dict[s] for s in seq],
                                  dtype=self.internal_type))
-
+    
         self.data_vector = np.array(self.data_vector)
 
     def calc_dist_matrix(self):
@@ -90,7 +96,11 @@ class DistMatrix:
             for j in range(i + 1, nrow):
                 self.dist_matrix[i,j] = self._pairwise(self._data_vector[i],self._data_vector[j])
                 self.dist_matrix[j,i] = self.dist_matrix[i,j]
-                
+     
+        self.dist_frame = pd.DataFrame(self.dist_matrix,
+                                       index = self.seq_strings,
+                                       columns = self.seq_strings)
+
     def _pairwise(self,s1,s2):
         """
         Pairwise distance function.  This should be defined for the various
@@ -98,6 +108,16 @@ class DistMatrix:
         """
 
         return 0.0
+
+    def plot_hist(self):
+        """
+        Make histogram plot of frequency of sequence distance scores in the
+        given distance matrix.  Use the dist_frame pandas data frame to use 
+        pandas plotting methods.
+        """
+        
+        plt.figure();
+        self.dist_frame.plot(kind='hist',legend=False,orientation='horizontal')
 
 
 class HammingDistMatrix(DistMatrix):
