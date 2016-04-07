@@ -5,6 +5,8 @@ Classes for creating distance matrices between sets of aligned sequence data.
 __author__ = "Hiranmayi Duvvuri, Michael J. Harms"
 __date__ = "2016-04-06"
 
+import sys
+
 import numpy as np
 import random 
 import scipy
@@ -18,6 +20,8 @@ except ImportError:
     warn = "The jellyfish library was not found. Some distance matrices will be unavailable."
     Warning(warn)
 
+AMINO = "ACDEFGHIKLMNPQRSTVWY*BZX"
+DNA = "ACGT*"
 
 class DistMatrix:
     """
@@ -40,9 +44,9 @@ class DistMatrix:
 
         # decide on the alphabet
         if self.alphabet == "amino": 
-            self._alphabet_string = 'ACDEFGHIKLMNPQRSTVWY*BZX'
+            self._alphabet_string = AMINO
         elif self.alphabet == "dna":
-            self._alphabet_string = 'ACGT*'
+            self._alphabet_string = DNA
         else:
             raise ValueError("alphabet not recongized.")
 
@@ -83,25 +87,32 @@ class DistMatrix:
                                  dtype=self.internal_type))
     
         self.data_vector = np.array(self.data_vector)
+        self.seq_strings = np.array(self.seq_strings)
 
-    def calc_dist_matrix(self):
+    def calc_dist_matrix(self,verbose=False):
         """
         Calculate all pairwise distances between the sequences in 
         self.data_vector, creating the self.dist_matrix in the process. 
         """
 
-        nrow = self._data_vector.shape[0]
+        nrow = self.data_vector.shape[0]
         self.dist_matrix = np.zeros((nrow, nrow),dtype=float)
         for i in range(nrow):
+
+            if verbose:
+                if i % 1000 == 0:
+                    print(i,"of",nrow)
+                    sys.stdout.flush()
+
             for j in range(i + 1, nrow):
-                self.dist_matrix[i,j] = self._pairwise(self._data_vector[i],self._data_vector[j])
+                self.dist_matrix[i,j] = self._pairwise_dist(self.data_vector[i],self.data_vector[j])
                 self.dist_matrix[j,i] = self.dist_matrix[i,j]
-     
+ 
         self.dist_frame = pd.DataFrame(self.dist_matrix,
                                        index = self.seq_strings,
                                        columns = self.seq_strings)
 
-    def _pairwise(self,s1,s2):
+    def _pairwise_dist(self,s1,s2):
         """
         Pairwise distance function.  This should be defined for the various
         daughter classes.
@@ -123,7 +134,7 @@ class DistMatrix:
 class HammingDistMatrix(DistMatrix):
     """
     Create a matrix using a Hamming distance.  This actually just wraps the 
-    scipy hamming distance matrix calculator, ignoring self._pairwise.  
+    scipy hamming distance matrix calculator, ignoring self._pairwise_dist.  
     """
 
     def __init__(self,alphabet="amino"):
@@ -138,13 +149,18 @@ class HammingDistMatrix(DistMatrix):
         Use the built-in scipy hamming distance calculator for this.
         """
 
-        self.dist_matrix = spatial.distance.squareform(spatial.distance.pdist(self._data_vector,metric="hamming")))
+        self.dist_matrix = spatial.distance.squareform(spatial.distance.pdist(self.data_vector,metric="hamming"))
+
+        self.dist_frame = pd.DataFrame(self.dist_matrix,
+                                       index = self.seq_strings,
+                                       columns = self.seq_strings)
 
     
 class WeightedDistMatrix(DistMatrix):
     """
     Calculate a weighted distance matrix.  This defaults to Blosum62, but can 
-    calculate any distance that has the form 1 - d1*d2*d3*...dn .
+    calculate any distance on 1) a linear score scale and 2) where the scale is
+    simply the sum of the scores.
     """
 
     def __init__(self,matrix_file="weight_matrices/blosum62.txt",alphabet="amino"):
@@ -178,18 +194,24 @@ class WeightedDistMatrix(DistMatrix):
             a = self._alphabet_dict[line[0]]
             for j in range(1, len(line)):
                 b = seq[j-1]
-                self.weight_matrix[a, b] = exp(float(line[j]))
+                self.weight_matrix[a, b] = float(line[j])
+
+        # Set weights to range from 0 (close) to 1 (far)
+        mini = np.min(self.weight_matrix)
+        maxi = np.max(self.weight_matrix)
+        self.weight_matrix = 1 - (self.weight_matrix - mini)/(maxi - mini)
+
 
     def _pairwise_dist(self,seq1,seq2):
 
-        return 1 - np.prod(self._matrix[seq1,seq2])
+        return np.sum(self.weight_matrix[seq1,seq2])
 
-class DamerauDistMatrix:
+class DamerauDistMatrix(DistMatrix):
     """
     Calculate a Damerau/Levenshtein distance between strings.  Requires jellyfish.
     """
 
-    def __init__(self,alphabet):
+    def __init__(self,alphabet="amino"):
         """
         Standard init function.  Only peculiarity is that this class stores the 
         sequences internally as strings.

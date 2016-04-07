@@ -13,8 +13,8 @@ import numpy as np
 import matplotlib.pyplot as plt
 import pandas as pd
 
-import pickle
-import makeweblogos as logo
+import pickle, sys
+#import makeweblogos as logo
 
 class Cluster:
     """
@@ -34,7 +34,7 @@ class Cluster:
         daughter class.
         """
 
-        self.clust_labels = None
+        self.cluster_labels = None
 
     def write_output(self,out_path):
         """
@@ -42,18 +42,18 @@ class Cluster:
         """
 
         # save cluster size summary
-        count = self.clust_labels.count()
+        count = self.cluster_labels.count()
         count.to_pickle('{}/summary.pickle'.format(out_path))
-    
+   
         # save each cluster in csv files
-        for i in range(self.num_clusters):
+        for i in range(self.num_clusters-1):
             csv_file="{}/{}.csv".format(out_path,i)
-            self.cluster_labels.get_group(i)["sequences"].to_csv(csv_file, index = False)
+            self.cluster_labels.groupby('cluster').get_group(i)["sequences"].to_csv(csv_file, index = False)
         
         # save weblogo of each cluster
-        for i in range(self.num_clusters):
-            logo.create_weblogo(self.cluster_labels.get_group(i)['sequences'].tolist(),
-                                '{}/clust{}.pdf'.format(out_path, i))
+        #for i in range(self.num_clusters):
+        #    logo.create_weblogo(self.cluster_labels.get_group(i)['sequences'].tolist(),
+        #                        '{}/clust{}.pdf'.format(out_path, i))
 
 
 class ClusterDB(Cluster):
@@ -61,7 +61,7 @@ class ClusterDB(Cluster):
     Generate clsuters by dbscan.
     """
 
-    def __init__(self,min_samples,epsilon=None,metric="precomputed",leaf_size=300,
+    def __init__(self,min_samples=5,epsilon=None,metric="precomputed",leaf_size=300,
                  algorithm="ball_tree",epsilon_size_cutoff=0.95):
         """
         Initialize clustering options.  The options nature of each option can
@@ -82,7 +82,7 @@ class ClusterDB(Cluster):
 
         # If the user does not specify epsilon, estimate it.  
         if self.epsilon == None:
-            self.epsilon = self._estimate_epsilon(D.dist_frame)
+            self.epsilon = self._estimate_epsilon(D)
 
         # Initialize a cluster.DBSCAN instance
         db = cluster.DBSCAN(eps=self.epsilon,
@@ -90,8 +90,7 @@ class ClusterDB(Cluster):
                             metric=self.metric, 
                             leaf_size=self.leaf_size,
                             algorithm=self.algorithm)
-
-        # Generate clusters
+      
         db.fit(D.dist_frame.as_matrix())
 
         # Grab core samples
@@ -100,11 +99,11 @@ class ClusterDB(Cluster):
         self.clusters = db.labels_
 
         # Basic cluster stats
-        self.num_clusters = n_clusters = len(np.unique(self.clusters)) - (1 if -1 in clusters else 0)
+        self.num_clusters = len(np.unique(self.clusters)) - (1 if -1 in self.clusters else 0)
         self.cluster_labels = pd.DataFrame({'sequences' : D.dist_frame.index, 
                                             'cluster' : self.clusters})
 
-    def _estimate_epsilon(self,D)
+    def _estimate_epsilon(self,D):
         """
         Choose the value of epsilon that maximizes both number of clusters 
         (N/Nmax > epsilon_size_cutoff) and maximizes the size of the noise
@@ -116,33 +115,42 @@ class ClusterDB(Cluster):
         noise_list = []
 
         # Go through a large number of values of epsilon 
-        for i in range(2,int(max(D.dist_frame.max()))):
+        for i in np.arange(0,np.max(D.dist_matrix),0.1):
 
             # generate clusters at this value of epsilon
             self.epsilon = i
-            self.generate_clusters(D.dist_frame)
+
+            # This check is because dbscan throws an error if epsilon is too small...
+            try:
+                self.generate_clusters(D)
+            except ValueError:
+                continue
 
             # record the epsilon, number of clusters, and size of the noise cluster
             epsilon_list.append(i)
             num_clust_list.append(self.num_clusters)
             noise_list.append(len(self.cluster_labels[(self.cluster_labels['cluster'] == -1)].index))
 
+            print(epsilon_list[-1],num_clust_list[-1],noise_list[-1])
+            sys.stdout.flush()
+
             # if we created more than just one giant cluster, write out the membership
             if self.num_clusters > 1:
-                count = self.cluster_labels.count()
-                count.to_pickle("junk_{:d}.pickle".format(i))
+                count = self.cluster_labels.groupby("cluster").count()
+                count.to_pickle("junk_{:.2f}.pickle".format(i))
 
         # Normalize the number of clusters to the largest number seen
         clust_thresh = np.array(num_clust_list)/max(num_clust_list)
 
         # Get indices of each epsilon where the number of clusters is above
         # epsilon_size_cutoff.
-        indices = np.where(clust_thresh[clust_thresh > self.epsilon_size_cutoff])
+        indices = np.where(clust_thresh > self.epsilon_size_cutoff)
 
         # Now find values of epsilon that maximize the size of the noise cluster
-        max_noise = max(noise_list)
-        eps = [epsilon_list[i] for i in indices if noise_list[i] == max_noise]
-
+        max_noise = max([noise_list[i] for i in indices[0]])
+        eps = [epsilon_list[i] for i in indices[0] if noise_list[i] == max_noise]
+  
+        # return the smallest epsilon compatible with this.
         return eps[0]
 
 class ClusterHCL(Cluster):
@@ -170,7 +178,7 @@ class ClusterHCL(Cluster):
 
         self.num_clusters = n_clusters = len(np.unique(self.clusters)) - (1 if -1 in clusters else 0)
         self.cluster_labels = pd.DataFrame({'sequences' : D.dist_frame.index, 
-                                            'cluster' : self.clusters})
+                                            'cluster'   : self.clusters})
     
 
 class EpsAnalysis():
@@ -199,20 +207,16 @@ class EpsAnalysis():
             pdf.savefig()
             plt.close()
     
-        
+
+"""        
 class ClusterProcessor(BaseProcessor):
-    """
-    """
 
     def process(self):
-        """
-        """
 
         pass
 
     @property
     def data(self):
-        """
-        """
 
         return None
+"""
