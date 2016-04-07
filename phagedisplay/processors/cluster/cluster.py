@@ -13,20 +13,47 @@ import numpy as np
 import matplotlib.pyplot as plt
 import pandas as pd
 
-import pickle, sys
-#import makeweblogos as logo
+import pickle, sys, os
+import weblogolib, corebio
+
+def create_weblogo(seq_list,out_file,alphabet="amino"):
+    """ 
+    Create a pdf sequence logo given a list of sequences.
+    """
+
+    # Alphabet and color scheme
+    if alphabet == "amino":
+        wl_alphabet = corebio.seq.unambiguous_protein_alphabet
+        wl_color_scheme = weblogolib.colorscheme.hydrophobicity
+    elif alphabet == "dna":
+        wl_alphabet = corebio.seq.unambiguous_dna_alphabet          
+        wl_color_scheme = weblogolib.colorscheme.nucleotide
+ 
+    # load data and create a logo
+    logo_sequences = corebio.seq.SeqList(seq_list,alphabet=wl_alphabet)
+    logo_data = weblogolib.LogoData.from_seqs(logo_sequences)
+
+    # create format
+    logo_format = weblogolib.LogoFormat(logo_data)
+    logo_format.color_scheme = wl_color_scheme
+
+    # dump out as a pdf.    
+    logo = weblogolib.pdf_formatter(logo_data, logo_format)
+    f = open(out_file,'w')
+    f.buffer.write(logo)
+    f.close()
 
 class Cluster:
     """
     Base class for clustering distance matrices (DistMatrix instances). 
     """
 
-    def __init__(self):
+    def __init__(self,out_path):
         """
         Dummy init function.
         """
 
-        pass
+        self.out_path = out_path
 
     def generate_clusters(self):
         """
@@ -36,38 +63,48 @@ class Cluster:
 
         self.cluster_labels = None
 
-    def write_output(self,out_path):
+    def write_output(self,alphabet="amino"):
         """
         Write out cluster output.
         """
 
-        # save cluster size summary
-        count = self.cluster_labels.count()
-        count.to_pickle('{}/summary.pickle'.format(out_path))
-   
-        # save each cluster in csv files
-        for i in range(self.num_clusters-1):
-            csv_file="{}/{}.csv".format(out_path,i)
-            self.cluster_labels.groupby('cluster').get_group(i)["sequences"].to_csv(csv_file, index = False)
-        
-        # save weblogo of each cluster
-        #for i in range(self.num_clusters):
-        #    logo.create_weblogo(self.cluster_labels.get_group(i)['sequences'].tolist(),
-        #                        '{}/clust{}.pdf'.format(out_path, i))
+        g = self.cluster_labels.groupby("cluster")
+        zero_pad_size = len("{:d}".format(self.num_clusters))
 
+        # save cluster size summary
+        count = g.count() 
+        count.to_csv(os.path.join(self.out_path,"summary.txt"))
+
+        for i in range(self.num_clusters):
+
+            # save each cluster in csv files
+            num = "{:d}".format(i).zfill(zero_pad_size)
+
+            csv_string = "{}_cluster.csv".format(num)
+            csv_file=os.path.join(self.out_path,csv_string)
+            g.get_group(i)["sequences"].to_csv(csv_file,index=False)
+        
+            # save weblogo of each cluster
+            pdf_string = "{}_cluster.pdf".format(num)
+            pdf_file = os.path.join(self.out_path,pdf_string)
+
+            create_weblogo(g.get_group(i)['sequences'].tolist(),
+                           pdf_file,
+                           alphabet)
 
 class ClusterDB(Cluster):
     """
     Generate clsuters by dbscan.
     """
 
-    def __init__(self,min_samples=5,epsilon=None,metric="precomputed",leaf_size=300,
+    def __init__(self,out_path,min_samples=5,epsilon=None,metric="precomputed",leaf_size=300,
                  algorithm="ball_tree",epsilon_size_cutoff=0.95):
         """
         Initialize clustering options.  The options nature of each option can
         be found in the scikitlearn dbscan documention.
         """
 
+        self.out_path = out_path
         self.min_samples = min_samples
         self.epsilon = epsilon
         self.metric = metric
@@ -137,7 +174,7 @@ class ClusterDB(Cluster):
             # if we created more than just one giant cluster, write out the membership
             if self.num_clusters > 1:
                 count = self.cluster_labels.groupby("cluster").count()
-                count.to_pickle("junk_{:.2f}.pickle".format(i))
+                count.to_pickle(os.path.join(self.out_path,"episilon_{:.2e}.pickle".format(i)))
 
         # Normalize the number of clusters to the largest number seen
         clust_thresh = np.array(num_clust_list)/max(num_clust_list)
@@ -158,12 +195,13 @@ class ClusterHCL(Cluster):
     Cluster by heirarchical clustering. 
     """
 
-    def __init__(self,factor,criterion="maxclust"):
+    def __init__(self,out_path,factor,criterion="maxclust"):
         """
         Perform heirarchical clustering.  See the scipy heirarchical clustering
         documentation.
         """
         
+        self.out_path = out_path
         self.factor = factor
         self.criterion = criterion
     
@@ -207,6 +245,8 @@ class EpsAnalysis():
             pdf.savefig()
             plt.close()
     
+
+
 
 """        
 class ClusterProcessor(BaseProcessor):
