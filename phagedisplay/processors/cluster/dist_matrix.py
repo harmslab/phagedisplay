@@ -5,10 +5,9 @@ Classes for creating distance matrices between sets of aligned sequence data.
 __author__ = "Hiranmayi Duvvuri, Michael J. Harms"
 __date__ = "2016-04-06"
 
-import sys
+import sys, os, pickle
 
 import numpy as np
-import random 
 import scipy
 from scipy import spatial
 
@@ -95,13 +94,15 @@ class DistMatrix:
         self.data_vector, creating the self.dist_matrix in the process. 
         """
 
+        print("Calculating distance matrix."); sys.stdout.flush()
+
         nrow = self.data_vector.shape[0]
         self.dist_matrix = np.zeros((nrow, nrow),dtype=float)
         for i in range(nrow):
 
             if verbose:
                 if i % 1000 == 0:
-                    print(i,"of",nrow)
+                    print("Row",i,"of",nrow)
                     sys.stdout.flush()
 
             for j in range(i + 1, nrow):
@@ -130,6 +131,19 @@ class DistMatrix:
         plt.figure();
         self.dist_frame.plot(kind='hist',legend=False,orientation='horizontal')
 
+    def save_matrix(self,filename=None,overwrite=False):
+        """
+        Write out the whole data structure to a pickle.
+        """
+        if not filename:
+            filename = "distance-matrix.pickle"
+
+        if not overwrite and os.path.exists(filename):
+            raise IOError("{:s} file exists.".format(filename))
+
+        f = open(filename,'wb')
+        pickle.dump(self.__dict__,f)
+        f.close() 
 
 class HammingDistMatrix(DistMatrix):
     """

@@ -1,7 +1,8 @@
 __description__ = \
 """
+Data structures for clustering and visualizing sequences.
 """
-__author__ = "Hiranmayi Duvvuri"
+__author__ = "Hiranmayi Duvvuri, Michael J. Harms"
 __date__ = "2016-04-06"
 
 import sklearn
@@ -48,12 +49,16 @@ class Cluster:
     Base class for clustering distance matrices (DistMatrix instances). 
     """
 
-    def __init__(self,out_path):
+    def __init__(self,out_path,verbose=False):
         """
         Dummy init function.
         """
 
         self.out_path = out_path
+        if not os.path.exists(out_path):
+            os.mkdir(out_path) 
+
+        self.verbose = verbose
 
     def generate_clusters(self):
         """
@@ -68,12 +73,14 @@ class Cluster:
         Write out cluster output.
         """
 
+        print("Creating output."); sys.stdout.flush()
+
         g = self.cluster_labels.groupby("cluster")
         zero_pad_size = len("{:d}".format(self.num_clusters))
 
         # save cluster size summary
         count = g.count() 
-        count.to_csv(os.path.join(self.out_path,"summary.txt"))
+        count.to_csv(os.path.join(self.out_path,"summary_count.txt"))
 
         for i in range(self.num_clusters):
 
@@ -98,11 +105,13 @@ class ClusterDB(Cluster):
     """
 
     def __init__(self,out_path,min_samples=5,epsilon=None,metric="precomputed",leaf_size=300,
-                 algorithm="ball_tree",epsilon_size_cutoff=0.95):
+                 algorithm="ball_tree",epsilon_size_cutoff=0.95,verbose=False):
         """
         Initialize clustering options.  The options nature of each option can
         be found in the scikitlearn dbscan documention.
         """
+        
+        super(self.__class__,self).__init__(out_path,verbose)
 
         self.out_path = out_path
         self.min_samples = min_samples
@@ -111,6 +120,7 @@ class ClusterDB(Cluster):
         self.leaf_size = leaf_size
         self.algorithm = algorithm
         self.epsilon_size_cutoff = epsilon_size_cutoff
+        self.verbose = verbose
    
     def generate_clusters(self,D):
         """
@@ -140,12 +150,32 @@ class ClusterDB(Cluster):
         self.cluster_labels = pd.DataFrame({'sequences' : D.dist_frame.index, 
                                             'cluster' : self.clusters})
 
+    def write_output(self,alphabet="amino"):
+        """
+        Write out cluster output.
+        """
+
+        super(self.__class__,self).write_output(alphabet)
+
+        f = open(os.path.join(self.out_path,"cluster_stats.txt"),"w")
+        f.write("Clustered by dbscan\n")
+        f.write("min_samples: {}\n".format(self.min_samples))
+        f.write("epsilon: {}\n".format(self.epsilon))
+        f.write("metric: {}\n".format(self.metric))
+        f.write("leaf_size: {}\n".format(self.leaf_size))
+        f.write("algorithm: {}\n".format(self.algorithm))
+        f.write("epsilon_size_cutoff: {}\n".format(self.epsilon_size_cutoff))
+        f.write("num_clusters: {}\n".format(self.num_clusters))
+        f.close()
+
     def _estimate_epsilon(self,D):
         """
         Choose the value of epsilon that maximizes both number of clusters 
         (N/Nmax > epsilon_size_cutoff) and maximizes the size of the noise
         cluster.
         """
+            
+        print("Optimizing epsilon."); sys.stdout.flush()
 
         epsilon_list = []
         num_clust_list = []
@@ -168,13 +198,14 @@ class ClusterDB(Cluster):
             num_clust_list.append(self.num_clusters)
             noise_list.append(len(self.cluster_labels[(self.cluster_labels['cluster'] == -1)].index))
 
-            print(epsilon_list[-1],num_clust_list[-1],noise_list[-1])
-            sys.stdout.flush()
-
-            # if we created more than just one giant cluster, write out the membership
-            if self.num_clusters > 1:
-                count = self.cluster_labels.groupby("cluster").count()
-                count.to_pickle(os.path.join(self.out_path,"episilon_{:.2e}.pickle".format(i)))
+            # spit out epsilon optimization if being verbose
+            if self.verbose:
+                print(epsilon_list[-1],num_clust_list[-1],noise_list[-1])
+                sys.stdout.flush()
+            
+                if self.num_clusters > 1:
+                    count = self.cluster_labels.groupby("cluster").count()
+                    count.to_pickle(os.path.join(self.out_path,"episilon_{:.2e}.pickle".format(i)))
 
         # Normalize the number of clusters to the largest number seen
         clust_thresh = np.array(num_clust_list)/max(num_clust_list)
@@ -195,11 +226,13 @@ class ClusterHCL(Cluster):
     Cluster by heirarchical clustering. 
     """
 
-    def __init__(self,out_path,factor,criterion="maxclust"):
+    def __init__(self,out_path,factor,criterion="maxclust",verbose=False):
         """
         Perform heirarchical clustering.  See the scipy heirarchical clustering
         documentation.
         """
+
+        super(self.__class__,self).__init__(out_path,verbose)
         
         self.out_path = out_path
         self.factor = factor
@@ -219,39 +252,29 @@ class ClusterHCL(Cluster):
                                             'cluster'   : self.clusters})
     
 
-class EpsAnalysis():
-    """
-    Analyze epsilon.
-    """   
- 
-    def graphs(self):
-        """
-        return epsilon and noise vs clusters graphs.
-        """
-
-        with PdfPages('Cluster_test/all_epsilons/eps_noise.pdf') as pdf:
-
-            plt.subplot(2, 1, 1)
-            plt.plot(self._epsilon, self._clusters)
-            plt.ylabel("clusters")
-            plt.xlabel("epsilon")
-            pdf.savefig()
-            plt.close()
-
-            plt.subplot(2, 1, 2)
-            plt.plot(self._noise, self._clusters)
-            plt.ylabel("clusters")
-            plt.xlabel("noise")
-            pdf.savefig()
-            plt.close()
-    
-
-
-
-"""        
 class ClusterProcessor(BaseProcessor):
 
-    def process(self):
+    def process(self,**kwargs):
+
+        self._dist_functions = {"hamming":dist_matrix.HammingDistMatrix,
+                                "damerau":DamerauDistMatrix,
+                                "weighted":dist_matrix.WeightedDistMatrix}
+
+
+    #D = dist_matrix.HammingDistMatrix()
+    #D = dist_matrix.DamerauDistMatrix()
+    #D.create_data_vector("NCX1_0_1_CaE_regression.txt")
+
+    D = dist_matrix.WeightedDistMatrix()
+    D.create_data_vector("NCX1_0_01_CaE_regression.txt")
+    D.calc_dist_matrix(verbose=True)
+
+    D.save_matrix()
+    shutil.move("distance-matrix.pickle","0.010-{}".format("distance-matrix.pickle"))
+
+C = cluster.ClusterDB("0.010")
+C.generate_clusters(D)
+C.write_output()
 
         pass
 
@@ -259,4 +282,3 @@ class ClusterProcessor(BaseProcessor):
     def data(self):
 
         return None
-"""
