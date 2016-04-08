@@ -251,7 +251,7 @@ class ClusterHCL(Cluster):
         self.cluster_labels = pd.DataFrame({'sequences' : D.dist_frame.index, 
                                             'cluster'   : self.clusters})
     
-
+"""
 class ClusterProcessor(BaseProcessor):
 
     def process(self,**kwargs):
@@ -260,25 +260,10 @@ class ClusterProcessor(BaseProcessor):
                                 "damerau":DamerauDistMatrix,
                                 "weighted":dist_matrix.WeightedDistMatrix}
 
-
-    #D = dist_matrix.HammingDistMatrix()
-    #D = dist_matrix.DamerauDistMatrix()
-    #D.create_data_vector("NCX1_0_1_CaE_regression.txt")
-
-    D = dist_matrix.WeightedDistMatrix()
-    D.create_data_vector("NCX1_0_01_CaE_regression.txt")
-    D.calc_dist_matrix(verbose=True)
-
-    D.save_matrix()
-    shutil.move("distance-matrix.pickle","0.010-{}".format("distance-matrix.pickle"))
-
-C = cluster.ClusterDB("0.010")
-C.generate_clusters(D)
-C.write_output()
-
         pass
 
     @property
     def data(self):
 
         return None
+"""

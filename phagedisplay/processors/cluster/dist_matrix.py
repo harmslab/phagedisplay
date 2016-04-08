@@ -145,6 +145,19 @@ class DistMatrix:
         pickle.dump(self.__dict__,f)
         f.close() 
 
+    def load_matrix(self,filename):
+        """
+        Read a pickle file into an instance of the class.  (This will overwrite
+        anything already stored in the instance that overlaps in __dict__, but
+        keep the non-overlapping stuff).
+        """
+
+        f = open(filename,'rb')
+        tmp_dict = pickle.load(f)
+        f.close()
+
+        self.__dict__.update(tmp_dict)
+
 class HammingDistMatrix(DistMatrix):
     """
     Create a matrix using a Hamming distance.  This actually just wraps the 
