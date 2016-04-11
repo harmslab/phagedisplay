@@ -1,11 +1,11 @@
 __description__ = \
 """
 """
-__author__ = "Hiranmayi Duvvuri"
-__date__ = "2016-04-09"
+__author__ = "Michael J. Harms"
+__date__ = "2016-04-10"
 
-__all__ = ["cluster"]
+__all__ = ["processor"]
 
-from .cluster import *
+from .processor import ClusterProcessor
 
 

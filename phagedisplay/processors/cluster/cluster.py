@@ -16,8 +16,6 @@ import pandas as pd
 import pickle, sys, os
 import weblogolib, corebio
 
-from phagedisplay import BaseProcessor
-
 def create_weblogo(seq_list,out_file,alphabet="amino"):
     """ 
     Create a pdf sequence logo given a list of sequences.
@@ -252,32 +250,3 @@ class ClusterHCL(Cluster):
         self.cluster_labels = pd.DataFrame({'sequences' : D.dist_frame.index, 
                                             'cluster'   : self.clusters})
     
-class ClusterProcessor(BaseProcessor):
-
-    def process(self,regession_out_dict,
-                dist_function="weighted",
-                dist_matrix="weight_matrices/blosum62.txt",
-                cluster_method="DBSCAN"):
-
-        self._dist_functions = {"hamming":dist_matrix.HammingDistMatrix,
-                                "damerau":dist_matrix.DamerauDistMatrix,
-                                "weighted":dist_matrix.WeightedDistMatrix}
-
-        self._cluster_methods = {"DBSCAN":ClusterDB,
-                                 "heirarchical":ClusterHCL}
-
-        self._dist_matrix = self._dist_functions[dist_function]
-        self._clusters = self._cluster_methods[cluster_method] 
-     
-        self._dist_matrix.create_data_vector(regression_out_dict)
-        self._dist_matrix.calc_dist_matrix()
-        self._dist_matrix.save_matrix()
- 
-        self._clusters = cluster.ClusterDB("biotin")
-        self._clusters.generate_clusters(self._dist_matrix)
-        self._clusters.write_output()
-
-    @property
-    def data(self):
-
-        return self._C.cluster_labels
