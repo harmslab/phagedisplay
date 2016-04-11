@@ -61,7 +61,8 @@ class DistMatrix:
         else:
             raise ValueError("unrecognized internal type.")
 
-    def create_data_vector(self,phage_file,k_cutoff=1.00):
+    def create_data_vector(self,regression_out_dict={},phage_file=None,
+                           k_cutoff=1.00):
         """
         Create an array of numpy arrays holding individual sequences that
         should be compared to one another. 
@@ -72,19 +73,32 @@ class DistMatrix:
 
         self.data_vector = []
         self.seq_strings = []
-        with open(phage_file) as data:
 
-            next(data)
-            for line in data:
-                num, seq, k_glob, theta_glob, k_ind, theta_ind = line.split()
-                if float(k_ind) > k_cutoff:
+        # If the user specifies a human-readable file, use that rather than the
+        # input dictionary.
+        if phage_file != None:
+         
+            with open(phage_file) as data:
 
-                    self.seq_strings.append(seq)
+                next(data)
+                for line in data:
+                    num, seq, k_glob, theta_glob, k_ind, theta_ind = line.split()
+                    if float(k_ind) > k_cutoff:
 
+                        self.seq_strings.append(seq)
+
+                        self.data_vector.append(
+                            np.array([self._alphabet_dict[s] for s in seq],
+                                     dtype=self.internal_type))
+
+        else:
+            for k in regression_out_dict.keys():
+                if self.regression_out_dict[k] > k_cutoff:
+                    self.seq_strings.append(k)
                     self.data_vector.append(
-                        np.array([self._alphabet_dict[s] for s in seq],
-                                 dtype=self.internal_type))
-    
+                                            np.array([self._alphabet_dict[s] for s in k],
+                                            dtype=self.internal_type))
+
         self.data_vector = np.array(self.data_vector)
         self.seq_strings = np.array(self.seq_strings)
 
