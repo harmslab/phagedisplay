@@ -5,7 +5,7 @@ Classes for creating distance matrices between sets of aligned sequence data.
 __author__ = "Hiranmayi Duvvuri, Michael J. Harms"
 __date__ = "2016-04-06"
 
-import sys, os, pickle
+import sys, os, pickle, copy
 
 import numpy as np
 import scipy
@@ -18,6 +18,8 @@ try:
 except ImportError:
     warn = "The jellyfish library was not found. Some distance matrices will be unavailable."
     Warning(warn)
+
+from . import weight_matrices
 
 AMINO = "ACDEFGHIKLMNPQRSTVWY*BZX"
 DNA = "ACGT*"
@@ -93,7 +95,7 @@ class DistMatrix:
 
         else:
             for k in regression_out_dict.keys():
-                if self.regression_out_dict[k] > k_cutoff:
+                if regression_out_dict[k][0] > k_cutoff:
                     self.seq_strings.append(k)
                     self.data_vector.append(
                                             np.array([self._alphabet_dict[s] for s in k],
@@ -204,38 +206,68 @@ class WeightedDistMatrix(DistMatrix):
     simply the sum of the scores.
     """
 
-    def __init__(self,matrix_file="weight_matrices/blosum62.txt",alphabet="amino"):
+    def __init__(self,matrix_name="blosum62",alphabet="amino"):
         """
-        Standard init function, but add creation of a weight matrix from 
-        input file (blosum62.txt by default). 
+        Standard init function, but add weight matrix (either in 
+        weight_matrices.py or a text file).
         """
 
         # Call the base class __init__ function.
         super(self.__class__,self).__init__(alphabet,int)
 
-        # Read in the matrix file    
-        self._weight_file = matrix_file
-        self._read_weight_file()
+        self._weight_matrix_name = matrix_name
+        self._initialize_matrix()
 
-    def _read_weight_file(self):
+    def _initialize_matrix(self):
         """
-        Read a weight/distance matrix file into a numpy array.  
+        Initialize the matrix either by reading from weight_matrices.py or by 
+        reading in from user-specified file.  
+
+        Read a weight/distance matrix file into a numpy array. Assumes the weight
+        file has a format like:
+
+            A  C  D  E ...
+        A   v  v  v  v
+        C   v  v  v  v
+        D   v  v  v  v 
+        E   v  v  v  v
+        .
+
+        where A, C, D ... are the alphabet axes and v are the individual values.  
+        Table is whitespace delimited.  X and Y sequence "axes" can be in any
+        order.
         """
 
-        data = open(self._weight_file).readlines()
+        try:
+            # Grab the weight matrix from weight_matrices.py
+            tmp_weight_matrix = copy.copy(weight_matrices.__dict__[self._weight_matrix_name])
+        except KeyError:
 
-        # Grab alphabet bits from top line
-        seq = [self._alphabet_dict[s] for s in data[0].strip('/n/r').split()]
+            # Treat this name as a file
+            data = open(self._weight_matrix_name).readlines()
+
+            # Grab alphabet bits from top line
+            seq = data[0].strip('/n/r').split()
+            tmp_weight_matrix = dict([(s,dict([(s,0) for s in seq])) for s in seq])
        
-        # Go through each line, populating weight matrix. 
-        self.weight_matrix = np.zeros((len(seq),len(seq)),dtype=float)
-        for line in data[1:]:
-            line = line.strip('/n/r').split()
+            # Go through each line, populating weight matrix. 
+            for line in data[1:]:
+                line = line.strip('/n/r').split()
 
-            a = self._alphabet_dict[line[0]]
-            for j in range(1, len(line)):
-                b = seq[j-1]
-                self.weight_matrix[a, b] = float(line[j])
+                a = line[0]
+                for j in range(1, len(line)):
+                    b = seq[j-1]
+                    tmp_weight_matrix[a][b] = float(line[j])
+
+        # Convert tmp_weight_matrix into a numpy array, normalized between 0 
+        # and 1.
+        keys = list(tmp_weight_matrix.keys())
+        self.weight_matrix = np.zeros((len(keys),len(keys)),dtype=float)
+        for i, k1 in enumerate(keys):
+            a = self._alphabet_dict[k1]
+            for j, k2 in enumerate(keys):
+                b = self._alphabet_dict[k2]
+                self.weight_matrix[a,b] = tmp_weight_matrix[k1][k2]
 
         # Set weights to range from 0 (close) to 1 (far)
         mini = np.min(self.weight_matrix)
