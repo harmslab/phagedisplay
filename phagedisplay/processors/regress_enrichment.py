@@ -368,7 +368,7 @@ class RegressEnrichmentProcessor(BaseProcessor):
 
     def process(self,count_dict,cg_width=1.0,minimum_times_seen=4,
                 human_out_file="human-readable-summary.txt",
-                global_regression=True):
+                global_regression=False):
         """
         Do the regression. 
             count_dict is a set of sequences with counts over rounds as values
@@ -448,6 +448,7 @@ class RegressEnrichmentProcessor(BaseProcessor):
                                                                                  o[0][3]))
         f.close()
 
+        self.saveFile(overwrite=True)
 
     def _find_patterns(self):
         """

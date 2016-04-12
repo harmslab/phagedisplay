@@ -12,10 +12,10 @@ if not sys.version_info[0] == 3:
 # Need to add all dependencies to setup as we go!
 setup(name='phagedisplay',
       version='0.1.1',
-      description='Sequence Space in the Protein Lattice Model Landscape',
-      author='Luke Wheeler, Zach Sailer, Andrea Loes, Dr. Michael J. Harms',
+      description='Pipeline for quantitative analysis of phage display experiments',
+      author='Luke Wheeler, Hiranmyai Duvvuri, Michael J. Harms',
       url='https://github.com/harmslab/phagedisplay',
       packages=find_packages(),
       zip_safe=False,
-      install_requires=["scipy","numpy"])
+      install_requires=["scipy","numpy","pandas","sklearn"])
 
