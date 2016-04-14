@@ -5,8 +5,7 @@ __author__ = "Michael J. Harms"
 __date__ = "2016-04-11"
 
 import os 
-from phagedisplay import processors
-from processors import BaseProcessor
+from .. import BaseProcessor
 from . import dist_matrix, cluster 
 
 class ClusterProcessor(BaseProcessor):

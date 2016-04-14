@@ -165,7 +165,7 @@ class FastqSeqCounter:
 
         return out_dict
 
-    def processFastqFiles(self,fastq_file_list):
+    def processFastqFiles(self,fastq_file_list,log_function=None):
         """
         Take a set of fastq files and count them.
         """
@@ -178,7 +178,8 @@ class FastqSeqCounter:
             good_counts = None
             bad_counts = None
             if f != None:
-                self._logger("Processing {:s}".format(f))
+                if log_function != None:
+                    log_function("Processing {:s}".format(f))
                 good_counts, bad_counts = self._processSingleFile(f)
             
             all_good_dicts.append(good_counts)
@@ -225,7 +226,7 @@ class FastqToCountsProcessor(BaseProcessor):
 
         # Count
         self._logger("processing fastq files")
-        good_counts, bad_counts = p.processFastqFiles(fastq_filenames)
+        good_counts, bad_counts = p.processFastqFiles(fastq_filenames,self._logger)
 
         # Write out pickle files 
         self._logger("writing counts files")
