@@ -8,7 +8,6 @@ import os, gzip,  pickle
 
 import phagedisplay
 from phagedisplay.processors import BaseProcessor
-from phagedisplay import util
 
 class MasterProcessor(BaseProcessor):
     """

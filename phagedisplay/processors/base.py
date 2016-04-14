@@ -6,10 +6,7 @@ __date__ = "2015-05-16"
 
 from . import blob
 from .blob import Blob, DateBlob, FileBlob
-import datetime, string, random, os, json, pickle
-
-import phagedisplay
-from phagedisplay import util
+import datetime, string, random, os, json, pickle, sys
 
 class BaseProcessor:
     """
@@ -205,8 +202,15 @@ class BaseProcessor:
         """
         """
 
-        util.logger(msg,self._log_file)
+        d = "_".join(str(datetime.date.today()).split(" "))
 
+        f = open(self._log_file,'a')
+        f.write("{:25s}{:s}\n".format(d,msg))
+        f.close()
+
+        print(msg)
+        sys.stdout.flush()
+        
     @property
     def data(self):
         """

@@ -9,7 +9,6 @@ __author__ = "Michael J. Harms"
 __date__ = "2015-01-20"
 
 from . import BaseProcessor
-from phagedisplay import util
 
 import sys, time, copy, os
 import pickle, scipy
@@ -200,7 +199,7 @@ class FitModel:
                    = ln(theta_x_0) + ln(E_x)*i - ln(sum(Q))
     """
 
-    def __init__(self,patterns,degeneracy,rounds,log_file=None):
+    def __init__(self,patterns,degeneracy,rounds,log_function=None):
         """
         Using the data in patterns and degeneracy, create an observable set, 
         objective function, constraints, and bounds taht can then be minimized.
@@ -210,11 +209,11 @@ class FitModel:
         self.degeneracy = degeneracy 
         self.rounds = np.array(rounds,dtype=int)
         self.num_rounds = len(self.rounds)
-        
+
+        self._log_function = log_function
+            
         self.num_patterns = len(patterns)
         self.log_degeneracy = np.log(self.degeneracy)
-
-        self.log_file = log_file
 
         # Create observable matrix (thetas x rounds)
         self.y_obs = patterns[:]
@@ -234,7 +233,8 @@ class FitModel:
         #    first guess.
         # 2) If that doesn't converge, assign the initial conc to the frequency
         #    at obs0 and  K to 1.0
-        util.logger("Generating initial parameter guesses...",self.log_file)
+        if self._log_function != None:
+            self._log_function("Generating initial parameter guesses...")
         self.param_guess = np.zeros((self.num_patterns*2),dtype=float) 
         for i in range(self.num_patterns):
             y = self.y_obs[i,:]
@@ -253,8 +253,8 @@ class FitModel:
                 self.param_guess[i] = np.log(1/self.num_patterns) 
                 self.param_guess[self.num_patterns + i] = np.log(K_guess)
 
-        util.logger("Done.",self.log_file)
-        sys.stdout.flush()
+        if self._log_function != None:
+            self._log_function("Done.")
 
         # Create bound list.  conc must be between 0 and 1, K must be positive
         self.bounds = [(None,None) for i in range(self.num_patterns)]   
@@ -324,15 +324,18 @@ class FitModel:
         etc.
         """
 
-        util.logger("Performing main fit... ",self.log_file)
-        self.start_time = time.time()
+        if self._log_function != None:
+            self._log_function("Performing main fit... ")
 
+        self.start_time = time.time()
         self.fit_result = minimize(fun=self._objective2,x0=self.param_guess,
                                    bounds=self.bounds,
                                    #constraints=self.constraints,
                                    options={"maxiter":maxiter,"maxfun":maxiter})
         self.end_time = time.time()
-        util.logger("Done.",self.log_file)
+
+        if self._log_function != None:
+            self._log_function("Done.")
 
     def returnParam(self):
         """
@@ -400,7 +403,7 @@ class RegressEnrichmentProcessor(BaseProcessor):
                 degeneracy[i] = degen
 
         # Do actual fit
-        m = FitModel(fit_pattern,degeneracy,self.rounds,self._log_file)
+        m = FitModel(fit_pattern,degeneracy,self.rounds,self._logger)
         
         if global_regression:
             m.runRegression()
