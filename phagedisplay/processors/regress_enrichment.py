@@ -233,7 +233,7 @@ class FitModel:
         #    first guess.
         # 2) If that doesn't converge, assign the initial conc to the frequency
         #    at obs0 and  K to 1.0
-        self._logger("Generating initial parameter guesses...",self.log_file)
+        self._logger("Generating initial parameter guesses...")
         self.param_guess = np.zeros((self.num_patterns*2),dtype=float) 
         for i in range(self.num_patterns):
             y = self.y_obs[i,:]
@@ -252,7 +252,7 @@ class FitModel:
                 self.param_guess[i] = np.log(1/self.num_patterns) 
                 self.param_guess[self.num_patterns + i] = np.log(K_guess)
 
-        self._logger("Done.",self.log_file)
+        self._logger("Done.")
         sys.stdout.flush()
 
         # Create bound list.  conc must be between 0 and 1, K must be positive
@@ -323,7 +323,7 @@ class FitModel:
         etc.
         """
 
-        self._logger("Performing main fit... ",self.log_file)
+        self._logger("Performing main fit... ")
         self.start_time = time.time()
 
         self.fit_result = minimize(fun=self._objective2,x0=self.param_guess,
@@ -331,7 +331,7 @@ class FitModel:
                                    #constraints=self.constraints,
                                    options={"maxiter":maxiter,"maxfun":maxiter})
         self.end_time = time.time()
-        self._logger("Done.",self.log_file)
+        self._logger("Done.")
 
     def returnParam(self):
         """
@@ -367,7 +367,7 @@ class RegressEnrichmentProcessor(BaseProcessor):
 
     def process(self,count_dict,cg_width=1.0,minimum_times_seen=4,
                 human_out_file="human-readable-summary.txt",
-                global_regression=True):
+                global_regression=False):
         """
         Do the regression. 
             count_dict is a set of sequences with counts over rounds as values
