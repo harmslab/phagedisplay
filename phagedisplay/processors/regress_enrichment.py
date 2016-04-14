@@ -447,6 +447,7 @@ class RegressEnrichmentProcessor(BaseProcessor):
                                                                                  o[0][3]))
         f.close()
 
+        self.saveFile(overwrite=True)
 
     def _find_patterns(self):
         """
