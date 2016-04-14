@@ -281,7 +281,9 @@ class IlluminaSampler(BaseSampler):
         Sample from pool_instance at round_to_sample.  Return the contents
         and counts.  Do not append to pool.
         """
-           
+          
+        ##### XXX ADD SEQUENCING ERRORS 
+ 
         return super(IlluminaSampler,self).runExperiment(pool_instance=pool_instance,
                                                          sample_size=sample_size,
                                                          round_to_sample=round_to_sample,
