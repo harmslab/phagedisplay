@@ -149,9 +149,9 @@ class FastqPipeline(Pipeline):
         #self.m.addProcessor(c)
         #self.m.process()
         
-        #d = processors.ClusterProcessor(expt_name="clustering")
-        #self.m.addProcessor(d)
-        #self.m.process()
+        d = processors.ClusterProcessor(expt_name="clustering")
+        self.m.addProcessor(d)
+        self.m.process()
 
     def _parseRoundsFile(self):
         """
