@@ -1,3 +1,12 @@
+__description__ = \
+"""
+Perform a linear transformation of measured enrichment data to back out the 
+enrichment factor (a binding constant, in a perfect world) for each sequence
+as well as the value of the summed partition function (omega).  
+"""
+__author__ = "Michael J. Harms"
+__date__ = "2016-06-21"
+
 import pickle
 import numpy as np
 
@@ -99,126 +108,44 @@ def pre_treat_arrays(seq_array,prev_counts,this_counts):
     
     return seq_array, prev_counts, this_counts
 
-class Stuff:
+class BindingPolynomialProcessor(BaseProcessor):
 
-    def __init__(self,delta_file,pickled_dict):
-        """
-        """
-        
-        self._delta_file = delta_file
-        self._pickled_dict = pickled_dict
-        
-        self._load_delta_file()
-        self._load_count_dict()
-        
-        self._filter = None
+    def process(self,count_dict,
+                ref_round=None,measured_round=None,
+                seq_to_take=None):
 
-    
-    def _load_delta_file(self):
+        if ref_round == None:
+            ref_round = 0
+        if measured_round == None:
+            measured_round = -1
 
-        self._seq = []
-        self._reference_df = []
-        self._competitor_df = []
-        
-        with open(self._delta_file) as f:
-            for line in f:
-                col = line.split()
-
-                if col[0] == "seq" or col[1] == "nan" or col[2] == "nan":
-                    continue
-
-                try:
-                    self._seq.append(col[0].strip())
-                    self._reference_df.append(float(col[1]))
-                    self._competitor_df.append(float(col[2]))
-                except ValueError:
-                    continue
-                
-        
-        self._seq_dict = dict([(s,i) for i,s in enumerate(self._seq)])
-        
-        self._seq = np.array(self._seq)
-        self._reference_df = np.array(self._reference_df)
-        self._competitor_df = np.array(self._competitor_df)
-        
-
-    def _load_count_dict(self):
-        """
-        """
-        
-        self._count_dict = pickle.load(open(self._pickled_dict,"rb"))
-        
-        self._count_seq = list(self._count_dict.keys())
-        self._count_seq_index = dict([(k,i) for i, k in enumerate(self._count_seq)])
-        
-        self._num_count_rounds = len(self._count_dict[list(self._count_dict.keys())[0]])
-        self._num_count_seq = len(self._count_seq)
-        
-        self._count_array = np.zeros((self._num_count_seq,self._num_count_rounds),dtype=int)
-        
-        for i, k in enumerate(self._count_seq):
-            self._count_array[i,:] = np.array(self._count_dict[k])
-            
-        
-    def apply_filter(self,ref_df_cutoff=None,comp_df_cutoff=None):
-        """
-        Filter data by some criteria.  Filters are non-destructive and can be 
-        removed by remove_filter method.
-            
-            ref_df_cutoff: take sequences in which change in frequency for the
-                           reference change is > ref_df_cutoff.
-            comp_df_cutoff: take sequences in which change in frequency for the
-                            competitor peptide is < comp_df_cutoff.
-         
-        """
-        
-        if ref_df_cutoff != None: 
-            meets_ref_filter = self._reference_df > ref_df_cutoff
+        local_count_dict = {}
+        if seq_to_take != None:
+            for s in seq_to_take:
+                local_count_dict[s] = count_dict[s]
         else:
-            meets_ref_filter = 1
+            local_count_dict = count_dict
 
-        if comp_df_cutoff != None:
-            meets_comp_filter = self._competitor_df < comp_df_cutoff
-        else:
-            meets_comp_filter = 1
-        
-        self._filter = meets_ref_filter * meets_comp_filter
-        
-    def remove_filter(self):
-        """
-        Wipe out the filter.
-        """
-        
-        self._filter = None
+        seq_array = np.array(list(local_count_dict.keys()))
+        prev_round = np.zeros(len(seq_array),dtype=int)
+        this_round = np.zeros(len(seq_array),dtype=int)
+        for i in range(len(seq_array)):
+            prev_round[i] = local_count_dict[seq_array[i]][ref_round]
+            this_round[i] = local_count_dict[seq_array[i]][measured_round]
+            
+        new_seq_array, new_prev, new_this = pre_treat_arrays(seq_array,
+                                                             prev_round,
+                                                             this_round)
+        logK, omega = get_logK(new_prev,new_this)
 
-    def round_counts(self,round_number=1):
-        """
-        Return the counts ofr a given round.
-        """
-        
-        if round_number >= self._num_count_rounds:
-            err = "round not found\n"
-            raise ValueError(err)
-                    
-        indexes = np.array([self._count_seq_index[s] for s in self.sequences])
-        
-        return self._count_array[indexes,round_number]
+        self._out_dict = {}
+        for i in 1:range(len(seq_array)):
+            self._out_dict[seq_array[i]] = list(logK[i:,])
 
-        
     @property
-    def sequences(self):
-        
-        if self._filter != None:
-            return self._seq[self._filter]
-        else:
-            return self._seq
-       
-X = Stuff("p000-p100_r1-r2_peptide-delta.txt",
-          "processed-experiments/NCX1_0_CaE/raw-counts/good-counts.pickle")
+    def data(self):
+        """
+        Return a dictionary of sequences keyed to logK.
+        """
 
-seq_array = X.sequences
-prev_round = X.round_counts(1)
-this_round = X.round_counts(2)
-
-new_seq_array, new_prev, new_this = pre_treat_arrays(seq_array,prev_round,this_round)
-logK, omega = get_logK(new_prev,new_this)
+        return self._out_dict
