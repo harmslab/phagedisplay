@@ -141,13 +141,17 @@ class FastqPipeline(Pipeline):
         self.m.addProcessor(b)
         self.m.process()
 
-        c = processors.RegressEnrichmentProcessor(expt_name="regression")
+        c = processors.BindingPolynomialProcessor(expt_name="binding-polynomial")
         self.m.addProcessor(c)
         self.m.process()
+
+        #c = processors.RegressEnrichmentProcessor(expt_name="regression")
+        #self.m.addProcessor(c)
+        #self.m.process()
         
-        d = processors.ClusterProcessor(expt_name="clustering")
-        self.m.addProcessor(d)
-        self.m.process()
+        #d = processors.ClusterProcessor(expt_name="clustering")
+        #self.m.addProcessor(d)
+        #self.m.process()
 
     def _parseRoundsFile(self):
         """

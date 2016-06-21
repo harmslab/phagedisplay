@@ -7,7 +7,9 @@ as well as the value of the summed partition function (omega).
 __author__ = "Michael J. Harms"
 __date__ = "2016-06-21"
 
-import pickle
+from . import BaseProcessor
+
+import os
 import numpy as np
 
 def get_logK(prev_counts,this_counts):
@@ -139,8 +141,21 @@ class BindingPolynomialProcessor(BaseProcessor):
         logK, omega = get_logK(new_prev,new_this)
 
         self._out_dict = {}
-        for i in 1:range(len(seq_array)):
-            self._out_dict[seq_array[i]] = list(logK[i:,])
+        for i in range(len(new_seq_array)):
+            self._out_dict[new_seq_array[i]] = list(logK[i])
+
+        human_readable = os.path.join(self.getProperty("expt_name"),
+                                      "human-readable-summary.txt")
+
+        f = open(human_readable,"w")
+        f.write("{:>15s} {:>15s} {:>15s} {:>15s} {:>15s}\n".format(" ","seq","logK","logK_low","logK_high"))
+        for i, s in enumerate(self._out_dict.keys()):
+            f.write("{:15d} {:>15s} {:15.8e} {:15.8e} {:15.8e}\n".format(i,s,
+                                                                        self._out_dict[s][0],
+                                                                        self._out_dict[s][1],
+                                                                        self._out_dict[s][2]))
+        f.close()
+            
 
     @property
     def data(self):
