@@ -47,22 +47,15 @@ class Pipeline:
         # Create the directory for the experiment 
         self.m.create()
 
-    def loadInput(self):
+    def run(self):
         """
         Dummy in parent class.  Will be full-fledged method in childern.  After 
-        running loadInput, the master processor -- self.m -- should have a 
+        running run, the master processor -- self.m -- should have a 
         pickled dictionary of counts vs. round.
         """
 
         pass
 
-    def finalize(self):
-        """
-        Given that the master processor has a dictionary of counts per round in 
-        the last spot, do the rest of the processing business on it.
-        """
-
-        pass
 
     def _parseArbitraryKeyFile(self,
                                arbitrary_key_file=None):
@@ -110,7 +103,7 @@ class FastqPipeline(Pipeline):
     Load in fastq files and spit out a counts-style dictionary.
     """
     
-    def loadInput(self,
+    def run(self,
                   fastq_files=[None],
                   rounds_file=None):
         """
@@ -179,7 +172,7 @@ class PicklePipeline(Pipeline):
     dictionary, previously stored as a pickle file.
     """  
  
-    def loadInput(self, 
+    def run(self, 
                   pickle_file=None):
         """
         Read in a counts-per-round dict from a dictionary.
@@ -195,7 +188,7 @@ class SimulationPipeline(Pipeline):
     Pipeline for loading in a simulated phage display experiment.
     """   
  
-    def loadInput(self,
+    def run(self,
                   simulation_file=None,
                   all_samples=False):
         """
@@ -333,7 +326,7 @@ def main(argv=None):
                           description=args.description,
                           date=args.date,
                           arbitrary_key_file=args.arbitrary_key_file)
-        p.loadInput(fastq_files=args.fastq_files,
+        p.run(fastq_files=args.fastq_files,
                     rounds_file=args.rounds_file)
 
     # pickle file specified 
@@ -343,7 +336,7 @@ def main(argv=None):
                            description=args.description,
                            date=args.date,
                            arbitrary_key_file=args.arbitrary_key_file)
-        p.loadInput(pickle_file=args.pickle_file)
+        p.run(pickle_file=args.pickle_file)
 
     # simulation file specified
     elif args.simulation_file:
@@ -353,8 +346,8 @@ def main(argv=None):
                                date=args.date,
                                arbitrary_key_file=args.arbitrary_key_file)
 
-        p.loadInput(simulation_file=args.simulation_file,
-                    all_samples=args.all_samples)
+        p.run(simulation_file=args.simulation_file,
+              all_samples=args.all_samples)
 
     # No file specified  
     else:
@@ -364,10 +357,7 @@ def main(argv=None):
                      date=args.date,
                      arbitrary_key_file=args.arbitrary_key_file)
         
-        p.loadInput()
-
-    # Do final analysis pipeline
-    p.finalize()
+        p.run()
 
 if __name__ == "__main__":
     main()

@@ -117,9 +117,9 @@ class BindingPolynomialProcessor(BaseProcessor):
                 seq_to_take=None):
 
         if ref_round == None:
-            ref_round = 0
+            ref_round = 1
         if measured_round == None:
-            measured_round = -1
+            measured_round = 2 
 
         local_count_dict = {}
         if seq_to_take != None:
@@ -163,4 +163,7 @@ class BindingPolynomialProcessor(BaseProcessor):
         Return a dictionary of sequences keyed to logK.
         """
 
+        #filtered = dict([(k,self._out_dict[k]) for k in self._out_dict.keys()
+        #                  if self._out_dict[k][0] > 0])
+        #return filtered 
         return self._out_dict
