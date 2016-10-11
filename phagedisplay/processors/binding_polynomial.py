@@ -14,6 +14,8 @@ import numpy as np
 
 def get_logK(prev_counts,this_counts):
     """
+    Use a binding polynomial to determine a log enrichment factor given a set 
+    of input counts and a set of output counts.
     """
     
     if len(prev_counts) != len(this_counts):
@@ -64,7 +66,7 @@ def get_logK(prev_counts,this_counts):
 
 def pre_treat_arrays(seq_array,prev_counts,this_counts):
     """
-    Get count arrays ready.
+    Get count arrays ready, tossing guys with zero counts.
     """
     
     # Arrays of zero counts
@@ -113,13 +115,8 @@ def pre_treat_arrays(seq_array,prev_counts,this_counts):
 class BindingPolynomialProcessor(BaseProcessor):
 
     def process(self,count_dict,
-                ref_round=None,measured_round=None,
+                ref_round=0,measured_round=1,
                 seq_to_take=None):
-
-        if ref_round == None:
-            ref_round = 1
-        if measured_round == None:
-            measured_round = 2 
 
         local_count_dict = {}
         if seq_to_take != None:
@@ -140,20 +137,27 @@ class BindingPolynomialProcessor(BaseProcessor):
                                                              this_round)
         logK, omega = get_logK(new_prev,new_this)
 
+        prev_dict = {}
+        this_dict = {}
+
         self._out_dict = {}
         for i in range(len(new_seq_array)):
             self._out_dict[new_seq_array[i]] = list(logK[i])
+            prev_dict[new_seq_array[i]] = new_prev[i]
+            this_dict[new_seq_array[i]] = new_this[i]
 
         human_readable = os.path.join(self.getProperty("expt_name"),
                                       "human-readable-summary.txt")
 
         f = open(human_readable,"w")
-        f.write("{:>15s} {:>15s} {:>15s} {:>15s} {:>15s}\n".format(" ","seq","logK","logK_low","logK_high"))
+        f.write("{:>15s} {:>15s} {:>15s} {:>15s} {:>15s} {:>15s} {:>15s}\n".format(" ","seq","logK","logK_low","logK_high","prev","current"))
         for i, s in enumerate(self._out_dict.keys()):
-            f.write("{:15d} {:>15s} {:15.8e} {:15.8e} {:15.8e}\n".format(i,s,
-                                                                        self._out_dict[s][0],
-                                                                        self._out_dict[s][1],
-                                                                        self._out_dict[s][2]))
+            f.write("{:15d} {:>15s} {:15.8e} {:15.8e} {:15.8e} {:15d} {:15d}\n".format(i,s,
+                                                                                       self._out_dict[s][0],
+                                                                                       self._out_dict[s][1],
+                                                                                       self._out_dict[s][2],
+                                                                                       prev_dict[s],
+                                                                                       this_dict[s]))
         f.close()
             
 

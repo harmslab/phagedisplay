@@ -104,8 +104,9 @@ class FastqPipeline(Pipeline):
     """
     
     def run(self,
-                  fastq_files=[None],
-                  rounds_file=None):
+            fastq_files=[None],
+            rounds_file=None,
+            ref_round=1,measured_round=2):
         """
         Load in fastq files (and maybe rounds files), process the raw sequencing
         input, and spit out some pretty sequence/counts-per-round dictionaries.
@@ -125,24 +126,24 @@ class FastqPipeline(Pipeline):
         fastq_files = new_fastq_files[:]
     
         # Load in the fastq files 
-        a = processors.FastqListProcessor(expt_name="raw-fastq-files")
+        a = processors.FastqListProcessor(expt_name="00_raw-fastq-files")
         self.m.addProcessor(a)
         self.m.process(file_list=fastq_files)
     
         # Count good sequences in the fastq files
-        b = processors.FastqToCountsProcessor(expt_name="raw-counts")
+        b = processors.FastqToCountsProcessor(expt_name="01_raw-counts")
         self.m.addProcessor(b)
         self.m.process()
 
-        c = processors.BindingPolynomialProcessor(expt_name="binding-polynomial")
+        c = processors.BindingPolynomialProcessor(expt_name="02_binding-polynomial")
         self.m.addProcessor(c)
-        self.m.process()
+        self.m.process(ref_round=ref_round,measured_round=measured_round)
 
         #c = processors.RegressEnrichmentProcessor(expt_name="regression")
         #self.m.addProcessor(c)
         #self.m.process()
         
-        d = processors.ClusterProcessor(expt_name="clustering")
+        d = processors.ClusterProcessor(expt_name="03_clustering")
         self.m.addProcessor(d)
         self.m.process()
 

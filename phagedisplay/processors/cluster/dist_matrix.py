@@ -64,7 +64,7 @@ class DistMatrix:
             raise ValueError("unrecognized internal type.")
 
     def create_data_vector(self,regression_out_dict={},phage_file=None,
-                           k_cutoff=1.00):
+                           k_cutoff=0.00):
         """
         Create an array of numpy arrays holding individual sequences that
         should be compared to one another. 
@@ -84,7 +84,11 @@ class DistMatrix:
 
                 next(data)
                 for line in data:
-                    num, seq, k_glob, theta_glob, k_ind, theta_ind = line.split()
+                    try:
+                        num, seq, k_glob, theta_glob, k_ind, theta_ind = line.split()
+                    except ValueError:
+                        num, seq, k_ind, k_min, k_max = line.split()
+
                     if float(k_ind) > k_cutoff:
 
                         self.seq_strings.append(seq)
@@ -104,6 +108,7 @@ class DistMatrix:
         self.data_vector = np.array(self.data_vector)
         self.seq_strings = np.array(self.seq_strings)
 
+
     def calc_dist_matrix(self,verbose=False):
         """
         Calculate all pairwise distances between the sequences in 
@@ -115,7 +120,6 @@ class DistMatrix:
         nrow = self.data_vector.shape[0]
         self.dist_matrix = np.zeros((nrow, nrow),dtype=float)
         for i in range(nrow):
-
             if verbose:
                 if i % 1000 == 0:
                     print("Row",i,"of",nrow)

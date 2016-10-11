@@ -125,7 +125,6 @@ class ClusterDB(Cluster):
         """
         Generate clusters by dbscan.  Takes a DistMatrix instance D as input.
         """
-
         # If the user does not specify epsilon, estimate it.  
         if self.epsilon == None:
             self.epsilon = self._estimate_epsilon(D)
