@@ -17,5 +17,6 @@ setup(name='phagedisplay',
       url='https://github.com/harmslab/phagedisplay',
       packages=find_packages(),
       zip_safe=False,
-      install_requires=["scipy","numpy","pandas","sklearn"])
+      install_requires=["scipy","numpy","pandas","sklearn"],
+      entry_points = {'console_scripts': ['phage = phagedisplay.run_pipeline:main']})
 
