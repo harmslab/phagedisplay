@@ -125,7 +125,6 @@ class ClusterDB(Cluster):
         """
         Generate clusters by dbscan.  Takes a DistMatrix instance D as input.
         """
-
         # If the user does not specify epsilon, estimate it.  
         if self.epsilon == None:
             self.epsilon = self._estimate_epsilon(D)
@@ -205,6 +204,11 @@ class ClusterDB(Cluster):
                 if self.num_clusters > 1:
                     count = self.cluster_labels.groupby("cluster").count()
                     count.to_pickle(os.path.join(self.out_path,"episilon_{:.2e}.pickle".format(i)))
+
+        # If no clusters were found for *any* epsilon, complain
+        if len(num_clust_list) < 1:
+            err = "No clusters found for any epsilon.  Data set has too few sequences?\n"
+            raise ValueError(err)
 
         # Normalize the number of clusters to the largest number seen
         clust_thresh = np.array(num_clust_list)/max(num_clust_list)

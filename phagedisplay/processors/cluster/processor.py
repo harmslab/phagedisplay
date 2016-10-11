@@ -28,7 +28,6 @@ class ClusterProcessor(BaseProcessor):
         self._dist_matrix.create_data_vector(regression_out_dict)
         self._dist_matrix.calc_dist_matrix()
 
-         
         base_dir = self.getProperty("expt_name")
         self._clusters = cluster.ClusterDB(os.path.join(base_dir,"clusters"))
         self._clusters.generate_clusters(self._dist_matrix)
