@@ -47,7 +47,7 @@ def get_logK(prev_counts,this_counts):
     out[:,0]= np.dot(inv_X,np.log(enrich_ratio))
     
     # Now propagate uncertainty
-    sigma_ratio = enrich_ratio * np.sqrt(this_counts**(-3) + prev_counts**(-3))
+    sigma_ratio = enrich_ratio * np.sqrt(this_counts**(2) + prev_counts**(2))
     K_sigma = np.sqrt(np.dot(np.abs(inv_X),sigma_ratio**2))
    
     K = np.exp(out[:,0])

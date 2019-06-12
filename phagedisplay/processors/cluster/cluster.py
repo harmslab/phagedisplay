@@ -14,7 +14,7 @@ import matplotlib.pyplot as plt
 import pandas as pd
 
 import pickle, sys, os
-import weblogolib, corebio
+import weblogo
 
 def create_weblogo(seq_list,out_file,alphabet="amino"):
     """ 
@@ -23,22 +23,22 @@ def create_weblogo(seq_list,out_file,alphabet="amino"):
 
     # Alphabet and color scheme
     if alphabet == "amino":
-        wl_alphabet = corebio.seq.unambiguous_protein_alphabet
-        wl_color_scheme = weblogolib.colorscheme.hydrophobicity
+        wl_alphabet = weblogo.seq.unambiguous_protein_alphabet
+        wl_color_scheme = weblogo.colorscheme.hydrophobicity
     elif alphabet == "dna":
-        wl_alphabet = corebio.seq.unambiguous_dna_alphabet          
-        wl_color_scheme = weblogolib.colorscheme.nucleotide
+        wl_alphabet = weblogo.seq.unambiguous_dna_alphabet          
+        wl_color_scheme = weblogo.colorscheme.nucleotide
  
     # load data and create a logo
-    logo_sequences = corebio.seq.SeqList(seq_list,alphabet=wl_alphabet)
-    logo_data = weblogolib.LogoData.from_seqs(logo_sequences)
+    logo_sequences = weblogo.seq.SeqList(seq_list,alphabet=wl_alphabet)
+    logo_data = weblogo.LogoData.from_seqs(logo_sequences)
 
     # create format
-    logo_format = weblogolib.LogoFormat(logo_data)
+    logo_format = weblogo.LogoFormat(logo_data)
     logo_format.color_scheme = wl_color_scheme
 
     # dump out as a pdf.    
-    logo = weblogolib.pdf_formatter(logo_data, logo_format)
+    logo = weblogo.pdf_formatter(logo_data, logo_format)
     f = open(out_file,'w')
     f.buffer.write(logo)
     f.close()
